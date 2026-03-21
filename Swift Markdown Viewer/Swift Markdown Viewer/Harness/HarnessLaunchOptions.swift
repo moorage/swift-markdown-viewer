@@ -18,6 +18,7 @@ enum HarnessDeviceClass: String, Codable {
 struct HarnessLaunchOptions {
     let fixtureRoot: URL?
     let openFile: String?
+    let uiTestOpenFolderURL: URL?
     let theme: String?
     let windowSize: CGSize?
     let disableFileWatch: Bool
@@ -54,6 +55,7 @@ struct HarnessLaunchOptions {
         return HarnessLaunchOptions(
             fixtureRoot: resolveURL(after: "--fixture-root"),
             openFile: value(after: "--open-file"),
+            uiTestOpenFolderURL: resolveURL(after: "--ui-test-open-folder"),
             theme: value(after: "--theme"),
             windowSize: windowSize,
             disableFileWatch: arguments.contains("--disable-file-watch"),

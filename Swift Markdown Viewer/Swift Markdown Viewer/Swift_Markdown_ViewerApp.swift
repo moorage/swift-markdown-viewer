@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if os(macOS)
+import AppKit
+#endif
 
 @main
 struct Swift_Markdown_ViewerApp: App {
@@ -15,5 +18,39 @@ struct Swift_Markdown_ViewerApp: App {
         WindowGroup {
             ContentView(model: model)
         }
+        #if os(macOS)
+        .commands {
+            CommandGroup(after: .newItem) {
+                Divider()
+                Button("Open Folder…") {
+                    openFolder()
+                }
+                .keyboardShortcut("o", modifiers: [.command])
+            }
+        }
+        #endif
     }
+
+    #if os(macOS)
+    private func openFolder() {
+        if model.launchOptions.uiTestMode, let testFolderURL = model.launchOptions.uiTestOpenFolderURL {
+            model.openFolder(at: testFolderURL)
+            return
+        }
+
+        let panel = NSOpenPanel()
+        panel.title = "Open Folder"
+        panel.prompt = "Open"
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.canCreateDirectories = false
+        panel.allowsMultipleSelection = false
+
+        guard panel.runModal() == .OK, let selectedURL = panel.url else {
+            return
+        }
+
+        model.openFolder(at: selectedURL)
+    }
+    #endif
 }

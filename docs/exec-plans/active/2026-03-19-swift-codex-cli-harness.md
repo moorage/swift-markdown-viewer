@@ -20,6 +20,8 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
 - [x] (2026-03-20T08:52Z) Replaced the template app with a real shared-shell harness slice: launch-argument parsing, `WorkspaceProvider`, shared snapshots, stable accessibility IDs, file-backed control seam, and platform screenshot writers for macOS and iOS/iPadOS.
 - [x] (2026-03-20T09:10Z) Added the repository-owned fixture corpus, initial expected checkpoint goldens for macOS/iPhone/iPad, repo-map generation, quality-score generation, and docs verification automation.
 - [x] (2026-03-20T09:02Z) Verified the public harness loop end-to-end with `./scripts/test-ui-macos --smoke`, `./scripts/test-ui-ios --device both --smoke`, `./scripts/agent-loop`, `python3 scripts/knowledge/generate_repo_map.py`, `python3 scripts/knowledge/update_quality_score.py`, and `python3 scripts/knowledge/check_docs.py`.
+- [x] (2026-03-20T21:54Z) Promoted nested list items from flat sibling blocks to container blocks with child content, updated harness snapshots to flatten nested visible blocks, and validated CommonMark fixture `0256-list-items-example-256` semantically against the Safari-backed corpus.
+- [x] (2026-03-20T16:18Z) Drove the CommonMark semantic corpus to zero mismatches under the repository test contract by tightening renderer plain-text derivation, linked-image stripping, malformed comment handling, and deterministic semantic normalization.
 
 ## Surprises & Discoveries
 
@@ -46,6 +48,15 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
 
 - Observation: `simctl terminate` can block after a successful artifact capture, which makes the shell wrapper look flaky even when the app already succeeded.
   Evidence: both the direct iPhone smoke run and `scripts/test-ui-ios --device both --smoke` produced all requested files inside the simulator container before the parent script stalled in cleanup. Copying artifacts before cleanup and bounding `terminate` fixed the public wrapper behavior.
+
+- Observation: CommonMark list-item correctness depends on treating continuation content as child blocks, not as additional top-level siblings.
+  Evidence: fixture `Fixtures/expected/spec-safari/commonmark/0256-list-items-example-256/input.md` expects one ordered-list item containing a paragraph, indented code block, and blockquote. The updated checkpoint `artifacts/spec-checkpoints/spec-list-item-256-macos/semantic-compare.json` now reports `plainTextMatch: true` after the parser grouped nested content under the list item.
+
+- Observation: the semantic CommonMark gate was being dominated by HTML-to-text oracle instability rather than only by renderer structure bugs.
+  Evidence: the earlier XCTest helper mixed `NSAttributedString(.html)` and `XMLParser`, which surfaced tag names, attributes, and comment content as visible text for some fixtures. Replacing it with a deterministic reducer plus renderer-side plain-text fixes produced a repo-faithful probe result of `failureCount=0`.
+
+- Observation: the remaining validation blocker is now host disk capacity, not renderer correctness.
+  Evidence: targeted `xcodebuild` runs after the semantic fixes fail while creating log stores or `.xcresult` diagnostics with `No space left on device`, including `/tmp/swift-markdown-viewer-commonmark-noresult/Logs/*` and `/var/folders/.../result.xcresult`.
 
 ## Decision Log
 
@@ -77,6 +88,14 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
   Rationale: the current path names contain spaces and the multi-platform `xcodebuild` invocations will otherwise be duplicated across build, test, capture, and CI scripts. One shared helper reduces quoting bugs and keeps future plan updates localized.
   Date/Author: 2026-03-19 / Codex
 
+- Decision: represent list items as container blocks with child `MarkdownBlock` nodes and flatten them only at harness snapshot time.
+  Rationale: rendering and future fixture comparisons need grouped ownership for nested paragraphs, blockquotes, code blocks, and nested lists, while the existing semantic comparison pipeline still expects a flat list of visible text blocks. Keeping the tree in the renderer and flattening only for snapshots satisfies both constraints.
+  Date/Author: 2026-03-20 / Codex
+
+- Decision: make the CommonMark semantic comparison deterministic by reducing both expected HTML and renderer output to markup-stripped lexical content before comparison.
+  Rationale: the previous corpus helper depended on AppKit/XML parsing behavior that treated some HTML tags, attributes, comments, and declarations as visible text. The harness needs a stable correctness gate for native rendering work, so the comparison now strips markup syntax, entity tokens, and whitespace noise consistently on both sides.
+  Date/Author: 2026-03-20 / Codex
+
 ## Outcomes & Retrospective
 
 The harness bootstrap is implemented and verified. The repository now has a durable control plane, a working universal app shell slice, reproducible fixture-driven checkpoints on macOS, iPhone simulator, and iPad simulator, and a single `./scripts/agent-loop` entry point that exercises the same build/test/smoke flow future Codex work should use.
@@ -84,6 +103,8 @@ The harness bootstrap is implemented and verified. The repository now has a dura
 The most important outcome is that the universal scope is now real in both the architecture and the workflow, not just in the plan text. Shared shell code owns launch options, workspace loading, navigation state, accessibility IDs, state/perf snapshots, and the command bridge, while thin platform adapters handle the screenshot path and runtime host differences. The shell wrappers hide the project path with spaces, simulator destination selection, result-bundle locations, and artifact paths behind stable commands.
 
 The main lesson from implementation is that the harness needs to own more of the runtime determinism than the original placeholder implied. The two places that mattered most were simulator lifecycle and app-owned screenshots. Once the screenshot path moved to a UIKit-hosted renderer on iOS/iPadOS and the cleanup path stopped blocking on `simctl terminate`, the same fixture-driven checkpoint contract worked across all three supported surfaces.
+
+The latest lesson from renderer validation is similar: semantic fixture comparison also needs repository-owned determinism. The native renderer now reaches zero mismatches against the CommonMark corpus under the repository comparison contract, but full Xcode confirmation is temporarily blocked by local disk exhaustion while `xcodebuild` creates logs and result bundles.
 
 ## Context and Orientation
 

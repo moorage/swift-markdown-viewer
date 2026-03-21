@@ -11,6 +11,8 @@ FIXTURE=""
 PLATFORM_TARGET="macos"
 DEVICE_CLASS="mac"
 CHECKPOINT=""
+FIXTURE_ROOT_OVERRIDE=""
+WINDOW_SIZE="1024x768"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -30,6 +32,14 @@ while [[ $# -gt 0 ]]; do
       CHECKPOINT="${2:-}"
       shift 2
       ;;
+    --fixture-root)
+      FIXTURE_ROOT_OVERRIDE="${2:-}"
+      shift 2
+      ;;
+    --window-size)
+      WINDOW_SIZE="${2:-}"
+      shift 2
+      ;;
     *)
       echo "unknown argument: $1" >&2
       exit 1
@@ -39,6 +49,8 @@ done
 
 [[ -n "${FIXTURE}" ]] || { echo "--fixture is required" >&2; exit 1; }
 [[ -n "${CHECKPOINT}" ]] || { echo "--checkpoint is required" >&2; exit 1; }
+
+ACTIVE_FIXTURE_ROOT="${FIXTURE_ROOT_OVERRIDE:-${FIXTURE_ROOT}}"
 
 OUT_DIR="${CHECKPOINTS_DIR}/${CHECKPOINT}"
 rm -rf "${OUT_DIR}"
@@ -51,11 +63,11 @@ if [[ "${PLATFORM_TARGET}" == "macos" ]]; then
   PERF_PATH="${OUT_DIR}/perf.json"
   SCREENSHOT_PATH="${OUT_DIR}/window.png"
   "${APP_BINARY}" \
-    --fixture-root "${FIXTURE_ROOT}" \
+    --fixture-root "${ACTIVE_FIXTURE_ROOT}" \
     --open-file "${FIXTURE}" \
     --platform-target macos \
     --device-class "${DEVICE_CLASS}" \
-    --window-size 1024x768 \
+    --window-size "${WINDOW_SIZE}" \
     --dump-visible-state "${STATE_PATH}" \
     --dump-perf-state "${PERF_PATH}" \
     --screenshot-path "${SCREENSHOT_PATH}" \
@@ -100,7 +112,7 @@ elif [[ "${PLATFORM_TARGET}" == "ios" ]]; then
   FIXTURE_COPY_ROOT="${CONTAINER_ROOT}/Documents/Fixtures/docs"
   rm -rf "${FIXTURE_COPY_ROOT}"
   mkdir -p "${FIXTURE_COPY_ROOT}"
-  cp -R "${FIXTURE_ROOT}/." "${FIXTURE_COPY_ROOT}/"
+  cp -R "${ACTIVE_FIXTURE_ROOT}/." "${FIXTURE_COPY_ROOT}/"
 
   STATE_PATH="${CONTAINER_ROOT}/Documents/HarnessArtifacts/${CHECKPOINT}/state.json"
   PERF_PATH="${CONTAINER_ROOT}/Documents/HarnessArtifacts/${CHECKPOINT}/perf.json"
@@ -112,7 +124,7 @@ elif [[ "${PLATFORM_TARGET}" == "ios" ]]; then
     --open-file "${FIXTURE}" \
     --platform-target ios \
     --device-class "${DEVICE_CLASS}" \
-    --window-size 1024x768 \
+    --window-size "${WINDOW_SIZE}" \
     --dump-visible-state "${STATE_PATH}" \
     --dump-perf-state "${PERF_PATH}" \
     --screenshot-path "${SCREENSHOT_PATH}" \

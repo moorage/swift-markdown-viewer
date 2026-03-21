@@ -1,0 +1,142 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+CHECKPOINT_SCRIPT="${ROOT_DIR}/scripts/capture-checkpoint"
+
+FIXTURE_DIR=""
+PLATFORM_TARGET="macos"
+DEVICE_CLASS=""
+CHECKPOINT_NAME=""
+OUTPUT_DIR=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --fixture-dir)
+      FIXTURE_DIR="${2:-}"
+      shift 2
+      ;;
+    --platform-target)
+      PLATFORM_TARGET="${2:-}"
+      shift 2
+      ;;
+    --device-class)
+      DEVICE_CLASS="${2:-}"
+      shift 2
+      ;;
+    --checkpoint)
+      CHECKPOINT_NAME="${2:-}"
+      shift 2
+      ;;
+    --output-dir)
+      OUTPUT_DIR="${2:-}"
+      shift 2
+      ;;
+    *)
+      echo "unknown argument: $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
+[[ -n "${FIXTURE_DIR}" ]] || { echo "--fixture-dir is required" >&2; exit 1; }
+FIXTURE_DIR="$(cd "${FIXTURE_DIR}" && pwd)"
+[[ -f "${FIXTURE_DIR}/input.md" ]] || { echo "missing ${FIXTURE_DIR}/input.md" >&2; exit 1; }
+[[ -f "${FIXTURE_DIR}/expected.html" ]] || { echo "missing ${FIXTURE_DIR}/expected.html" >&2; exit 1; }
+[[ -f "${FIXTURE_DIR}/viewport.json" ]] || { echo "missing ${FIXTURE_DIR}/viewport.json" >&2; exit 1; }
+
+if [[ -z "${DEVICE_CLASS}" ]]; then
+  case "${PLATFORM_TARGET}" in
+    macos) DEVICE_CLASS="mac" ;;
+    ios) DEVICE_CLASS="iphone" ;;
+    *) echo "expected --platform-target macos|ios" >&2; exit 1 ;;
+  esac
+fi
+
+if [[ -z "${CHECKPOINT_NAME}" ]]; then
+  base="$(basename "${FIXTURE_DIR}")"
+  CHECKPOINT_NAME="spec-${base}-${PLATFORM_TARGET}-${DEVICE_CLASS}"
+fi
+
+if [[ -z "${OUTPUT_DIR}" ]]; then
+  OUTPUT_DIR="${ROOT_DIR}/artifacts/spec-checkpoints/${CHECKPOINT_NAME}"
+fi
+mkdir -p "${OUTPUT_DIR}"
+
+WINDOW_SIZE="$(python3 - "${FIXTURE_DIR}/viewport.json" "${DEVICE_CLASS}" <<'PY'
+import json
+import sys
+
+payload = json.loads(open(sys.argv[1], encoding="utf-8").read())
+device = sys.argv[2]
+platforms = payload.get("platforms", {})
+config = platforms.get(device) or platforms.get("mac") or {"width": 1024, "height": 768}
+print(f"{int(config['width'])}x{int(config['height'])}")
+PY
+)"
+
+"${CHECKPOINT_SCRIPT}" \
+  --fixture-root "${FIXTURE_DIR}" \
+  --fixture "input.md" \
+  --platform-target "${PLATFORM_TARGET}" \
+  --device-class "${DEVICE_CLASS}" \
+  --window-size "${WINDOW_SIZE}" \
+  --checkpoint "${CHECKPOINT_NAME}"
+
+SOURCE_CHECKPOINT_DIR="${ROOT_DIR}/artifacts/checkpoints/${CHECKPOINT_NAME}"
+cp "${SOURCE_CHECKPOINT_DIR}/state.json" "${OUTPUT_DIR}/state.json"
+cp "${SOURCE_CHECKPOINT_DIR}/perf.json" "${OUTPUT_DIR}/perf.json"
+cp "${SOURCE_CHECKPOINT_DIR}/window.png" "${OUTPUT_DIR}/window.png"
+cp "${FIXTURE_DIR}/input.md" "${OUTPUT_DIR}/input.md"
+cp "${FIXTURE_DIR}/expected.html" "${OUTPUT_DIR}/expected.html"
+cp "${FIXTURE_DIR}/viewport.json" "${OUTPUT_DIR}/viewport.json"
+if [[ -f "${FIXTURE_DIR}/meta.json" ]]; then
+  cp "${FIXTURE_DIR}/meta.json" "${OUTPUT_DIR}/meta.json"
+fi
+
+python3 - "${OUTPUT_DIR}" <<'PY'
+from __future__ import annotations
+
+import json
+import re
+import sys
+from html.parser import HTMLParser
+from pathlib import Path
+
+
+class TextCollector(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.parts: list[str] = []
+
+    def handle_data(self, data: str) -> None:
+        self.parts.append(data)
+
+
+def normalize(value: str) -> str:
+    return re.sub(r"\s+", " ", value).strip()
+
+
+root = Path(sys.argv[1])
+state = json.loads(root.joinpath("state.json").read_text(encoding="utf-8"))
+expected_html = root.joinpath("expected.html").read_text(encoding="utf-8")
+
+collector = TextCollector()
+collector.feed(expected_html)
+expected_text = normalize(" ".join(collector.parts))
+actual_text = normalize(" ".join(block.get("text", "") for block in state.get("visibleBlocks", [])))
+
+summary = {
+    "selectedFile": state.get("selectedFile"),
+    "viewport": state.get("viewport"),
+    "expectedPlainText": expected_text,
+    "actualVisibleText": actual_text,
+    "plainTextMatch": expected_text == actual_text,
+    "note": "This is a thin semantic comparison between expected HTML text content and the current harness visible block text.",
+}
+root.joinpath("semantic-compare.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+print(root)
+PY
+
+echo "spec checkpoint written to ${OUTPUT_DIR}"

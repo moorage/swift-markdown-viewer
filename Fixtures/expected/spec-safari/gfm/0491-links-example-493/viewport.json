@@ -1,0 +1,20 @@
+{
+  "platforms": {
+    "iphone": {
+      "width": 390,
+      "height": 844,
+      "scale": 3
+    },
+    "ipad": {
+      "width": 820,
+      "height": 1180,
+      "scale": 2
+    },
+    "mac": {
+      "width": 1280,
+      "height": 900,
+      "scale": 2
+    }
+  },
+  "initial_scroll_y": 0
+}

@@ -1,0 +1,12 @@
+{
+  "browser": "Safari",
+  "browserVersion": "26.1",
+  "fixtureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/spec-fixtures-starter/gfm/0601-autolinks-example-603",
+  "referenceHTML": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0601-autolinks-example-603-mac/reference.html",
+  "screenshot": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0601-autolinks-example-603-mac/safari-window.png",
+  "deviceClass": "mac",
+  "windowWidth": 1280,
+  "windowHeight": 900,
+  "settleSeconds": 1.5,
+  "captureMode": "safaridriver-screenshot"
+}

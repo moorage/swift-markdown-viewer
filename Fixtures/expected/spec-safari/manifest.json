@@ -1,0 +1,951 @@
+{
+  "sourceRoot": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter",
+  "destinationRoot": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari",
+  "entries": [
+    {
+      "suite": "commonmark",
+      "case": "0001-tabs-example-1",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0001-tabs-example-1-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0001-tabs-example-1",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0002-tabs-example-2",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0002-tabs-example-2-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0002-tabs-example-2",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0012-backslash-escapes-example-12",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0012-backslash-escapes-example-12-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0012-backslash-escapes-example-12",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0013-backslash-escapes-example-13",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0013-backslash-escapes-example-13-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0013-backslash-escapes-example-13",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0025-entity-and-numeric-character-references-example-25",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0025-entity-and-numeric-character-references-example-25-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0025-entity-and-numeric-character-references-example-25",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0026-entity-and-numeric-character-references-example-26",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0026-entity-and-numeric-character-references-example-26-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0026-entity-and-numeric-character-references-example-26",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0042-precedence-example-42",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0042-precedence-example-42-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0042-precedence-example-42",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0043-thematic-breaks-example-43",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0043-thematic-breaks-example-43-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0043-thematic-breaks-example-43",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0044-thematic-breaks-example-44",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0044-thematic-breaks-example-44-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0044-thematic-breaks-example-44",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0062-atx-headings-example-62",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0062-atx-headings-example-62-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0062-atx-headings-example-62",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0063-atx-headings-example-63",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0063-atx-headings-example-63-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0063-atx-headings-example-63",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0080-setext-headings-example-80",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0080-setext-headings-example-80-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0080-setext-headings-example-80",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0081-setext-headings-example-81",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0081-setext-headings-example-81-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0081-setext-headings-example-81",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0107-indented-code-blocks-example-107",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0107-indented-code-blocks-example-107-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0107-indented-code-blocks-example-107",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0108-indented-code-blocks-example-108",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0108-indented-code-blocks-example-108-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0108-indented-code-blocks-example-108",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0119-fenced-code-blocks-example-119",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0119-fenced-code-blocks-example-119-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0119-fenced-code-blocks-example-119",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0120-fenced-code-blocks-example-120",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0120-fenced-code-blocks-example-120-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0120-fenced-code-blocks-example-120",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0148-html-blocks-example-148",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0148-html-blocks-example-148-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0148-html-blocks-example-148",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0149-html-blocks-example-149",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0149-html-blocks-example-149-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0149-html-blocks-example-149",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0194-link-reference-definitions-example-194",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0194-link-reference-definitions-example-194-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0194-link-reference-definitions-example-194",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0195-link-reference-definitions-example-195",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0195-link-reference-definitions-example-195-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0195-link-reference-definitions-example-195",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0221-paragraphs-example-221",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0221-paragraphs-example-221-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0221-paragraphs-example-221",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0222-paragraphs-example-222",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0222-paragraphs-example-222-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0222-paragraphs-example-222",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0229-blank-lines-example-229",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0229-blank-lines-example-229-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0229-blank-lines-example-229",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0230-block-quotes-example-230",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0230-block-quotes-example-230-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0230-block-quotes-example-230",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0231-block-quotes-example-231",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0231-block-quotes-example-231-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0231-block-quotes-example-231",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0255-list-items-example-255",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0255-list-items-example-255-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0255-list-items-example-255",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0256-list-items-example-256",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0256-list-items-example-256-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0256-list-items-example-256",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0303-lists-example-303",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0303-lists-example-303-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0303-lists-example-303",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0304-lists-example-304",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0304-lists-example-304-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0304-lists-example-304",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0329-inlines-example-329",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0329-inlines-example-329-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0329-inlines-example-329",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0330-code-spans-example-330",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0330-code-spans-example-330-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0330-code-spans-example-330",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0331-code-spans-example-331",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0331-code-spans-example-331-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0331-code-spans-example-331",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0352-emphasis-and-strong-emphasis-example-352",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0352-emphasis-and-strong-emphasis-example-352-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0352-emphasis-and-strong-emphasis-example-352",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0353-emphasis-and-strong-emphasis-example-353",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0353-emphasis-and-strong-emphasis-example-353-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0353-emphasis-and-strong-emphasis-example-353",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0484-links-example-484",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0484-links-example-484-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0484-links-example-484",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0485-links-example-485",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0485-links-example-485-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0485-links-example-485",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0574-images-example-574",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0574-images-example-574-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0574-images-example-574",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0575-images-example-575",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0575-images-example-575-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0575-images-example-575",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0596-autolinks-example-596",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0596-autolinks-example-596-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0596-autolinks-example-596",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0597-autolinks-example-597",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0597-autolinks-example-597-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0597-autolinks-example-597",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0615-raw-html-example-615",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0615-raw-html-example-615-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0615-raw-html-example-615",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0616-raw-html-example-616",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0616-raw-html-example-616-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0616-raw-html-example-616",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0636-hard-line-breaks-example-636",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0636-hard-line-breaks-example-636-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0636-hard-line-breaks-example-636",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0637-hard-line-breaks-example-637",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0637-hard-line-breaks-example-637-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0637-hard-line-breaks-example-637",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0651-soft-line-breaks-example-651",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0651-soft-line-breaks-example-651-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0651-soft-line-breaks-example-651",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0652-soft-line-breaks-example-652",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0652-soft-line-breaks-example-652-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0652-soft-line-breaks-example-652",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0653-textual-content-example-653",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0653-textual-content-example-653-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0653-textual-content-example-653",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "commonmark",
+      "case": "0654-textual-content-example-654",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/commonmark/0654-textual-content-example-654-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/commonmark/0654-textual-content-example-654",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0001-tabs-example-1",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0001-tabs-example-1-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0001-tabs-example-1",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0002-tabs-example-2",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0002-tabs-example-2-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0002-tabs-example-2",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0012-precedence-example-12",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0012-precedence-example-12-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0012-precedence-example-12",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0013-thematic-breaks-example-13",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0013-thematic-breaks-example-13-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0013-thematic-breaks-example-13",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0014-thematic-breaks-example-14",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0014-thematic-breaks-example-14-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0014-thematic-breaks-example-14",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0032-atx-headings-example-32",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0032-atx-headings-example-32-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0032-atx-headings-example-32",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0033-atx-headings-example-33",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0033-atx-headings-example-33-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0033-atx-headings-example-33",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0050-setext-headings-example-50",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0050-setext-headings-example-50-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0050-setext-headings-example-50",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0051-setext-headings-example-51",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0051-setext-headings-example-51-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0051-setext-headings-example-51",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0077-indented-code-blocks-example-77",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0077-indented-code-blocks-example-77-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0077-indented-code-blocks-example-77",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0078-indented-code-blocks-example-78",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0078-indented-code-blocks-example-78-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0078-indented-code-blocks-example-78",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0089-fenced-code-blocks-example-89",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0089-fenced-code-blocks-example-89-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0089-fenced-code-blocks-example-89",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0090-fenced-code-blocks-example-90",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0090-fenced-code-blocks-example-90-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0090-fenced-code-blocks-example-90",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0118-html-blocks-example-118",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0118-html-blocks-example-118-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0118-html-blocks-example-118",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0119-html-blocks-example-119",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0119-html-blocks-example-119-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0119-html-blocks-example-119",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0161-link-reference-definitions-example-161",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0161-link-reference-definitions-example-161-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0161-link-reference-definitions-example-161",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0162-link-reference-definitions-example-162",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0162-link-reference-definitions-example-162-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0162-link-reference-definitions-example-162",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0189-paragraphs-example-189",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0189-paragraphs-example-189-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0189-paragraphs-example-189",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0190-paragraphs-example-190",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0190-paragraphs-example-190-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0190-paragraphs-example-190",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0197-blank-lines-example-197",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0197-blank-lines-example-197-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0197-blank-lines-example-197",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0198-tables-extension-example-198",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0198-tables-extension-example-198-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0198-tables-extension-example-198",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0199-tables-extension-example-199",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0199-tables-extension-example-199-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0199-tables-extension-example-199",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0206-block-quotes-example-206",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0206-block-quotes-example-206-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0206-block-quotes-example-206",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0207-block-quotes-example-207",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0207-block-quotes-example-207-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0207-block-quotes-example-207",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0231-list-items-example-231",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0231-list-items-example-231-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0231-list-items-example-231",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0232-list-items-example-232",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0232-list-items-example-232-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0232-list-items-example-232",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0279-lists-example-281",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0279-lists-example-281-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0279-lists-example-281",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0280-lists-example-282",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0280-lists-example-282-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0280-lists-example-282",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0305-inlines-example-307",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0305-inlines-example-307-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0305-inlines-example-307",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0306-backslash-escapes-example-308",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0306-backslash-escapes-example-308-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0306-backslash-escapes-example-308",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0307-backslash-escapes-example-309",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0307-backslash-escapes-example-309-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0307-backslash-escapes-example-309",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0319-entity-and-numeric-character-references-example-321",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0319-entity-and-numeric-character-references-example-321-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0319-entity-and-numeric-character-references-example-321",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0320-entity-and-numeric-character-references-example-322",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0320-entity-and-numeric-character-references-example-322-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0320-entity-and-numeric-character-references-example-322",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0336-code-spans-example-338",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0336-code-spans-example-338-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0336-code-spans-example-338",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0337-code-spans-example-339",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0337-code-spans-example-339-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0337-code-spans-example-339",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0358-emphasis-and-strong-emphasis-example-360",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0358-emphasis-and-strong-emphasis-example-360-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0358-emphasis-and-strong-emphasis-example-360",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0359-emphasis-and-strong-emphasis-example-361",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0359-emphasis-and-strong-emphasis-example-361-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0359-emphasis-and-strong-emphasis-example-361",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0489-strikethrough-extension-example-491",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0489-strikethrough-extension-example-491-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0489-strikethrough-extension-example-491",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0490-strikethrough-extension-example-492",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0490-strikethrough-extension-example-492-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0490-strikethrough-extension-example-492",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0491-links-example-493",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0491-links-example-493-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0491-links-example-493",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0492-links-example-494",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0492-links-example-494-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0492-links-example-494",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0578-images-example-580",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0578-images-example-580-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0578-images-example-580",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0579-images-example-581",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0579-images-example-581-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0579-images-example-581",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0600-autolinks-example-602",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0600-autolinks-example-602-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0600-autolinks-example-602",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0601-autolinks-example-603",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0601-autolinks-example-603-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0601-autolinks-example-603",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0619-autolinks-extension-example-621",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0619-autolinks-extension-example-621-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0619-autolinks-extension-example-621",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0620-autolinks-extension-example-622",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0620-autolinks-extension-example-622-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0620-autolinks-extension-example-622",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0630-raw-html-example-632",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0630-raw-html-example-632-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0630-raw-html-example-632",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0631-raw-html-example-633",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0631-raw-html-example-633-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0631-raw-html-example-633",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0650-disallowed-raw-html-extension-example-652",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0650-disallowed-raw-html-extension-example-652-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0650-disallowed-raw-html-extension-example-652",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0651-hard-line-breaks-example-653",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0651-hard-line-breaks-example-653-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0651-hard-line-breaks-example-653",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0652-hard-line-breaks-example-654",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0652-hard-line-breaks-example-654-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0652-hard-line-breaks-example-654",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0666-soft-line-breaks-example-668",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0666-soft-line-breaks-example-668-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0666-soft-line-breaks-example-668",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0667-soft-line-breaks-example-669",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0667-soft-line-breaks-example-669-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0667-soft-line-breaks-example-669",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0668-textual-content-example-670",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0668-textual-content-example-670-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0668-textual-content-example-670",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    },
+    {
+      "suite": "gfm",
+      "case": "0669-textual-content-example-671",
+      "captureDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/tmp/safari-references-starter/gfm/0669-textual-content-example-671-mac",
+      "goldenDir": "/Users/matthewmoore/Projects/swift-markdown-viewer/Fixtures/expected/spec-safari/gfm/0669-textual-content-example-671",
+      "browser": "Safari",
+      "browserVersion": "26.1",
+      "deviceClass": "mac"
+    }
+  ]
+}

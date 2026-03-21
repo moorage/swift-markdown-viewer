@@ -38,4 +38,29 @@ enum PlatformScreenshotWriter {
         try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
         try pngData.write(to: url)
     }
+
+    #if os(macOS)
+    @MainActor
+    static func write(window: NSWindow, to url: URL) throws {
+        guard let contentView = window.contentView else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+
+        let bounds = contentView.bounds
+        guard bounds.width > 0, bounds.height > 0 else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+
+        guard let bitmap = contentView.bitmapImageRepForCachingDisplay(in: bounds) else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+        contentView.cacheDisplay(in: bounds, to: bitmap)
+        guard let pngData = bitmap.representation(using: .png, properties: [:]) else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+
+        try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try pngData.write(to: url)
+    }
+    #endif
 }

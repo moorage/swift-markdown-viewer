@@ -47,7 +47,8 @@ assert state["platform"] == "ios"
 assert state["deviceClass"] == device_class
 assert state["selectedFile"] == "basic_typography.md"
 assert state["workspaceRoot"] == "Fixtures/docs"
-assert state["visibleBlocks"][0]["id"] == "block.placeholder.0"
+assert state["visibleBlocks"][0]["kind"] == "heading"
+assert state["visibleBlocks"][0]["text"] == "Basic typography"
 assert root.joinpath("window.png").exists()
 print(f"iOS smoke ok for {device_class}")
 PY

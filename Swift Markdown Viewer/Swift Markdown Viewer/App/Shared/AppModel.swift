@@ -6,6 +6,7 @@ import SwiftUI
 final class AppModel: ObservableObject {
     @Published private(set) var files: [MarkdownFileNode] = []
     @Published private(set) var documentText = "Loading…"
+    @Published private(set) var documentBlocks: [MarkdownBlock] = []
     @Published private(set) var selectedPath: WorkspacePath?
     @Published private(set) var backStack: [NavigationEntry] = []
     @Published private(set) var forwardStack: [NavigationEntry] = []
@@ -27,11 +28,28 @@ final class AppModel: ObservableObject {
         self.launchOptions = launchOptions
     }
 
+    var canNavigateBack: Bool {
+        !backStack.isEmpty
+    }
+
+    var canNavigateForward: Bool {
+        !forwardStack.isEmpty
+    }
+
+    var selectedFileDisplayName: String {
+        selectedPath?.rawValue.split(separator: "/").last.map(String.init) ?? "No file selected"
+    }
+
+    var windowTitle: String {
+        "\(workspaceRootDisplay) > \(selectedFileDisplayName)"
+    }
+
     static var preview: AppModel {
         let model = AppModel(launchOptions: HarnessLaunchOptions.fromProcess(arguments: ["Preview"]))
         model.files = EmbeddedFixtures.docs.keys.sorted().map { MarkdownFileNode(path: WorkspacePath(rawValue: $0), name: $0) }
         model.selectedPath = WorkspacePath(rawValue: "basic_typography.md")
         model.documentText = EmbeddedFixtures.docs["basic_typography.md"] ?? ""
+        model.documentBlocks = MarkdownRenderer.blocks(from: model.documentText)
         model.workspaceRootDisplay = "Fixtures/docs"
         model.isReady = true
         return model
@@ -61,6 +79,7 @@ final class AppModel: ObservableObject {
         }
         selectedPath = path
         documentText = (try? workspaceProvider.readFile(at: path)) ?? "Unable to read \(path.rawValue)"
+        documentBlocks = MarkdownRenderer.blocks(from: documentText)
         isReady = true
         readyReference = Date()
     }
@@ -79,6 +98,10 @@ final class AppModel: ObservableObject {
             backStack.append(NavigationEntry(filePath: selectedPath, scrollPosition: nil))
         }
         openFile(entry.filePath, recordHistory: false)
+    }
+
+    func openFolder(at rootURL: URL) {
+        loadWorkspace(from: rootURL)
     }
 
     func fulfillLaunchArtifactRequestsIfNeeded() {
@@ -141,10 +164,7 @@ final class AppModel: ObservableObject {
     }
 
     func stateSnapshot() -> HarnessStateSnapshot {
-        let firstLine = documentText
-            .components(separatedBy: .newlines)
-            .first(where: { !$0.trimmingCharacters(in: .whitespaces).isEmpty }) ?? ""
-
+        let flattenedBlocks = flattenVisibleBlocks(from: documentBlocks)
         return HarnessStateSnapshot(
             platform: launchOptions.platformTarget.rawValue,
             deviceClass: launchOptions.deviceClass.rawValue,
@@ -152,52 +172,69 @@ final class AppModel: ObservableObject {
             selectedFile: selectedPath?.rawValue,
             history: NavigationHistorySnapshot(backCount: backStack.count, forwardCount: forwardStack.count),
             viewport: ViewportSnapshot(x: 0, y: 0, width: viewportSize.width, height: viewportSize.height),
-            visibleBlocks: [
+            visibleBlocks: flattenedBlocks.map { block in
                 VisibleBlockSnapshot(
-                    id: AccessibilityIDs.placeholderBlock,
-                    kind: "paragraph",
-                    text: firstLine
+                    id: block.id,
+                    kind: block.kind.rawValue,
+                    text: block.plainText
                 )
-            ],
+            },
             sidebar: SidebarSnapshot(selectedNode: selectedPath?.rawValue)
         )
     }
 
     func performanceSnapshot() -> HarnessPerformanceSnapshot {
-        HarnessPerformanceSnapshot(
+        let flattenedBlocks = flattenVisibleBlocks(from: documentBlocks)
+        return HarnessPerformanceSnapshot(
             platform: launchOptions.platformTarget.rawValue,
             deviceClass: launchOptions.deviceClass.rawValue,
             launchTime: 0,
             readyTime: readyReference.timeIntervalSince(startReference),
-            visibleBlockCount: 1,
+            visibleBlockCount: flattenedBlocks.count,
             activeAnimatedMediaCount: 0,
             activeVideoPlayerCount: 0
         )
     }
 
     private func loadWorkspace() async {
-        let provider = LocalWorkspaceProvider(rootURL: launchOptions.fixtureRoot, embeddedDocs: EmbeddedFixtures.docs)
+        loadWorkspace(from: launchOptions.fixtureRoot)
+
+        if commandServer == nil, let commandDirectoryURL = launchOptions.commandDirectoryURL {
+            let server = HarnessCommandServer(directoryURL: commandDirectoryURL)
+            commandServer = server
+            server.start(model: self)
+        }
+    }
+
+    private func loadWorkspace(from rootURL: URL?) {
+        let provider = LocalWorkspaceProvider(rootURL: rootURL, embeddedDocs: EmbeddedFixtures.docs)
         workspaceProvider = provider
         do {
             let workspace = try provider.loadRoot()
             files = workspace.files
             workspaceRootDisplay = workspace.rootIdentifier
-            let initialPath = launchOptions.openFile.flatMap { WorkspacePath(rawValue: $0) } ?? workspace.files.first?.path
+            let initialPath: WorkspacePath?
+            if rootURL == launchOptions.fixtureRoot {
+                initialPath = launchOptions.openFile.flatMap { WorkspacePath(rawValue: $0) } ?? workspace.files.first?.path
+            } else {
+                initialPath = workspace.files.first?.path
+            }
+            backStack.removeAll()
+            forwardStack.removeAll()
             if let initialPath {
                 openFile(initialPath, recordHistory: false)
             } else {
+                selectedPath = nil
                 documentText = "No markdown files found."
+                documentBlocks = MarkdownRenderer.blocks(from: documentText)
                 isReady = true
             }
         } catch {
+            files = []
+            selectedPath = nil
             documentText = "Unable to load workspace: \(error.localizedDescription)"
+            documentBlocks = MarkdownRenderer.blocks(from: documentText)
             isReady = true
-        }
-
-        if let commandDirectoryURL = launchOptions.commandDirectoryURL {
-            let server = HarnessCommandServer(directoryURL: commandDirectoryURL)
-            commandServer = server
-            server.start(model: self)
         }
     }
 
@@ -209,6 +246,15 @@ final class AppModel: ObservableObject {
     private func writePerformanceSnapshot(to url: URL) throws {
         try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
         try JSONEncoder.pretty.encode(performanceSnapshot()).write(to: url)
+    }
+
+    private func flattenVisibleBlocks(from blocks: [MarkdownBlock]) -> [MarkdownBlock] {
+        var flattened: [MarkdownBlock] = []
+        for block in blocks {
+            flattened.append(block)
+            flattened.append(contentsOf: flattenVisibleBlocks(from: block.children))
+        }
+        return flattened
     }
 }
 

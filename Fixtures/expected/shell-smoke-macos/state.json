@@ -17,9 +17,19 @@
   },
   "visibleBlocks" : [
     {
-      "id" : "block.placeholder.0",
+      "id" : "block.0",
+      "kind" : "heading",
+      "text" : "Basic typography"
+    },
+    {
+      "id" : "block.1",
       "kind" : "paragraph",
-      "text" : "# Basic typography"
+      "text" : "This is a small fixture for the harness shell."
+    },
+    {
+      "id" : "block.2",
+      "kind" : "paragraph",
+      "text" : "It includes emphasis, strong text, and a simple second paragraph."
     }
   ],
   "workspaceRoot" : "Fixtures\/docs"

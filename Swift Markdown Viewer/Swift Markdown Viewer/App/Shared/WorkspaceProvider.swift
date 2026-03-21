@@ -55,8 +55,11 @@ struct LocalWorkspaceProvider: WorkspaceProvider {
     }
 
     func loadRoot() throws -> Workspace {
-        if let rootURL, let files = try? markdownFiles(in: rootURL), !files.isEmpty {
-            return Workspace(rootIdentifier: normalizedDisplayRoot(for: rootURL), files: files)
+        if let rootURL {
+            return Workspace(
+                rootIdentifier: normalizedDisplayRoot(for: rootURL),
+                files: try markdownFiles(in: rootURL)
+            )
         }
 
         let files = embeddedDocs.keys.sorted().map { key in
@@ -71,6 +74,7 @@ struct LocalWorkspaceProvider: WorkspaceProvider {
             if let text = try? String(contentsOf: url, encoding: .utf8) {
                 return text
             }
+            throw WorkspaceProviderError.fileNotFound(path)
         }
         if let text = embeddedDocs[path.rawValue] {
             return text
