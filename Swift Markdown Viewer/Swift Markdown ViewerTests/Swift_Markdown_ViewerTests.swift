@@ -189,6 +189,31 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
         XCTAssertEqual(blocks[0].table?.alignments, [.center, .trailing])
     }
 
+    func testMarkdownRendererPreservesBlockSemanticsAroundTable() {
+        let markdown = """
+        # Heading
+
+        Intro paragraph.
+
+        | abc | defghi |
+        :-: | -----------:
+        bar | baz
+
+        ## Follow-up
+
+        Tail paragraph.
+        """
+
+        let blocks = MarkdownRenderer.blocks(from: markdown)
+
+        XCTAssertEqual(blocks.map(\.kind), [.heading, .paragraph, .table, .heading, .paragraph])
+        XCTAssertEqual(blocks[0].plainText, "Heading")
+        XCTAssertEqual(blocks[1].plainText, "Intro paragraph.")
+        XCTAssertEqual(blocks[2].table?.header, ["abc", "defghi"])
+        XCTAssertEqual(blocks[3].plainText, "Follow-up")
+        XCTAssertEqual(blocks[4].plainText, "Tail paragraph.")
+    }
+
     func testMarkdownRendererParsesImportedSafariBackedFixtures() throws {
         let tabsFixture = repoRootURL
             .appendingPathComponent("Fixtures/expected/spec-safari/commonmark/0001-tabs-example-1/input.md")

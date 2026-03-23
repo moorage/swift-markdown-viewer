@@ -68,10 +68,6 @@ enum MarkdownRenderer {
         let normalized = markdown.replacingOccurrences(of: "\r\n", with: "\n")
         let lines = normalized.components(separatedBy: "\n")
 
-        if containsTableSyntax(in: lines) {
-            return legacyBlocks(from: normalized)
-        }
-
         if let specialBlocks = standaloneSpecialBlocks(from: normalized, lines: lines) {
             return specialBlocks
         }
@@ -538,7 +534,7 @@ enum MarkdownRenderer {
     private static func segmentedBlocks(from markdown: String) -> [MarkdownBlock]? {
         let lines = markdown.components(separatedBy: "\n")
         let imageReferences = imageReferenceDefinitions(from: lines)
-        var foundHTMLBlock = false
+        var foundSpecialBlock = false
         var blocks: [MarkdownBlock] = []
         var markdownBuffer: [String] = []
         var blockIndex = 0
@@ -578,7 +574,7 @@ enum MarkdownRenderer {
             }
 
             if let htmlBlock = htmlBlock(in: lines, at: lineIndex) {
-                foundHTMLBlock = true
+                foundSpecialBlock = true
                 appendCoreBlocks(from: markdownBuffer)
                 markdownBuffer.removeAll()
                 let sourceText = htmlBlock.lines.joined(separator: "\n")
@@ -607,7 +603,7 @@ enum MarkdownRenderer {
             let trimmed = lines[lineIndex].trimmingCharacters(in: .whitespaces)
             if !trimmed.isEmpty,
                let image = imageBlock(from: trimmed, references: imageReferences) {
-                foundHTMLBlock = true
+                foundSpecialBlock = true
                 appendCoreBlocks(from: markdownBuffer)
                 markdownBuffer.removeAll()
                 blocks.append(
@@ -632,21 +628,23 @@ enum MarkdownRenderer {
                 continue
             }
 
+            if let tableMatch = table(from: lines, at: lineIndex) {
+                foundSpecialBlock = true
+                appendCoreBlocks(from: markdownBuffer)
+                markdownBuffer.removeAll()
+                blocks.append(tableBlock(from: tableMatch, id: "block.\(blockIndex)"))
+                blockIndex += 1
+                lineIndex = tableMatch.nextIndex
+                continue
+            }
+
             markdownBuffer.append(lines[lineIndex])
             lineIndex += 1
         }
 
+        guard foundSpecialBlock else { return nil }
         appendCoreBlocks(from: markdownBuffer)
-        return foundHTMLBlock ? blocks : nil
-    }
-
-    private static func containsTableSyntax(in lines: [String]) -> Bool {
-        for index in lines.indices {
-            if table(from: lines, at: index) != nil {
-                return true
-            }
-        }
-        return false
+        return blocks
     }
 
     private static func emptyParagraph() -> MarkdownBlock {
@@ -991,30 +989,7 @@ enum MarkdownRenderer {
             }
 
             if let tableMatch = table(from: lines, at: index) {
-                let tableText = ([tableMatch.header] + tableMatch.rows)
-                    .flatMap { $0 }
-                    .joined(separator: " ")
-                blocks.append(
-                    MarkdownBlock(
-                        id: nextID(),
-                        kind: .table,
-                        plainText: normalizeVisibleText(tableText),
-                        sourceText: "",
-                        level: nil,
-                        listItemIndex: nil,
-                        indentLevel: 0,
-                        isTaskItem: false,
-                        isTaskCompleted: nil,
-                        table: MarkdownTable(
-                            alignments: tableMatch.alignments,
-                            header: tableMatch.header,
-                            rows: tableMatch.rows
-                        ),
-                        image: nil,
-                        attributedText: nil,
-                        children: []
-                    )
-                )
+                blocks.append(tableBlock(from: tableMatch, id: nextID()))
                 index = tableMatch.nextIndex
                 continue
             }
@@ -1100,5 +1075,33 @@ enum MarkdownRenderer {
             alignments.append(alignment)
         }
         return alignments
+    }
+
+    private static func tableBlock(
+        from tableMatch: (header: [String], alignments: [MarkdownTableAlignment], rows: [[String]], nextIndex: Int),
+        id: String
+    ) -> MarkdownBlock {
+        let tableText = ([tableMatch.header] + tableMatch.rows)
+            .flatMap { $0 }
+            .joined(separator: " ")
+        return MarkdownBlock(
+            id: id,
+            kind: .table,
+            plainText: normalizeVisibleText(tableText),
+            sourceText: "",
+            level: nil,
+            listItemIndex: nil,
+            indentLevel: 0,
+            isTaskItem: false,
+            isTaskCompleted: nil,
+            table: MarkdownTable(
+                alignments: tableMatch.alignments,
+                header: tableMatch.header,
+                rows: tableMatch.rows
+            ),
+            image: nil,
+            attributedText: nil,
+            children: []
+        )
     }
 }

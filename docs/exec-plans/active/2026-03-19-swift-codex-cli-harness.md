@@ -12,6 +12,7 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
 
 ## Progress
 
+- [x] (2026-03-23T06:20Z) Reworked `MarkdownRenderer` table handling so mixed documents segment tables as first-class blocks instead of downgrading the entire chunk to the legacy parser, and added a regression test covering headings before and after a table.
 - [x] (2026-03-20T06:51Z) Read `codex_execplan_native_macos_gfm_viewer.md`, the reference harness docs/scripts in `tmp/codex-harness-to-migrate/`, and the current Xcode scaffold under `Swift Markdown Viewer/`.
 - [x] (2026-03-20T06:51Z) Drafted the bootstrap plan-routing file `docs/PLANS.md`, anchored `docs/exec-plans/`, and wrote the initial active harness ExecPlan.
 - [x] (2026-03-20T07:07Z) Diffed `codex_execplan_native_universal_gfm_viewer.md` against the macOS brief and rewrote this plan to target a universal macOS + iPhone + iPad harness instead of a macOS-only one.
@@ -24,6 +25,9 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
 - [x] (2026-03-20T16:18Z) Drove the CommonMark semantic corpus to zero mismatches under the repository test contract by tightening renderer plain-text derivation, linked-image stripping, malformed comment handling, and deterministic semantic normalization.
 
 ## Surprises & Discoveries
+
+- Observation: documents that mix GFM tables with ordinary Markdown blocks currently lose heading semantics because table detection forces the whole chunk through a legacy fallback parser.
+  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/MarkdownRenderer.swift` routes any chunk that satisfies `containsTableSyntax(in:)` into `legacyBlocks(from:)`, and that fallback only emits `.table`, `.paragraph`, `.image`, or `.rawHTML` blocks.
 
 - Observation: the repository is no longer just the Xcode scaffold, but the durable control plane is still only partially bootstrapped.
   Evidence: `docs/PLANS.md` and `docs/exec-plans/active/2026-03-19-swift-codex-cli-harness.md` now exist, but there is still no root `README.md`, `AGENTS.md`, `ARCHITECTURE.md`, `.agents/`, or `scripts/` tree in the live repo.
@@ -58,7 +62,14 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
 - Observation: the remaining validation blocker is now host disk capacity, not renderer correctness.
   Evidence: targeted `xcodebuild` runs after the semantic fixes fail while creating log stores or `.xcresult` diagnostics with `No space left on device`, including `/tmp/swift-markdown-viewer-commonmark-noresult/Logs/*` and `/var/folders/.../result.xcresult`.
 
+- Observation: the host-based XCTest path still crashes inside `MarkdownRenderer.attributedBlocks(from:)` with a libmalloc double-free when renderer tests execute under the app host, even though the same parsing path succeeds in a standalone `swiftc` probe.
+  Evidence: `~/Library/Logs/DiagnosticReports/Swift Markdown Viewer-2026-03-22-231526.ips` and `~/Library/Logs/DiagnosticReports/Swift Markdown Viewer-2026-03-22-231541.ips` both terminate in `MarkdownRenderer.BlockBuilder.__deallocating_deinit` with `pointer being freed was not allocated` during `testMarkdownRendererParsesMultipleBlockKinds` and `testMarkdownRendererPreservesBlockSemanticsAroundTable`.
+
 ## Decision Log
+
+- Decision: treat GFM tables as first-class segmented blocks inside mixed documents instead of as a feature gate that swaps the entire chunk to the legacy parser.
+  Rationale: CommonMark/GFM block semantics are compositional. A table appearing later in a document must not demote earlier or later headings, paragraphs, or lists to plaintext. Segmenting table regions preserves the existing attributed/presentation-intent pipeline for non-table blocks while keeping the repository's native table model.
+  Date/Author: 2026-03-22 / Codex
 
 - Decision: keep the existing Xcode project as the bootstrap entry point instead of recreating or renaming it before the harness exists.
   Rationale: the current scheme builds, and the goal of this workstream is to remove workflow ambiguity first. Renaming the project or rebuilding targets now would add avoidable project-file churn before the control plane is stable.
@@ -98,6 +109,8 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
 
 ## Outcomes & Retrospective
 
+The next renderer correction in this workstream is mixed-block parsing around GFM tables. The current parser gets table-only fixtures right but misclassifies headings in real-world documents that combine headings, prose, and a later table because table detection swaps the entire chunk into the legacy line parser. The corrective implementation should keep tables as explicit blocks while allowing the existing semantic block parser to continue handling neighboring headings, paragraphs, lists, and code blocks in the same document.
+
 The harness bootstrap is implemented and verified. The repository now has a durable control plane, a working universal app shell slice, reproducible fixture-driven checkpoints on macOS, iPhone simulator, and iPad simulator, and a single `./scripts/agent-loop` entry point that exercises the same build/test/smoke flow future Codex work should use.
 
 The most important outcome is that the universal scope is now real in both the architecture and the workflow, not just in the plan text. Shared shell code owns launch options, workspace loading, navigation state, accessibility IDs, state/perf snapshots, and the command bridge, while thin platform adapters handle the screenshot path and runtime host differences. The shell wrappers hide the project path with spaces, simulator destination selection, result-bundle locations, and artifact paths behind stable commands.
@@ -105,6 +118,8 @@ The most important outcome is that the universal scope is now real in both the a
 The main lesson from implementation is that the harness needs to own more of the runtime determinism than the original placeholder implied. The two places that mattered most were simulator lifecycle and app-owned screenshots. Once the screenshot path moved to a UIKit-hosted renderer on iOS/iPadOS and the cleanup path stopped blocking on `simctl terminate`, the same fixture-driven checkpoint contract worked across all three supported surfaces.
 
 The latest lesson from renderer validation is similar: semantic fixture comparison also needs repository-owned determinism. The native renderer now reaches zero mismatches against the CommonMark corpus under the repository comparison contract, but full Xcode confirmation is temporarily blocked by local disk exhaustion while `xcodebuild` creates logs and result bundles.
+
+The latest mixed-table correction improves block-structure fidelity: headings and paragraphs now survive adjacent GFM tables because tables are segmented as explicit blocks instead of forcing an entire mixed document through the legacy line parser. Focused functional validation succeeds in a standalone `swiftc` probe over `Models.swift` plus `MarkdownRenderer.swift`, while host-based XCTest confirmation remains blocked by the separate `BlockBuilder` double-free described in `Surprises & Discoveries`.
 
 ## Context and Orientation
 

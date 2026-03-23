@@ -3,17 +3,26 @@
 - active ExecPlans:
   - `docs/exec-plans/active/2026-03-19-swift-codex-cli-harness.md`
 - current milestone:
-  - CommonMark semantic corpus parity for the native renderer
+  - Mixed-block parsing parity for native renderer documents that combine headings and GFM tables
 - commands run:
+  - `swiftc "Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/Models.swift" "Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/MarkdownRenderer.swift" /tmp/mixed_table_probe.swift -o /tmp/mixed_table_probe && /tmp/mixed_table_probe`
+  - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-mixed-table-fixed -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererParsesTableFromSpecExample" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererPreservesBlockSemanticsAroundTable" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererParsesMultipleBlockKinds" test`
+  - `python3 scripts/check_execplan.py`
+  - `python3 scripts/knowledge/check_docs.py`
   - `xcrun swiftc "Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/Models.swift" "Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/MarkdownRenderer.swift" /tmp/commonmark_repo_probe.swift -o /tmp/commonmark_repo_probe && /tmp/commonmark_repo_probe`
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-commonmark -resultBundlePath /tmp/swift-markdown-viewer-commonmark-3.xcresult -destination platform=macOS,arch=arm64 CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererMatchesCommonMarkFixtureCorpusSemantics" test`
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-commonmark-noresult -destination platform=macOS,arch=arm64 CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererMatchesCommonMarkFixtureCorpusSemantics" test`
 - evidence gathered:
+  - `/tmp/mixed_table_probe` returns the expected block sequence for a heading + paragraph + table + heading + paragraph document
+  - `python3 scripts/check_execplan.py` and `python3 scripts/knowledge/check_docs.py` both pass after updating the active plan and implementation notes
   - `/tmp/commonmark_repo_probe.swift` now reports `failureCount=0` against `tmp/spec-fixtures/commonmark`
   - `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/MarkdownRenderer.swift` now preserves paragraph continuation text, strips linked-image placeholders before attributed parsing, and routes declaration/comment text through deterministic HTML-to-text handling
 - important discoveries:
+  - mixed documents should segment tables as explicit blocks; treating table presence as a parser-mode switch violates compositional block semantics and causes headings to render as plaintext
+  - the current host-based XCTest path still trips a `BlockBuilder` double-free in `MarkdownRenderer.attributedBlocks(from:)`, so targeted `xcodebuild test` is not yet a trustworthy renderer validation path for this slice
   - the largest remaining CommonMark gap was the comparison oracle, not the block tree; AppKit/XML-based HTML extraction was surfacing markup internals as visible text
   - linked-image fixtures require an empty-paragraph result when preprocessing removes all visible markdown, otherwise the parser falls back to legacy raw-text handling
 - open risks or blockers:
+  - targeted unit tests for renderer paths currently fail under the app-hosted XCTest runner because `MarkdownRenderer.BlockBuilder.__deallocating_deinit` aborts with `pointer being freed was not allocated`; latest repros are in `~/Library/Logs/DiagnosticReports/Swift Markdown Viewer-2026-03-22-231526.ips` and `~/Library/Logs/DiagnosticReports/Swift Markdown Viewer-2026-03-22-231541.ips`
   - full `xcodebuild` confirmation is currently blocked by host disk exhaustion while Xcode writes log stores and result bundles
   - Safari visual parity remains poor even though CommonMark semantic parity is now at zero mismatches under the repository contract
