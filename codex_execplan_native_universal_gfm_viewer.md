@@ -1102,5 +1102,4 @@ Once the human prerequisites are complete, start Codex at the repo root and inst
 
 Use this brief at the start of the Codex run:
 
-> Build the app described in `codex_execplan_native_macos_gfm_viewer.md`. Follow the milestone order. Work in thin vertical slices. After every meaningful change, run the relevant build, tests, and harness checks. If something fails, diagnose and fix it before continuing. Do not stop after partial implementation when a clear next step remains. Prefer semantic state dumps, targeted UI tests, screenshots, and perf checks over guesswork. Verify on macOS and on iPhone/iPad simulator surfaces where applicable. The work is not done until the shell-driven verification loop passes.
-
+> Build the app described in `codex_execplan_native_universal_gfm_viewer.md`. Follow the milestone order. Work in thin vertical slices. After every meaningful change, run the relevant build, tests, and harness checks. If something fails, diagnose and fix it before continuing. Do not stop after partial implementation when a clear next step remains. Prefer semantic state dumps, targeted UI tests, screenshots, and perf checks over guesswork. Verify on macOS and on iPhone/iPad simulator surfaces where applicable. The work is not done until the shell-driven verification loop passes.

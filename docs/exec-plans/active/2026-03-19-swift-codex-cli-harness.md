@@ -12,8 +12,9 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
 
 ## Progress
 
+- [x] (2026-03-23T08:05Z) Removed the obsolete macOS-only product brief file and cleaned the remaining control-plane references so the universal brief is the only product source of truth left in-repo.
 - [x] (2026-03-23T06:20Z) Reworked `MarkdownRenderer` table handling so mixed documents segment tables as first-class blocks instead of downgrading the entire chunk to the legacy parser, and added a regression test covering headings before and after a table.
-- [x] (2026-03-20T06:51Z) Read `codex_execplan_native_macos_gfm_viewer.md`, the reference harness docs/scripts in `tmp/codex-harness-to-migrate/`, and the current Xcode scaffold under `Swift Markdown Viewer/`.
+- [x] (2026-03-20T06:51Z) Read the older macOS-only product brief, the reference harness docs/scripts in `tmp/codex-harness-to-migrate/`, and the current Xcode scaffold under `Swift Markdown Viewer/`.
 - [x] (2026-03-20T06:51Z) Drafted the bootstrap plan-routing file `docs/PLANS.md`, anchored `docs/exec-plans/`, and wrote the initial active harness ExecPlan.
 - [x] (2026-03-20T07:07Z) Diffed `codex_execplan_native_universal_gfm_viewer.md` against the macOS brief and rewrote this plan to target a universal macOS + iPhone + iPad harness instead of a macOS-only one.
 - [x] (2026-03-20T07:24Z) Created the durable control-plane docs, `.agents/` prompts, `.codex/` metadata, docs validation scripts, and macOS GitHub workflows described in Milestone 1.
@@ -25,6 +26,9 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
 - [x] (2026-03-20T16:18Z) Drove the CommonMark semantic corpus to zero mismatches under the repository test contract by tightening renderer plain-text derivation, linked-image stripping, malformed comment handling, and deterministic semantic normalization.
 
 ## Surprises & Discoveries
+
+- Observation: the obsolete macOS-only product brief was still referenced by the live control plane even though the universal brief had already superseded it.
+  Evidence: `codex_execplan_native_universal_gfm_viewer.md` still used the older filename in its kickoff brief, and `docs/generated/repo-map.json` still listed the removed file until the repo map was refreshed.
 
 - Observation: documents that mix GFM tables with ordinary Markdown blocks currently lose heading semantics because table detection forces the whole chunk through a legacy fallback parser.
   Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/MarkdownRenderer.swift` routes any chunk that satisfies `containsTableSyntax(in:)` into `legacyBlocks(from:)`, and that fallback only emits `.table`, `.paragraph`, `.image`, or `.rawHTML` blocks.
@@ -66,6 +70,10 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
   Evidence: `~/Library/Logs/DiagnosticReports/Swift Markdown Viewer-2026-03-22-231526.ips` and `~/Library/Logs/DiagnosticReports/Swift Markdown Viewer-2026-03-22-231541.ips` both terminate in `MarkdownRenderer.BlockBuilder.__deallocating_deinit` with `pointer being freed was not allocated` during `testMarkdownRendererParsesMultipleBlockKinds` and `testMarkdownRendererPreservesBlockSemanticsAroundTable`.
 
 ## Decision Log
+
+- Decision: retire the superseded macOS-only product brief instead of keeping a duplicate in-repo artifact once the universal brief fully replaced it.
+  Rationale: keeping both filenames around makes the control plane ambiguous and causes generated docs to keep advertising a stale source of truth. The universal brief already covers the live product scope.
+  Date/Author: 2026-03-23 / Codex
 
 - Decision: treat GFM tables as first-class segmented blocks inside mixed documents instead of as a feature gate that swaps the entire chunk to the legacy parser.
   Rationale: CommonMark/GFM block semantics are compositional. A table appearing later in a document must not demote earlier or later headings, paragraphs, or lists to plaintext. Segmenting table regions preserves the existing attributed/presentation-intent pipeline for non-table blocks while keeping the repository's native table model.

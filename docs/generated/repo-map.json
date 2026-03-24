@@ -152,6 +152,3624 @@
                   "name": "window.png"
                 }
               ]
+            },
+            {
+              "type": "dir",
+              "name": "spec-safari",
+              "children": [
+                {
+                  "type": "dir",
+                  "name": "commonmark",
+                  "children": [
+                    {
+                      "type": "dir",
+                      "name": "0001-tabs-example-1",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0002-tabs-example-2",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0012-backslash-escapes-example-12",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0013-backslash-escapes-example-13",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0025-entity-and-numeric-character-references-example-25",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0026-entity-and-numeric-character-references-example-26",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0042-precedence-example-42",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0043-thematic-breaks-example-43",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0044-thematic-breaks-example-44",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0062-atx-headings-example-62",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0063-atx-headings-example-63",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0080-setext-headings-example-80",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0081-setext-headings-example-81",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0107-indented-code-blocks-example-107",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0108-indented-code-blocks-example-108",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0119-fenced-code-blocks-example-119",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0120-fenced-code-blocks-example-120",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0148-html-blocks-example-148",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0149-html-blocks-example-149",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0194-link-reference-definitions-example-194",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0195-link-reference-definitions-example-195",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0221-paragraphs-example-221",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0222-paragraphs-example-222",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0229-blank-lines-example-229",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0230-block-quotes-example-230",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0231-block-quotes-example-231",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0255-list-items-example-255",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0256-list-items-example-256",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0303-lists-example-303",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0304-lists-example-304",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0329-inlines-example-329",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0330-code-spans-example-330",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0331-code-spans-example-331",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0352-emphasis-and-strong-emphasis-example-352",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0353-emphasis-and-strong-emphasis-example-353",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0484-links-example-484",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0485-links-example-485",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0574-images-example-574",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0575-images-example-575",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0596-autolinks-example-596",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0597-autolinks-example-597",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0615-raw-html-example-615",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0616-raw-html-example-616",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0636-hard-line-breaks-example-636",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0637-hard-line-breaks-example-637",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0651-soft-line-breaks-example-651",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0652-soft-line-breaks-example-652",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0653-textual-content-example-653",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0654-textual-content-example-654",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "dir",
+                  "name": "gfm",
+                  "children": [
+                    {
+                      "type": "dir",
+                      "name": "0001-tabs-example-1",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0002-tabs-example-2",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0012-precedence-example-12",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0013-thematic-breaks-example-13",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0014-thematic-breaks-example-14",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0032-atx-headings-example-32",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0033-atx-headings-example-33",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0050-setext-headings-example-50",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0051-setext-headings-example-51",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0077-indented-code-blocks-example-77",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0078-indented-code-blocks-example-78",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0089-fenced-code-blocks-example-89",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0090-fenced-code-blocks-example-90",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0118-html-blocks-example-118",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0119-html-blocks-example-119",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0161-link-reference-definitions-example-161",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0162-link-reference-definitions-example-162",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0189-paragraphs-example-189",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0190-paragraphs-example-190",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0197-blank-lines-example-197",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0198-tables-extension-example-198",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0199-tables-extension-example-199",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0206-block-quotes-example-206",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0207-block-quotes-example-207",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0231-list-items-example-231",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0232-list-items-example-232",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0279-lists-example-281",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0280-lists-example-282",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0305-inlines-example-307",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0306-backslash-escapes-example-308",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0307-backslash-escapes-example-309",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0319-entity-and-numeric-character-references-example-321",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0320-entity-and-numeric-character-references-example-322",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0336-code-spans-example-338",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0337-code-spans-example-339",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0358-emphasis-and-strong-emphasis-example-360",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0359-emphasis-and-strong-emphasis-example-361",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0489-strikethrough-extension-example-491",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0490-strikethrough-extension-example-492",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0491-links-example-493",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0492-links-example-494",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0578-images-example-580",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0579-images-example-581",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0600-autolinks-example-602",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0601-autolinks-example-603",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0619-autolinks-extension-example-621",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0620-autolinks-extension-example-622",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0630-raw-html-example-632",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0631-raw-html-example-633",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0650-disallowed-raw-html-extension-example-652",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0651-hard-line-breaks-example-653",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0652-hard-line-breaks-example-654",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0666-soft-line-breaks-example-668",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0667-soft-line-breaks-example-669",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0668-textual-content-example-670",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "dir",
+                      "name": "0669-textual-content-example-671",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "expected.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "input.md"
+                        },
+                        {
+                          "type": "file",
+                          "name": "meta.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari-metadata.json"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference-safari.png"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reference.html"
+                        },
+                        {
+                          "type": "file",
+                          "name": "viewport.json"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "file",
+                  "name": "manifest.json"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "dir",
+          "name": "window-workspaces",
+          "children": [
+            {
+              "type": "dir",
+              "name": "window-alpha",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "alpha.md"
+                }
+              ]
+            },
+            {
+              "type": "dir",
+              "name": "window-beta",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "beta.md"
+                }
+              ]
             }
           ]
         }
@@ -160,6 +3778,10 @@
     {
       "type": "file",
       "name": "README.md"
+    },
+    {
+      "type": "file",
+      "name": "README_FOR_APES.md"
     },
     {
       "type": "dir",
@@ -179,7 +3801,19 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "MacSidebarKeyEventBridge.swift"
+                    },
+                    {
+                      "type": "file",
+                      "name": "MacWindowConfiguration.swift"
+                    },
+                    {
+                      "type": "file",
                       "name": "PlatformScreenshotWriter.swift"
+                    },
+                    {
+                      "type": "file",
+                      "name": "SelectableDocumentTextView.swift"
                     },
                     {
                       "type": "dir",
@@ -203,11 +3837,19 @@
                     },
                     {
                       "type": "file",
+                      "name": "MarkdownRenderer.swift"
+                    },
+                    {
+                      "type": "file",
                       "name": "Models.swift"
                     },
                     {
                       "type": "file",
                       "name": "WorkspaceProvider.swift"
+                    },
+                    {
+                      "type": "file",
+                      "name": "WorkspaceWindowSessionStore.swift"
                     }
                   ]
                 },
@@ -222,6 +3864,10 @@
                     {
                       "type": "file",
                       "name": "ViewerShellView.swift"
+                    },
+                    {
+                      "type": "file",
+                      "name": "WindowSceneRootView.swift"
                     }
                   ]
                 }
@@ -284,6 +3930,10 @@
                 {
                   "type": "file",
                   "name": "HarnessSnapshots.swift"
+                },
+                {
+                  "type": "file",
+                  "name": "UITestOpenFolderSelectionStore.swift"
                 }
               ]
             },
@@ -358,10 +4008,6 @@
     },
     {
       "type": "file",
-      "name": "codex_execplan_native_macos_gfm_viewer.md"
-    },
-    {
-      "type": "file",
       "name": "codex_execplan_native_universal_gfm_viewer.md"
     },
     {
@@ -403,6 +4049,22 @@
                 {
                   "type": "file",
                   "name": "2026-03-19-swift-codex-cli-harness.md"
+                },
+                {
+                  "type": "file",
+                  "name": "2026-03-23-async-document-loading.md"
+                },
+                {
+                  "type": "file",
+                  "name": "2026-03-23-cross-block-selection.md"
+                },
+                {
+                  "type": "file",
+                  "name": "2026-03-23-session-restore.md"
+                },
+                {
+                  "type": "file",
+                  "name": "2026-03-23-window-scoped-workspaces.md"
                 }
               ]
             },
@@ -421,7 +4083,12 @@
         {
           "type": "dir",
           "name": "generated",
-          "children": []
+          "children": [
+            {
+              "type": "file",
+              "name": "repo-map.json"
+            }
+          ]
         },
         {
           "type": "file",
@@ -443,7 +4110,15 @@
         },
         {
           "type": "file",
+          "name": "bridge_safari_references.py"
+        },
+        {
+          "type": "file",
           "name": "build"
+        },
+        {
+          "type": "file",
+          "name": "build_markdown_fixtures.py"
         },
         {
           "type": "file",
@@ -460,6 +4135,14 @@
         {
           "type": "file",
           "name": "compare-goldens"
+        },
+        {
+          "type": "file",
+          "name": "compare_renderer_to_safari.py"
+        },
+        {
+          "type": "file",
+          "name": "fetch_and_build_spec_fixtures.sh"
         },
         {
           "type": "dir",
@@ -492,6 +4175,14 @@
               "name": "xcode-env.sh"
             }
           ]
+        },
+        {
+          "type": "file",
+          "name": "reduce_spec_fixtures.py"
+        },
+        {
+          "type": "file",
+          "name": "render_fixture_checkpoint"
         },
         {
           "type": "file",
