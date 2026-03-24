@@ -763,22 +763,6 @@ nonisolated enum MarkdownRenderer {
             .replacingOccurrences(of: "&amp;", with: "&")
             .replacingOccurrences(of: "&lt;", with: "<")
             .replacingOccurrences(of: "&gt;", with: ">")
-
-        if let data = source.data(using: .utf8),
-           let attributed = try? NSAttributedString(
-               data: data,
-               options: [.documentType: NSAttributedString.DocumentType.html],
-               documentAttributes: nil
-           ) {
-            let extracted = attributed.string
-                .replacingOccurrences(of: "\u{FFFC}", with: "")
-                .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            if !extracted.isEmpty {
-                return extracted
-            }
-        }
-
         return normalizeVisibleText(stripped)
     }
 

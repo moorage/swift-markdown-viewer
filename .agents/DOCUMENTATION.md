@@ -16,6 +16,7 @@
   - `./scripts/test-unit`
   - `python3 scripts/knowledge/check_docs.py`
   - `xcodebuild -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -sdk iphonesimulator -derivedDataPath artifacts/DerivedData CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build`
+  - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-commonmark-fail-2 -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererMatchesCommonMarkFixtureCorpusSemantics" test`
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-selection-fix -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testSelectableDocumentFormatterUsesRenderedDocumentText" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererParsesMultipleBlockKinds" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAdjacentFilePathMovesSidebarSelection" test`
   - `python3 scripts/check_execplan.py`
   - `python3 scripts/knowledge/check_docs.py`
@@ -68,6 +69,7 @@
   - `README_FOR_APES.md` now gives humans a product-first explanation of the native Markdown viewer plus a practical setup guide for running an AI CLI inside the repo harness
   - the Xcode project now targets stable repository-supported platforms again: iPhone/iPad + macOS only, with iOS 16.0 and macOS 13.0 deployment targets instead of accidental `26.x` beta-style settings
   - `AppRootView`, `WindowSceneRootView`, and `ViewerShellView` now avoid newer SwiftUI-only overloads and macOS-only keyboard APIs on iOS, so the app compiles against the lowered deployment targets used by CI
+  - `MarkdownRenderer.htmlVisibleText(from:)` now uses deterministic repository-owned HTML stripping instead of `NSAttributedString` HTML parsing, which restores correct CommonMark semantics for raw script blocks and comment-like HTML spans
 - important discoveries:
   - exposing raw markdown in one native text view fixes selection but regresses the core product expectation, so the selectable surface has to be derived from parsed blocks rather than `documentText`
   - default actor isolation on `MarkdownRenderer` was not just a warning source; once parser work moved off the main actor it could abort host-based renderer tests, so the renderer helper itself needs to opt out of `MainActor`
@@ -83,10 +85,10 @@
   - linked-image fixtures require an empty-paragraph result when preprocessing removes all visible markdown, otherwise the parser falls back to legacy raw-text handling
   - a separate human-first README is useful in this repository because the main control-plane docs are optimized for autonomous agent work, not for quickly explaining the product and the harness to a newcomer
   - lowering the deployment targets exposed two latent portability issues: the project was still configured for visionOS even though the repo does not support it, and newer `onChange`/`MoveCommandDirection` usage had crept into otherwise cross-platform SwiftUI code
+  - `NSAttributedString` HTML import is not a safe semantic oracle for this renderer; for raw HTML blocks it can drop script contents and over-count comment-like text compared with the repository's CommonMark contract
 - open risks or blockers:
   - a true two-window macOS XCUITest remains flaky in this environment, so simultaneous-window proof currently relies on deterministic model-level coverage rather than a passing multi-window UI test
   - session ordering is preserved by scene activation order rather than a user-visible window identity, so the specific restored front-to-back ordering may still differ from the exact pre-quit arrangement
   - direct automated proof that two simultaneously open macOS windows can each keep distinct markdown workspace selections is still blocked by the separate macOS UI-test runner bootstrap failure
-  - `./scripts/test-unit` still fails on `testMarkdownRendererMatchesCommonMarkFixtureCorpusSemantics` for `0180-html-blocks-example-180` and `0628-raw-html-example-628`, which points to a remaining raw-HTML semantic mismatch outside the selection-specific regression slice
   - full `xcodebuild` confirmation is currently blocked by host disk exhaustion while Xcode writes log stores and result bundles
   - Safari visual parity remains poor even though CommonMark semantic parity is now at zero mismatches under the repository contract
