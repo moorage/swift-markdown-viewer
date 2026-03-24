@@ -8,6 +8,8 @@ enum AccessibilityIDs {
     static let scrollView = "document.scrollView"
     static let text = "document.text"
     static let placeholderBlock = "block.placeholder.0"
+    static let emptyStateMessage = "empty-state.message"
+    static let emptyStateOpenFolderButton = "empty-state.open-folder"
 
     static func sidebarNode(_ path: String) -> String {
         "sidebar.node.\(path.replacingOccurrences(of: "/", with: "."))"

@@ -17,11 +17,18 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
         }
     }
 
+    private static var retainedModels: [AppModel] = []
+
     private var repoRootURL: URL {
         URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
+    }
+
+    @MainActor
+    private func retainForTestLifetime(_ model: AppModel) {
+        Self.retainedModels.append(model)
     }
 
     func testLaunchOptionsParsePlatformAndPaths() throws {
@@ -51,6 +58,21 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
         XCTAssertTrue(options.uiTestMode)
     }
 
+    func testLaunchOptionsParseMultipleUITestOpenFolders() {
+        let options = HarnessLaunchOptions.fromProcess(arguments: [
+            "App",
+            "--ui-test-open-folder", "/tmp/first-folder",
+            "--ui-test-open-folder", "/tmp/second-folder",
+            "--ui-test-mode", "1",
+        ])
+
+        XCTAssertEqual(
+            options.uiTestOpenFolderURLs.map(\.path),
+            ["/tmp/first-folder", "/tmp/second-folder"]
+        )
+        XCTAssertEqual(options.uiTestOpenFolderURL?.path, "/tmp/first-folder")
+    }
+
     func testWorkspaceProviderFallsBackToEmbeddedDocs() throws {
         let provider = LocalWorkspaceProvider(rootURL: nil, embeddedDocs: EmbeddedFixtures.docs)
         let workspace = try provider.loadRoot()
@@ -69,6 +91,69 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
 
         XCTAssertEqual(workspace.rootIdentifier, tempRoot.lastPathComponent)
         XCTAssertTrue(workspace.files.isEmpty)
+    }
+
+    @MainActor
+    func testAppModelAutoPromptsForFolderOnNormalMacLaunch() {
+        let options = HarnessLaunchOptions(
+            fixtureRoot: nil,
+            openFile: nil,
+            uiTestOpenFolderURL: nil,
+            theme: nil,
+            windowSize: nil,
+            disableFileWatch: true,
+            dumpVisibleStateURL: nil,
+            dumpPerfStateURL: nil,
+            screenshotPathURL: nil,
+            commandDirectoryURL: nil,
+            uiTestMode: false,
+            platformTarget: .macos,
+            deviceClass: .mac
+        )
+
+        let model = AppModel(launchOptions: options)
+        retainForTestLifetime(model)
+
+        XCTAssertTrue(model.shouldAutoPromptForFolderOnLaunch)
+    }
+
+    @MainActor
+    func testAppModelSkipsAutoPromptDuringUITestLaunch() {
+        let options = HarnessLaunchOptions(
+            fixtureRoot: nil,
+            openFile: nil,
+            uiTestOpenFolderURL: URL(fileURLWithPath: "/tmp/ui-test-folder"),
+            theme: nil,
+            windowSize: nil,
+            disableFileWatch: true,
+            dumpVisibleStateURL: nil,
+            dumpPerfStateURL: nil,
+            screenshotPathURL: nil,
+            commandDirectoryURL: nil,
+            uiTestMode: true,
+            platformTarget: .macos,
+            deviceClass: .mac
+        )
+
+        let model = AppModel(launchOptions: options)
+        retainForTestLifetime(model)
+
+        XCTAssertFalse(model.shouldAutoPromptForFolderOnLaunch)
+    }
+
+    @MainActor
+    func testAutomaticFolderPromptPolicySuppressesLaunchSceneOnly() {
+        var policy = AutomaticFolderPromptPolicy()
+
+        XCTAssertTrue(policy.shouldSuppressAutomaticFolderPrompt(for: "launch-scene", hasRestoredSession: false))
+        XCTAssertFalse(policy.shouldSuppressAutomaticFolderPrompt(for: "new-window-scene", hasRestoredSession: false))
+    }
+
+    func testAutomaticFolderPromptPolicySuppressesRestoredScenes() {
+        var policy = AutomaticFolderPromptPolicy()
+
+        XCTAssertTrue(policy.shouldSuppressAutomaticFolderPrompt(for: "restored-scene", hasRestoredSession: true))
+        XCTAssertFalse(policy.shouldSuppressAutomaticFolderPrompt(for: "explicit-new-window", hasRestoredSession: false))
     }
 
     @MainActor
@@ -104,6 +189,114 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
         XCTAssertEqual(snapshot.sidebar.selectedNode, "fixture.md")
         XCTAssertEqual(snapshot.visibleBlocks.first?.text, "Fixture")
         XCTAssertEqual(snapshot.visibleBlocks.first?.kind, "heading")
+        XCTAssertEqual(model.restorationSession?.rootPath, tempRoot.path)
+        XCTAssertEqual(model.restorationSession?.selectedFile, "fixture.md")
+    }
+
+    @MainActor
+    func testOpenFolderSelectionWinsOverPendingBootstrapLoad() async throws {
+        let alphaWorkspace = repoRootURL
+            .appendingPathComponent("Fixtures/window-workspaces/window-alpha", isDirectory: true)
+        let launchFixtureRoot = repoRootURL
+            .appendingPathComponent("Fixtures/docs", isDirectory: true)
+
+        let model = AppModel(
+            launchOptions: HarnessLaunchOptions(
+                fixtureRoot: launchFixtureRoot,
+                openFile: "basic_typography.md",
+                uiTestOpenFolderURL: nil,
+                theme: nil,
+                windowSize: nil,
+                disableFileWatch: true,
+                dumpVisibleStateURL: nil,
+                dumpPerfStateURL: nil,
+                screenshotPathURL: nil,
+                commandDirectoryURL: nil,
+                uiTestMode: true,
+                platformTarget: .macos,
+                deviceClass: .mac
+            )
+        )
+
+        model.bootstrap()
+        model.openFolder(at: alphaWorkspace)
+        try await Task.sleep(nanoseconds: 500_000_000)
+
+        XCTAssertEqual(model.restorationSession?.rootPath, alphaWorkspace.path)
+        XCTAssertEqual(model.selectedPath?.rawValue, "alpha.md")
+        XCTAssertEqual(model.windowTitle, "window-alpha > alpha.md")
+    }
+
+    @MainActor
+    func testEmptyWorkspaceShowsNoMarkdownFilesMessage() async throws {
+        let emptyWorkspace = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: emptyWorkspace, withIntermediateDirectories: true)
+
+        let model = AppModel(
+            launchOptions: HarnessLaunchOptions(
+                fixtureRoot: emptyWorkspace,
+                openFile: nil,
+                uiTestOpenFolderURL: nil,
+                theme: nil,
+                windowSize: nil,
+                disableFileWatch: true,
+                dumpVisibleStateURL: nil,
+                dumpPerfStateURL: nil,
+                screenshotPathURL: nil,
+                commandDirectoryURL: nil,
+                uiTestMode: true,
+                platformTarget: .macos,
+                deviceClass: .mac
+            )
+        )
+
+        model.bootstrap()
+        try await Task.sleep(nanoseconds: 300_000_000)
+
+        XCTAssertTrue(model.files.isEmpty)
+        XCTAssertNil(model.selectedPath)
+        XCTAssertEqual(model.documentText, "No markdown files found.")
+    }
+
+    @MainActor
+    func testWindowScopedModelsKeepDifferentFoldersAfterOpeningNewWorkspace() async throws {
+        let alphaWorkspace = repoRootURL
+            .appendingPathComponent("Fixtures/window-workspaces/window-alpha", isDirectory: true)
+        let betaWorkspace = repoRootURL
+            .appendingPathComponent("Fixtures/window-workspaces/window-beta", isDirectory: true)
+
+        let launchOptions = HarnessLaunchOptions(
+            fixtureRoot: alphaWorkspace,
+            openFile: "alpha.md",
+            uiTestOpenFolderURL: nil,
+            theme: nil,
+            windowSize: nil,
+            disableFileWatch: true,
+            dumpVisibleStateURL: nil,
+            dumpPerfStateURL: nil,
+            screenshotPathURL: nil,
+            commandDirectoryURL: nil,
+            uiTestMode: true,
+            platformTarget: .macos,
+            deviceClass: .mac
+        )
+
+        let firstWindowModel = AppModel(launchOptions: launchOptions)
+        let secondWindowModel = AppModel(launchOptions: launchOptions)
+
+        firstWindowModel.bootstrap()
+        secondWindowModel.bootstrap()
+        secondWindowModel.openFolder(at: betaWorkspace)
+        try await Task.sleep(nanoseconds: 500_000_000)
+
+        XCTAssertEqual(firstWindowModel.restorationSession?.rootPath, alphaWorkspace.path)
+        XCTAssertEqual(firstWindowModel.selectedPath?.rawValue, "alpha.md")
+        XCTAssertEqual(firstWindowModel.windowTitle, "window-alpha > alpha.md")
+
+        XCTAssertEqual(secondWindowModel.restorationSession?.rootPath, betaWorkspace.path)
+        XCTAssertEqual(secondWindowModel.selectedPath?.rawValue, "beta.md")
+        XCTAssertEqual(secondWindowModel.windowTitle, "window-beta > beta.md")
     }
 
     @MainActor
@@ -137,6 +330,90 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
         XCTAssertEqual(model.windowTitle, "\(tempRoot.lastPathComponent) > notes.md")
     }
 
+    @MainActor
+    func testAppModelRestoresInitialWorkspaceSession() async throws {
+        let tempRoot = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: tempRoot, withIntermediateDirectories: true)
+        try "# Alpha".write(to: tempRoot.appendingPathComponent("alpha.md"), atomically: true, encoding: .utf8)
+        try "# Beta".write(to: tempRoot.appendingPathComponent("beta.md"), atomically: true, encoding: .utf8)
+
+        let model = AppModel(
+            launchOptions: HarnessLaunchOptions(
+                fixtureRoot: nil,
+                openFile: nil,
+                uiTestOpenFolderURL: nil,
+                theme: nil,
+                windowSize: nil,
+                disableFileWatch: true,
+                dumpVisibleStateURL: nil,
+                dumpPerfStateURL: nil,
+                screenshotPathURL: nil,
+                commandDirectoryURL: nil,
+                uiTestMode: false,
+                platformTarget: .macos,
+                deviceClass: .mac
+            ),
+            initialSession: WorkspaceWindowSession(
+                rootPath: tempRoot.path,
+                selectedFile: "beta.md"
+            )
+        )
+
+        model.bootstrap()
+        try await Task.sleep(nanoseconds: 1_000_000_000)
+
+        XCTAssertFalse(model.shouldAutoPromptForFolderOnLaunch)
+        XCTAssertEqual(model.selectedPath?.rawValue, "beta.md")
+        XCTAssertEqual(model.windowTitle, "\(tempRoot.lastPathComponent) > beta.md")
+        XCTAssertEqual(model.restorationSession?.rootPath, tempRoot.path)
+        XCTAssertEqual(model.restorationSession?.selectedFile, "beta.md")
+    }
+
+    func testWorkspaceProviderReturnsRelativePathsForTemporaryRoots() throws {
+        let tempRoot = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: tempRoot, withIntermediateDirectories: true)
+        try "# Alpha".write(to: tempRoot.appendingPathComponent("alpha.md"), atomically: true, encoding: .utf8)
+        try "# Beta".write(to: tempRoot.appendingPathComponent("beta.md"), atomically: true, encoding: .utf8)
+
+        let provider = LocalWorkspaceProvider(rootURL: tempRoot, embeddedDocs: EmbeddedFixtures.docs)
+        let workspace = try provider.loadRoot()
+
+        XCTAssertEqual(workspace.files.map(\.path.rawValue), ["alpha.md", "beta.md"])
+    }
+
+    @MainActor
+    func testAdjacentFilePathMovesSidebarSelection() {
+        let files = [
+            MarkdownFileNode(path: WorkspacePath(rawValue: "alpha.md"), name: "alpha.md"),
+            MarkdownFileNode(path: WorkspacePath(rawValue: "beta.md"), name: "beta.md"),
+            MarkdownFileNode(path: WorkspacePath(rawValue: "gamma.md"), name: "gamma.md"),
+        ]
+
+        XCTAssertEqual(
+            AppModel.adjacentFilePath(from: WorkspacePath(rawValue: "alpha.md"), within: files, offset: 1)?.rawValue,
+            "beta.md"
+        )
+        XCTAssertEqual(
+            AppModel.adjacentFilePath(from: WorkspacePath(rawValue: "beta.md"), within: files, offset: 1)?.rawValue,
+            "gamma.md"
+        )
+        XCTAssertNil(
+            AppModel.adjacentFilePath(from: WorkspacePath(rawValue: "gamma.md"), within: files, offset: 1)
+        )
+        XCTAssertEqual(
+            AppModel.adjacentFilePath(from: WorkspacePath(rawValue: "gamma.md"), within: files, offset: -1)?.rawValue,
+            "beta.md"
+        )
+        XCTAssertEqual(
+            AppModel.adjacentFilePath(from: nil, within: files, offset: 1)?.rawValue,
+            "alpha.md"
+        )
+        XCTAssertEqual(
+            AppModel.adjacentFilePath(from: nil, within: files, offset: -1)?.rawValue,
+            "gamma.md"
+        )
+    }
+
     func testMarkdownRendererParsesMultipleBlockKinds() {
         let markdown = """
         # Heading
@@ -159,6 +436,33 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
         XCTAssertEqual(blocks[0].plainText, "Heading")
         XCTAssertEqual(blocks[1].plainText, "Intro with bold text.")
         XCTAssertEqual(blocks[5].plainText, "let x = 1")
+    }
+
+    func testSelectableDocumentFormatterUsesRenderedDocumentText() {
+        let markdown = """
+        # Heading
+
+        Intro with **bold** text.
+
+        - Item one
+        1. Item two
+
+        ```
+        let x = 1
+        ```
+        """
+
+        let blocks = MarkdownRenderer.blocks(from: markdown)
+        let rendered = SelectableDocumentFormatter.attributedText(from: blocks).string
+
+        XCTAssertTrue(rendered.contains("Heading"))
+        XCTAssertTrue(rendered.contains("Intro with bold text."))
+        XCTAssertTrue(rendered.contains("- Item one"))
+        XCTAssertTrue(rendered.contains("1. Item two"))
+        XCTAssertTrue(rendered.contains("let x = 1"))
+        XCTAssertFalse(rendered.contains("# Heading"))
+        XCTAssertFalse(rendered.contains("**bold**"))
+        XCTAssertFalse(rendered.contains("```"))
     }
 
     func testMarkdownRendererParsesIndentedCodeBlockFromSpecExample() {

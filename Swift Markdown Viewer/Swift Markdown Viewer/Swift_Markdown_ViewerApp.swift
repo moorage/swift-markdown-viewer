@@ -6,51 +6,35 @@
 //
 
 import SwiftUI
-#if os(macOS)
-import AppKit
-#endif
 
 @main
 struct Swift_Markdown_ViewerApp: App {
-    @StateObject private var model = AppModel(launchOptions: HarnessLaunchOptions.fromProcess())
+    private let launchOptions: HarnessLaunchOptions
+    @StateObject private var sessionStore: WorkspaceWindowSessionStore
+
+    init() {
+        let resolvedLaunchOptions = HarnessLaunchOptions.fromProcess()
+        launchOptions = resolvedLaunchOptions
+        UITestOpenFolderSelectionStore.shared.configureIfNeeded(using: resolvedLaunchOptions)
+        _sessionStore = StateObject(
+            wrappedValue: WorkspaceWindowSessionStore(launchOptions: resolvedLaunchOptions)
+        )
+    }
 
     var body: some Scene {
-        WindowGroup {
-            ContentView(model: model)
+        WindowGroup(for: String.self) { $sceneID in
+            WindowSceneRootView(
+                launchOptions: launchOptions,
+                sceneID: sceneID,
+                sessionStore: sessionStore
+            )
+        } defaultValue: {
+            UUID().uuidString
         }
         #if os(macOS)
         .commands {
-            CommandGroup(after: .newItem) {
-                Divider()
-                Button("Open Folder…") {
-                    openFolder()
-                }
-                .keyboardShortcut("o", modifiers: [.command])
-            }
+            WindowOpenFolderCommands()
         }
         #endif
     }
-
-    #if os(macOS)
-    private func openFolder() {
-        if model.launchOptions.uiTestMode, let testFolderURL = model.launchOptions.uiTestOpenFolderURL {
-            model.openFolder(at: testFolderURL)
-            return
-        }
-
-        let panel = NSOpenPanel()
-        panel.title = "Open Folder"
-        panel.prompt = "Open"
-        panel.canChooseFiles = false
-        panel.canChooseDirectories = true
-        panel.canCreateDirectories = false
-        panel.allowsMultipleSelection = false
-
-        guard panel.runModal() == .OK, let selectedURL = panel.url else {
-            return
-        }
-
-        model.openFolder(at: selectedURL)
-    }
-    #endif
 }

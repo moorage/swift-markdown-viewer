@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var model: AppModel
+    let onOpenFolder: (() -> Void)?
 
     var body: some View {
-        AppRootView(model: model)
+        AppRootView(model: model, onOpenFolder: onOpenFolder)
     }
 }

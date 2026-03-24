@@ -5,6 +5,7 @@ import AppKit
 
 struct AppRootView: View {
     @ObservedObject var model: AppModel
+    let onOpenFolder: (() -> Void)?
     #if os(macOS)
     @State private var liveWindow: NSWindow?
     #endif
@@ -12,7 +13,7 @@ struct AppRootView: View {
     var body: some View {
         GeometryReader { proxy in
             let renderSize = resolvedRenderSize(from: proxy.size)
-            ViewerShellView(model: model)
+            ViewerShellView(model: model, onOpenFolder: onOpenFolder)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .task {
                     model.bootstrap()
@@ -26,7 +27,7 @@ struct AppRootView: View {
                     } else {
                         model.installScreenshotWriter { url in
                             try PlatformScreenshotWriter.write(
-                                content: ViewerShellView(model: model)
+                                content: ViewerShellView(model: model, onOpenFolder: onOpenFolder)
                                     .frame(width: renderSize.width, height: renderSize.height),
                                 to: url
                             )
@@ -35,7 +36,7 @@ struct AppRootView: View {
                     #else
                     model.installScreenshotWriter { url in
                         try PlatformScreenshotWriter.write(
-                            content: ViewerShellView(model: model)
+                            content: ViewerShellView(model: model, onOpenFolder: onOpenFolder)
                                 .frame(width: renderSize.width, height: renderSize.height),
                             to: url
                         )

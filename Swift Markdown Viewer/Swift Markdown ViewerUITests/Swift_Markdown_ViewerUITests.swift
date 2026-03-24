@@ -48,14 +48,94 @@ final class Swift_Markdown_ViewerUITests: XCTestCase {
         ]
         app.launch()
 
-        XCTAssertTrue(app.staticTexts["nav.title"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Fixtures/docs > basic_typography.md"].exists)
+        XCTAssertTrue(app.buttons["nav.back"].waitForExistence(timeout: 5))
 
+        app.windows.element(boundBy: 0).click()
         app.typeKey("o", modifierFlags: .command)
 
         let openedSidebarNode = app.buttons["sidebar.node.zeta.md"]
         XCTAssertTrue(openedSidebarNode.waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["UITest Workspace > zeta.md"].waitForExistence(timeout: 5))
+    }
+
+    @MainActor
+    func testEmptyWorkspaceShowsCenteredOpenFolderCallToAction() throws {
+        let app = XCUIApplication()
+        let repoRoot = ProcessInfo.processInfo.environment["PWD"] ?? FileManager.default.currentDirectoryPath
+        let initialFixtureRoot = "\(repoRoot)/Fixtures/docs"
+        let emptyWorkspace = try makeWorkspace(named: "Empty Workspace", files: [:])
+
+        app.launchArguments = [
+            "--fixture-root", initialFixtureRoot,
+            "--open-file", "basic_typography.md",
+            "--ui-test-open-folder", emptyWorkspace.path,
+            "--ui-test-mode", "1",
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.buttons["nav.back"].waitForExistence(timeout: 5))
+
+        app.windows.element(boundBy: 0).click()
+        app.typeKey("o", modifierFlags: .command)
+
+        XCTAssertTrue(app.staticTexts["No markdown files found."].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["empty-state.open-folder"].exists)
+    }
+
+    @MainActor
+    func testClickingSidebarNodeSwitchesPrimaryViewer() throws {
+        let app = XCUIApplication()
+        let workspace = try makeWorkspace(named: "Click Workspace", files: [
+            "alpha.md": "# Alpha\n\nFirst file.",
+            "beta.md": "# Beta\n\nSecond file."
+        ])
+
+        app.launchArguments = [
+            "--fixture-root", workspace.path,
+            "--open-file", "alpha.md",
+            "--ui-test-mode", "1",
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.staticTexts["Click Workspace > alpha.md"].waitForExistence(timeout: 5))
+
+        let betaNode = app.buttons["sidebar.node.beta.md"]
+        XCTAssertTrue(betaNode.waitForExistence(timeout: 5))
+        betaNode.click()
+
+        XCTAssertTrue(app.staticTexts["Click Workspace > beta.md"].waitForExistence(timeout: 5))
+    }
+
+    @MainActor
+    func testSidebarArrowKeysSwitchMarkdownFiles() throws {
+        let app = XCUIApplication()
+        let workspace = try makeWorkspace(named: "Keyboard Workspace", files: [
+            "alpha.md": "# Alpha\n\nFirst file.",
+            "beta.md": "# Beta\n\nSecond file.",
+            "gamma.md": "# Gamma\n\nThird file."
+        ])
+
+        app.launchArguments = [
+            "--fixture-root", workspace.path,
+            "--open-file", "alpha.md",
+            "--ui-test-mode", "1",
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.staticTexts["Keyboard Workspace > alpha.md"].waitForExistence(timeout: 5))
+
+        let alphaNode = app.buttons["sidebar.node.alpha.md"]
+        XCTAssertTrue(alphaNode.waitForExistence(timeout: 5))
+        alphaNode.click()
+
+        app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: [])
+        XCTAssertTrue(app.staticTexts["Keyboard Workspace > beta.md"].waitForExistence(timeout: 5))
+
+        app.typeKey(XCUIKeyboardKey.downArrow.rawValue, modifierFlags: [])
+        XCTAssertTrue(app.staticTexts["Keyboard Workspace > gamma.md"].waitForExistence(timeout: 5))
+
+        app.typeKey(XCUIKeyboardKey.upArrow.rawValue, modifierFlags: [])
+        XCTAssertTrue(app.staticTexts["Keyboard Workspace > beta.md"].waitForExistence(timeout: 5))
     }
 
     @MainActor
@@ -77,4 +157,13 @@ final class Swift_Markdown_ViewerUITests: XCTestCase {
         }
         return folder
     }
+
+    private func waitForWindowCount(_ app: XCUIApplication, expected: Int, timeout: TimeInterval) -> Bool {
+        let predicate = NSPredicate { _, _ in
+            app.windows.count == expected
+        }
+        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: nil)
+        return XCTWaiter().wait(for: [expectation], timeout: timeout) == .completed
+    }
+
 }

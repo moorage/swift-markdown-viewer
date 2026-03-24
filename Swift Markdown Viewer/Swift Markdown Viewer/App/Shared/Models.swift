@@ -1,29 +1,29 @@
 import Foundation
 
-struct WorkspacePath: Hashable, Codable, Identifiable {
+struct WorkspacePath: Hashable, Codable, Identifiable, Sendable {
     let rawValue: String
 
     var id: String { rawValue }
 }
 
-struct MarkdownFileNode: Identifiable, Hashable {
+struct MarkdownFileNode: Identifiable, Hashable, Sendable {
     let path: WorkspacePath
     let name: String
 
     var id: String { path.rawValue }
 }
 
-struct Workspace {
+struct Workspace: Sendable {
     let rootIdentifier: String
     let files: [MarkdownFileNode]
 }
 
-struct NavigationEntry: Equatable {
+struct NavigationEntry: Equatable, Sendable {
     let filePath: WorkspacePath
     let scrollPosition: Double?
 }
 
-enum MarkdownBlockKind: String, Hashable {
+enum MarkdownBlockKind: String, Hashable, Sendable {
     case heading
     case paragraph
     case unorderedListItem
@@ -36,25 +36,25 @@ enum MarkdownBlockKind: String, Hashable {
     case thematicBreak
 }
 
-enum MarkdownTableAlignment: String, Hashable {
+enum MarkdownTableAlignment: String, Hashable, Sendable {
     case leading
     case center
     case trailing
 }
 
-struct MarkdownTable: Hashable {
+struct MarkdownTable: Hashable, Sendable {
     let alignments: [MarkdownTableAlignment]
     let header: [String]
     let rows: [[String]]
 }
 
-struct MarkdownImage: Hashable {
+struct MarkdownImage: Hashable, Sendable {
     let altText: String
     let sourceURL: String
     let title: String?
 }
 
-struct MarkdownBlock: Identifiable, Hashable {
+struct MarkdownBlock: Identifiable, Hashable, Sendable {
     let id: String
     let kind: MarkdownBlockKind
     let plainText: String

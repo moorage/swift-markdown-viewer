@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-enum MarkdownRenderer {
+nonisolated enum MarkdownRenderer {
     private struct ResolvedContainer {
         let identity: String
         let kind: ContainerKind
@@ -56,7 +56,7 @@ enum MarkdownRenderer {
         }
     }
 
-    static func blocks(from markdown: String) -> [MarkdownBlock] {
+    nonisolated static func blocks(from markdown: String) -> [MarkdownBlock] {
         let normalized = markdown.replacingOccurrences(of: "\r\n", with: "\n")
         if let segmentedBlocks = segmentedBlocks(from: normalized) {
             return segmentedBlocks
@@ -64,7 +64,7 @@ enum MarkdownRenderer {
         return coreBlocks(from: normalized)
     }
 
-    private static func coreBlocks(from markdown: String) -> [MarkdownBlock] {
+    private nonisolated static func coreBlocks(from markdown: String) -> [MarkdownBlock] {
         let normalized = markdown.replacingOccurrences(of: "\r\n", with: "\n")
         let lines = normalized.components(separatedBy: "\n")
 
@@ -89,14 +89,14 @@ enum MarkdownRenderer {
         return legacyBlocks(from: normalized)
     }
 
-    static func attributedText(for block: MarkdownBlock) -> AttributedString {
+    nonisolated static func attributedText(for block: MarkdownBlock) -> AttributedString {
         if let attributedText = block.attributedText {
             return attributedText
         }
         return attributedText(for: block.sourceText)
     }
 
-    static func attributedText(for sourceText: String) -> AttributedString {
+    nonisolated static func attributedText(for sourceText: String) -> AttributedString {
         if let attributed = try? AttributedString(
             markdown: sourceText,
             options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
@@ -106,7 +106,7 @@ enum MarkdownRenderer {
         return AttributedString(sourceText)
     }
 
-    private static func attributedBlocks(from attributed: AttributedString) -> [MarkdownBlock] {
+    private nonisolated static func attributedBlocks(from attributed: AttributedString) -> [MarkdownBlock] {
         var roots: [BlockBuilder] = []
         var fallbackIndex = 0
 
@@ -137,7 +137,7 @@ enum MarkdownRenderer {
         return blocks
     }
 
-    private static func appendRun(
+    private nonisolated static func appendRun(
         _ substring: AttributedString,
         text: String,
         presentationIntent: PresentationIntent,
@@ -238,7 +238,7 @@ enum MarkdownRenderer {
         appendText(text, attributed: substring, to: leafBuilder)
     }
 
-    private static func resolvedContainers(from presentationIntent: PresentationIntent) -> [ResolvedContainer] {
+    private nonisolated static func resolvedContainers(from presentationIntent: PresentationIntent) -> [ResolvedContainer] {
         var containers: [ResolvedContainer] = [ResolvedContainer(identity: "root", kind: .root)]
         var pendingList: [ResolvedContainer] = []
         var listDepth = 0
@@ -327,7 +327,7 @@ enum MarkdownRenderer {
         return containers
     }
 
-    private static func findOrCreate(
+    private nonisolated static func findOrCreate(
         identity: String,
         kind: MarkdownBlockKind,
         indentLevel: Int,
@@ -366,7 +366,7 @@ enum MarkdownRenderer {
         return created
     }
 
-    private static func appendText(_ text: String, attributed: AttributedString, to builder: BlockBuilder) {
+    private nonisolated static func appendText(_ text: String, attributed: AttributedString, to builder: BlockBuilder) {
         switch builder.kind {
         case .codeBlock:
             builder.sourceText += text
@@ -378,7 +378,7 @@ enum MarkdownRenderer {
         }
     }
 
-    private static func buildBlock(from builder: BlockBuilder, blockIndex: inout Int) -> MarkdownBlock? {
+    private nonisolated static func buildBlock(from builder: BlockBuilder, blockIndex: inout Int) -> MarkdownBlock? {
         let sourceText: String
         let plainText: String
         let attributedText: AttributedString?
@@ -451,12 +451,12 @@ enum MarkdownRenderer {
         )
     }
 
-    private static func normalizedPlainText(from sourceText: String) -> String {
+    private nonisolated static func normalizedPlainText(from sourceText: String) -> String {
         let normalized = normalizeVisibleText(sourceText)
         return normalized == "⸻" ? "" : normalized
     }
 
-    private static func visibleText(from sourceText: String, attributedText: AttributedString?) -> String {
+    private nonisolated static func visibleText(from sourceText: String, attributedText: AttributedString?) -> String {
         if sourceText.contains("<!") || sourceText.contains("<?") {
             return htmlVisibleText(from: sourceText)
         }
@@ -481,7 +481,7 @@ enum MarkdownRenderer {
         return normalizedPlainText(from: sourceText)
     }
 
-    private static func standaloneSpecialBlocks(from markdown: String, lines: [String]) -> [MarkdownBlock]? {
+    private nonisolated static func standaloneSpecialBlocks(from markdown: String, lines: [String]) -> [MarkdownBlock]? {
         let imageReferences = imageReferenceDefinitions(from: lines)
         let meaningfulLines = lines
             .map { $0.trimmingCharacters(in: .whitespaces) }
@@ -531,7 +531,7 @@ enum MarkdownRenderer {
         return nil
     }
 
-    private static func segmentedBlocks(from markdown: String) -> [MarkdownBlock]? {
+    private nonisolated static func segmentedBlocks(from markdown: String) -> [MarkdownBlock]? {
         let lines = markdown.components(separatedBy: "\n")
         let imageReferences = imageReferenceDefinitions(from: lines)
         var foundSpecialBlock = false
@@ -647,7 +647,7 @@ enum MarkdownRenderer {
         return blocks
     }
 
-    private static func emptyParagraph() -> MarkdownBlock {
+    private nonisolated static func emptyParagraph() -> MarkdownBlock {
         MarkdownBlock(
             id: "block.0",
             kind: .paragraph,
@@ -665,19 +665,19 @@ enum MarkdownRenderer {
         )
     }
 
-    private static func normalizeVisibleText(_ text: String) -> String {
+    private nonisolated static func normalizeVisibleText(_ text: String) -> String {
         text.replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    private static func containsHTMLTag(in source: String) -> Bool {
+    private nonisolated static func containsHTMLTag(in source: String) -> Bool {
         source.range(
             of: #"<(?:/?[A-Za-z][A-Za-z0-9-]*(?=[\s>/])[^>]*|![A-Za-z-]+[^>]*|\?[A-Za-z][^>]*|!--[^>]*--)>"#,
             options: .regularExpression
         ) != nil
     }
 
-    private static func isHTMLOnlyDocument(_ markdown: String) -> Bool {
+    private nonisolated static func isHTMLOnlyDocument(_ markdown: String) -> Bool {
         let trimmed = markdown.trimmingCharacters(in: .whitespacesAndNewlines)
         let lines = trimmed.components(separatedBy: "\n").filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
         guard !lines.isEmpty,
@@ -689,7 +689,7 @@ enum MarkdownRenderer {
         return containsHTMLTag(in: trimmed)
     }
 
-    private static func htmlBlock(in lines: [String], at startIndex: Int) -> (lines: [String], nextIndex: Int)? {
+    private nonisolated static func htmlBlock(in lines: [String], at startIndex: Int) -> (lines: [String], nextIndex: Int)? {
         let line = lines[startIndex]
         let trimmed = line.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return nil }
@@ -728,7 +728,7 @@ enum MarkdownRenderer {
         return nil
     }
 
-    private static func collectHTMLBlock(in lines: [String], at startIndex: Int, until terminator: String) -> (lines: [String], nextIndex: Int) {
+    private nonisolated static func collectHTMLBlock(in lines: [String], at startIndex: Int, until terminator: String) -> (lines: [String], nextIndex: Int) {
         var endIndex = startIndex
         while endIndex < lines.count {
             if lines[endIndex].contains(terminator) {
@@ -739,7 +739,7 @@ enum MarkdownRenderer {
         return (Array(lines[startIndex..<lines.count]), lines.count)
     }
 
-    private static func collectHTMLBlock(in lines: [String], at startIndex: Int, untilClosingTag tagName: String) -> (lines: [String], nextIndex: Int) {
+    private nonisolated static func collectHTMLBlock(in lines: [String], at startIndex: Int, untilClosingTag tagName: String) -> (lines: [String], nextIndex: Int) {
         let terminator = "</\(tagName)"
         var endIndex = startIndex
         while endIndex < lines.count {
@@ -751,7 +751,7 @@ enum MarkdownRenderer {
         return (Array(lines[startIndex..<lines.count]), lines.count)
     }
 
-    private static func htmlVisibleText(from source: String) -> String {
+    private nonisolated static func htmlVisibleText(from source: String) -> String {
         let stripped = source
             .replacingOccurrences(of: #"<!--[\s\S]*?-->"#, with: " ", options: .regularExpression)
             .replacingOccurrences(of: #"<\?[\s\S]*?\?>"#, with: " ", options: .regularExpression)
@@ -782,7 +782,7 @@ enum MarkdownRenderer {
         return normalizeVisibleText(stripped)
     }
 
-    private static func parseTaskMarker(in text: String) -> (Bool, Bool?, AttributedString, String) {
+    private nonisolated static func parseTaskMarker(in text: String) -> (Bool, Bool?, AttributedString, String) {
         guard text.count >= 4 else {
             return (false, nil, AttributedString(text), text)
         }
@@ -803,12 +803,12 @@ enum MarkdownRenderer {
         }
     }
 
-    private static func isReferenceDefinitionLine(_ line: String) -> Bool {
+    private nonisolated static func isReferenceDefinitionLine(_ line: String) -> Bool {
         let pattern = #"^\[[^\]]+\]:"#
         return line.range(of: pattern, options: .regularExpression) != nil
     }
 
-    private static func potentialReferenceDefinitionRange(in lines: [String], at startIndex: Int) -> Int? {
+    private nonisolated static func potentialReferenceDefinitionRange(in lines: [String], at startIndex: Int) -> Int? {
         let line = lines[startIndex]
         let indentation = line.prefix { $0 == " " || $0 == "\t" }.count
         guard indentation < 4 else { return nil }
@@ -833,7 +833,7 @@ enum MarkdownRenderer {
         return index
     }
 
-    private static func containsOnlyReferenceDefinitionsOrWhitespace(in markdown: String) -> Bool {
+    private nonisolated static func containsOnlyReferenceDefinitionsOrWhitespace(in markdown: String) -> Bool {
         let lines = markdown.components(separatedBy: "\n")
         var index = 0
 
@@ -852,7 +852,7 @@ enum MarkdownRenderer {
         return true
     }
 
-    private static func imageReferenceDefinitions(from lines: [String]) -> [String: MarkdownImage] {
+    private nonisolated static func imageReferenceDefinitions(from lines: [String]) -> [String: MarkdownImage] {
         var definitions: [String: MarkdownImage] = [:]
         let pattern = #"^\[([^\]]+)\]:\s+(\S+)(?:\s+"([^"]*)")?\s*$"#
         let regex = try? NSRegularExpression(pattern: pattern)
@@ -875,7 +875,7 @@ enum MarkdownRenderer {
         return definitions
     }
 
-    private static func imageBlock(from line: String, references: [String: MarkdownImage]) -> MarkdownImage? {
+    private nonisolated static func imageBlock(from line: String, references: [String: MarkdownImage]) -> MarkdownImage? {
         if let direct = directImage(from: line) {
             return direct
         }
@@ -901,7 +901,7 @@ enum MarkdownRenderer {
         return MarkdownImage(altText: altText, sourceURL: definition.sourceURL, title: definition.title)
     }
 
-    private static func directImage(from line: String) -> MarkdownImage? {
+    private nonisolated static func directImage(from line: String) -> MarkdownImage? {
         let pattern = #"^!\[([^\]]*)\]\((\S+?)(?:\s+"([^"]*)")?\)\s*$"#
         guard let regex = try? NSRegularExpression(pattern: pattern) else { return nil }
         let range = NSRange(location: 0, length: line.utf16.count)
@@ -918,7 +918,7 @@ enum MarkdownRenderer {
         )
     }
 
-    private static func normalizedInlineText(_ source: String) -> String {
+    private nonisolated static func normalizedInlineText(_ source: String) -> String {
         if let attributed = try? AttributedString(
             markdown: source,
             options: AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
@@ -932,7 +932,7 @@ enum MarkdownRenderer {
         return normalizeVisibleText(source)
     }
 
-    private static func markdownRemovingInlineImages(_ source: String) -> String {
+    private nonisolated static func markdownRemovingInlineImages(_ source: String) -> String {
         let patterns = [
             #"\[\!\[[^\]]*\]\([^)]+\)\]\([^)]+\)"#,
             #"\[\!\[[^\]]*\]\([^)]+\)\]\[[^\]]+\]"#,
@@ -945,7 +945,7 @@ enum MarkdownRenderer {
         }
     }
 
-    private static func legacyBlocks(from markdown: String) -> [MarkdownBlock] {
+    private nonisolated static func legacyBlocks(from markdown: String) -> [MarkdownBlock] {
         let lines = markdown.components(separatedBy: "\n")
         let imageReferences = imageReferenceDefinitions(from: lines)
         var blocks: [MarkdownBlock] = []
@@ -1024,7 +1024,7 @@ enum MarkdownRenderer {
         return blocks.isEmpty ? [emptyParagraph()] : blocks
     }
 
-    private static func table(from lines: [String], at index: Int) -> (header: [String], alignments: [MarkdownTableAlignment], rows: [[String]], nextIndex: Int)? {
+    private nonisolated static func table(from lines: [String], at index: Int) -> (header: [String], alignments: [MarkdownTableAlignment], rows: [[String]], nextIndex: Int)? {
         guard index + 1 < lines.count else { return nil }
         guard let header = splitTableRow(lines[index]), !header.isEmpty else { return nil }
         guard let alignments = parseTableDivider(lines[index + 1]), alignments.count == header.count else { return nil }
@@ -1039,7 +1039,7 @@ enum MarkdownRenderer {
         return (header, alignments, rows, cursor)
     }
 
-    private static func splitTableRow(_ line: String) -> [String]? {
+    private nonisolated static func splitTableRow(_ line: String) -> [String]? {
         let trimmed = line.trimmingCharacters(in: .whitespaces)
         guard trimmed.contains("|") else { return nil }
         var content = trimmed
@@ -1055,7 +1055,7 @@ enum MarkdownRenderer {
         return cells.contains(where: { !$0.isEmpty }) ? cells : nil
     }
 
-    private static func parseTableDivider(_ line: String) -> [MarkdownTableAlignment]? {
+    private nonisolated static func parseTableDivider(_ line: String) -> [MarkdownTableAlignment]? {
         guard let cells = splitTableRow(line) else { return nil }
         var alignments: [MarkdownTableAlignment] = []
         for cell in cells {
@@ -1077,7 +1077,7 @@ enum MarkdownRenderer {
         return alignments
     }
 
-    private static func tableBlock(
+    private nonisolated static func tableBlock(
         from tableMatch: (header: [String], alignments: [MarkdownTableAlignment], rows: [[String]], nextIndex: Int),
         id: String
     ) -> MarkdownBlock {

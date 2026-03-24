@@ -2,9 +2,9 @@ import Foundation
 
 protocol WorkspaceProvider {
     var displayRoot: String { get }
-    func loadRoot() throws -> Workspace
-    func readFile(at path: WorkspacePath) throws -> String
-    func resolveMediaURL(for path: WorkspacePath) throws -> URL
+    nonisolated func loadRoot() throws -> Workspace
+    nonisolated func readFile(at path: WorkspacePath) throws -> String
+    nonisolated func resolveMediaURL(for path: WorkspacePath) throws -> URL
 }
 
 enum WorkspaceProviderError: Error {
@@ -43,7 +43,7 @@ enum EmbeddedFixtures {
     ]
 }
 
-struct LocalWorkspaceProvider: WorkspaceProvider {
+struct LocalWorkspaceProvider: WorkspaceProvider, Sendable {
     let rootURL: URL?
     let embeddedDocs: [String: String]
 
@@ -54,7 +54,7 @@ struct LocalWorkspaceProvider: WorkspaceProvider {
         return "Fixtures/docs"
     }
 
-    func loadRoot() throws -> Workspace {
+    nonisolated func loadRoot() throws -> Workspace {
         if let rootURL {
             return Workspace(
                 rootIdentifier: normalizedDisplayRoot(for: rootURL),
@@ -68,7 +68,7 @@ struct LocalWorkspaceProvider: WorkspaceProvider {
         return Workspace(rootIdentifier: "Fixtures/docs", files: files)
     }
 
-    func readFile(at path: WorkspacePath) throws -> String {
+    nonisolated func readFile(at path: WorkspacePath) throws -> String {
         if let rootURL {
             let url = rootURL.appendingPathComponent(path.rawValue)
             if let text = try? String(contentsOf: url, encoding: .utf8) {
@@ -82,18 +82,19 @@ struct LocalWorkspaceProvider: WorkspaceProvider {
         throw WorkspaceProviderError.fileNotFound(path)
     }
 
-    func resolveMediaURL(for path: WorkspacePath) throws -> URL {
+    nonisolated func resolveMediaURL(for path: WorkspacePath) throws -> URL {
         if let rootURL {
             return rootURL.appendingPathComponent(path.rawValue)
         }
         throw WorkspaceProviderError.rootMissing(path.rawValue)
     }
 
-    private func markdownFiles(in rootURL: URL) throws -> [MarkdownFileNode] {
+    private nonisolated func markdownFiles(in rootURL: URL) throws -> [MarkdownFileNode] {
         guard FileManager.default.fileExists(atPath: rootURL.path) else {
             throw WorkspaceProviderError.rootMissing(rootURL.path)
         }
 
+        let canonicalRootPath = canonicalPath(for: rootURL)
         let enumerator = FileManager.default.enumerator(
             at: rootURL,
             includingPropertiesForKeys: [.isRegularFileKey],
@@ -104,13 +105,19 @@ struct LocalWorkspaceProvider: WorkspaceProvider {
         var result: [MarkdownFileNode] = []
         while let fileURL = enumerator?.nextObject() as? URL {
             guard fileURL.pathExtension.lowercased() == "md" else { continue }
-            let relative = fileURL.path.replacingOccurrences(of: rootURL.path + "/", with: "")
+            let canonicalFilePath = canonicalPath(for: fileURL)
+            guard canonicalFilePath.hasPrefix(canonicalRootPath + "/") else { continue }
+            let relative = String(canonicalFilePath.dropFirst(canonicalRootPath.count + 1))
             result.append(MarkdownFileNode(path: WorkspacePath(rawValue: relative), name: relative))
         }
         return result.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
     }
 
-    private func normalizedDisplayRoot(for rootURL: URL) -> String {
+    private nonisolated func canonicalPath(for url: URL) -> String {
+        url.resolvingSymlinksInPath().standardizedFileURL.path
+    }
+
+    private nonisolated func normalizedDisplayRoot(for rootURL: URL) -> String {
         if rootURL.lastPathComponent == "docs", rootURL.deletingLastPathComponent().lastPathComponent == "Fixtures" {
             return "Fixtures/docs"
         }

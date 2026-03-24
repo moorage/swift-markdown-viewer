@@ -2,28 +2,14 @@ import SwiftUI
 
 struct ViewerShellView: View {
     @ObservedObject var model: AppModel
+    let onOpenFolder: (() -> Void)?
+    #if os(macOS)
+    @FocusState private var sidebarFocused: Bool
+    #endif
 
     var body: some View {
         NavigationSplitView {
-            List(model.files) { file in
-                Button {
-                    model.openFile(file.path)
-                } label: {
-                    HStack {
-                        Text(file.name)
-                            .font(.body)
-                        Spacer()
-                        if model.selectedPath == file.path {
-                            Image(systemName: "checkmark")
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier(AccessibilityIDs.sidebarNode(file.path.rawValue))
-            }
-            .listStyle(.sidebar)
-            .accessibilityIdentifier(AccessibilityIDs.sidebarList)
+            sidebarContent
         } detail: {
             detailContent
         }
@@ -37,20 +23,87 @@ struct ViewerShellView: View {
         #endif
     }
 
-    private var detailContent: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                ForEach(model.documentBlocks) { block in
-                    MarkdownBlockView(block: block)
-                }
-            }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .textSelection(.enabled)
-                .accessibilityIdentifier(AccessibilityIDs.text)
-                .padding(.bottom, 24)
+    private var sidebarContent: some View {
+        List(model.files) { file in
+            sidebarRow(for: file)
         }
-        .accessibilityIdentifier(AccessibilityIDs.scrollView)
-        .padding(20)
+        #if os(macOS)
+        .focusable()
+        .focused($sidebarFocused)
+        #endif
+        .listStyle(.sidebar)
+        .accessibilityIdentifier(AccessibilityIDs.sidebarList)
+        .onMoveCommand(perform: handleSidebarMove)
+        #if os(macOS)
+        .background(
+            MacSidebarKeyEventBridge(
+                isEnabled: sidebarFocused,
+                onMoveUp: { model.selectAdjacentFile(offset: -1) },
+                onMoveDown: { model.selectAdjacentFile(offset: 1) }
+            )
+        )
+        .onAppear {
+            sidebarFocused = true
+        }
+        #endif
+    }
+
+    private func sidebarRow(for file: MarkdownFileNode) -> some View {
+        let isSelected = model.selectedPath == file.path
+        return Button {
+            #if os(macOS)
+            sidebarFocused = true
+            #endif
+            model.openFile(file.path)
+        } label: {
+            SidebarFileRow(file: file, isSelected: isSelected)
+        }
+        .buttonStyle(.plain)
+        .listRowInsets(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
+        .listRowBackground(sidebarRowBackground(isSelected: isSelected))
+        .accessibilityIdentifier(AccessibilityIDs.sidebarNode(file.path.rawValue))
+    }
+
+    private func handleSidebarMove(_ direction: MoveCommandDirection) {
+        #if os(macOS)
+        guard sidebarFocused else { return }
+        #endif
+
+        switch direction {
+        case .up:
+            model.selectAdjacentFile(offset: -1)
+        case .down:
+            model.selectAdjacentFile(offset: 1)
+        default:
+            break
+        }
+    }
+
+    private func sidebarRowBackground(isSelected: Bool) -> some View {
+        Group {
+            if isSelected {
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(Color.accentColor.opacity(0.22))
+                    .padding(.vertical, 1)
+            } else {
+                Color.clear
+            }
+        }
+    }
+
+    private var detailContent: some View {
+        ZStack {
+            if shouldShowEmptyWorkspaceState {
+                emptyWorkspaceState
+            } else {
+                SelectableDocumentTextView(blocks: model.documentBlocks)
+                    .padding(20)
+            }
+
+            if model.isLoadingDocument {
+                loadingOverlay
+            }
+        }
         #if os(macOS)
         .overlay(alignment: .topLeading) {
             Text(model.windowTitle)
@@ -86,6 +139,46 @@ struct ViewerShellView: View {
         #endif
     }
 
+    private var loadingOverlay: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(.ultraThinMaterial)
+            VStack(spacing: 10) {
+                ProgressView()
+                    .controlSize(.regular)
+                Text("Loading document…")
+                    .font(.headline)
+            }
+            .padding(24)
+        }
+        .frame(width: 220, height: 140)
+        .allowsHitTesting(false)
+    }
+
+    private var shouldShowEmptyWorkspaceState: Bool {
+        model.files.isEmpty && model.documentText == "No markdown files found."
+    }
+
+    private var emptyWorkspaceState: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "folder.badge.questionmark")
+                .font(.system(size: 32, weight: .medium))
+                .foregroundStyle(.secondary)
+            Text("No markdown files found.")
+                .font(.title3)
+                .multilineTextAlignment(.center)
+                .accessibilityIdentifier(AccessibilityIDs.emptyStateMessage)
+            if let onOpenFolder {
+                Button("Open Another Folder") {
+                    onOpenFolder()
+                }
+                .accessibilityIdentifier(AccessibilityIDs.emptyStateOpenFolderButton)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .padding(24)
+    }
+
     #if os(macOS)
     private var macNavigationControls: some View {
         ControlGroup {
@@ -107,6 +200,26 @@ struct ViewerShellView: View {
         .labelStyle(.iconOnly)
     }
     #endif
+}
+
+private struct SidebarFileRow: View {
+    let file: MarkdownFileNode
+    let isSelected: Bool
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "doc.text")
+                .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
+            Text(file.name)
+                .font(.body)
+                .lineLimit(1)
+            Spacer(minLength: 0)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .contentShape(Rectangle())
+    }
 }
 
 private struct MarkdownBlockView: View {
