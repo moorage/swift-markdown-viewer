@@ -146,6 +146,13 @@ struct ViewerShellView: View {
                 .disabled(!model.canNavigateForward)
                 .accessibilityIdentifier(AccessibilityIDs.forwardButton)
 
+                if let onOpenFolder {
+                    Button(action: onOpenFolder) {
+                        Label("Open Folder", systemImage: "folder.badge.plus")
+                    }
+                    .accessibilityIdentifier(AccessibilityIDs.openFolderButton)
+                }
+
                 Text(model.windowTitle)
                     .font(.headline)
                     .lineLimit(1)

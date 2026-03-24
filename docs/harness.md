@@ -12,6 +12,10 @@ The harness is the shell-first control plane for this repository.
 - `./scripts/test-ui-ios --device both --smoke`
 - `./scripts/capture-checkpoint --fixture basic_typography.md --platform-target macos --checkpoint shell-smoke-macos`
 - `./scripts/compare-goldens --checkpoint shell-smoke-macos`
+- `./scripts/archive-release --platform ios`
+- `./scripts/archive-release --platform macos`
+- `./scripts/export-app-store --platform ios --archive-path <xcarchive> --export-options-plist <plist>`
+- `./scripts/export-app-store --platform macos --archive-path <xcarchive> --export-options-plist <plist>`
 - `./scripts/agent-loop`
 
 ## Artifacts

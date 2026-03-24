@@ -43,6 +43,20 @@ enum EmbeddedFixtures {
     ]
 }
 
+enum SupportedMarkdownExtensions {
+    static let all: Set<String> = [
+        "md",
+        "markdown",
+        "mdown",
+        "mkd",
+        "mkdn",
+    ]
+
+    static func contains(_ fileExtension: String) -> Bool {
+        all.contains(fileExtension.lowercased())
+    }
+}
+
 struct LocalWorkspaceProvider: WorkspaceProvider, Sendable {
     let rootURL: URL?
     let embeddedDocs: [String: String]
@@ -104,7 +118,7 @@ struct LocalWorkspaceProvider: WorkspaceProvider, Sendable {
 
         var result: [MarkdownFileNode] = []
         while let fileURL = enumerator?.nextObject() as? URL {
-            guard fileURL.pathExtension.lowercased() == "md" else { continue }
+            guard SupportedMarkdownExtensions.contains(fileURL.pathExtension) else { continue }
             let canonicalFilePath = canonicalPath(for: fileURL)
             guard canonicalFilePath.hasPrefix(canonicalRootPath + "/") else { continue }
             let relative = String(canonicalFilePath.dropFirst(canonicalRootPath.count + 1))

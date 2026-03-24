@@ -8,6 +8,7 @@ import AppKit
 struct WorkspaceWindowSession: Codable, Equatable, Sendable {
     let rootPath: String
     let selectedFile: String?
+    let securityScopedBookmarkData: Data?
 
     var rootURL: URL {
         URL(fileURLWithPath: rootPath)

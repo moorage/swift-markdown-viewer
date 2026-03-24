@@ -1,6 +1,8 @@
 import SwiftUI
 #if os(macOS)
 import AppKit
+#else
+import UniformTypeIdentifiers
 #endif
 
 struct WindowSceneRootView: View {
@@ -10,6 +12,8 @@ struct WindowSceneRootView: View {
     #if os(macOS)
     @State private var hasAttemptedInitialFolderPrompt = false
     @Environment(\.openWindow) private var openWindow
+    #else
+    @State private var isPresentingFolderImporter = false
     #endif
     @Environment(\.scenePhase) private var scenePhase
 
@@ -52,13 +56,21 @@ struct WindowSceneRootView: View {
                     sessionStore.persistActiveSessions()
                 }
             }
+            #if !os(macOS)
+            .fileImporter(
+                isPresented: $isPresentingFolderImporter,
+                allowedContentTypes: [.folder],
+                allowsMultipleSelection: false,
+                onCompletion: handleFolderImport
+            )
+            #endif
     }
 
-    #if os(macOS)
     private var openFolderAction: (() -> Void)? {
         openFolder
     }
 
+    #if os(macOS)
     private var revealInFinderAction: RevealInFinderAction? {
         guard model.canRevealSelectedFileInFinder else { return nil }
         return RevealInFinderAction(handler: revealInFinder)
@@ -104,8 +116,20 @@ struct WindowSceneRootView: View {
         NSWorkspace.shared.activateFileViewerSelecting([selectedFileURL])
     }
     #else
-    private var openFolderAction: (() -> Void)? {
-        nil
+    private func openFolder() {
+        if model.launchOptions.uiTestMode, let testFolderURL = UITestOpenFolderSelectionStore.shared.nextFolderURL() {
+            model.openFolder(at: testFolderURL)
+            return
+        }
+
+        isPresentingFolderImporter = true
+    }
+
+    private func handleFolderImport(_ result: Result<[URL], Error>) {
+        guard case let .success(selectedURLs) = result, let selectedURL = selectedURLs.first else {
+            return
+        }
+        model.openFolder(at: selectedURL)
     }
     #endif
 }

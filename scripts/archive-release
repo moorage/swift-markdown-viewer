@@ -1,0 +1,86 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+source "$(cd "$(dirname "$0")" && pwd)/lib/xcode-env.sh"
+
+ensure_dirs
+require_project
+
+PLATFORM=""
+ALLOW_PROVISIONING_UPDATES=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --platform)
+      PLATFORM="${2:-}"
+      shift 2
+      ;;
+    --allow-provisioning-updates)
+      ALLOW_PROVISIONING_UPDATES=1
+      shift 1
+      ;;
+    *)
+      echo "usage: ./scripts/archive-release --platform ios|macos [--allow-provisioning-updates]" >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ -z "${PLATFORM}" ]]; then
+  echo "expected --platform ios|macos" >&2
+  exit 1
+fi
+
+TEAM_ID="${APPLE_DEVELOPMENT_TEAM:-}"
+if [[ -z "${TEAM_ID}" ]]; then
+  echo "set APPLE_DEVELOPMENT_TEAM to your Apple Developer Team ID before archiving" >&2
+  exit 1
+fi
+
+ARCHIVES_DIR="${ARTIFACTS_DIR}/archives"
+mkdir -p "${ARCHIVES_DIR}"
+
+case "${PLATFORM}" in
+  ios)
+    DESTINATION="generic/platform=iOS"
+    ARCHIVE_PATH="${ARCHIVES_DIR}/Swift Markdown Viewer-ios.xcarchive"
+    ;;
+  macos)
+    DESTINATION="generic/platform=macOS"
+    ARCHIVE_PATH="${ARCHIVES_DIR}/Swift Markdown Viewer-macos.xcarchive"
+    ;;
+  *)
+    echo "expected --platform ios|macos" >&2
+    exit 1
+    ;;
+esac
+
+EXTRA_SETTINGS=()
+if [[ -n "${APP_BUNDLE_IDENTIFIER_OVERRIDE:-}" ]]; then
+  EXTRA_SETTINGS+=("PRODUCT_BUNDLE_IDENTIFIER=${APP_BUNDLE_IDENTIFIER_OVERRIDE}")
+fi
+if [[ -n "${APP_MARKETING_VERSION:-}" ]]; then
+  EXTRA_SETTINGS+=("MARKETING_VERSION=${APP_MARKETING_VERSION}")
+fi
+if [[ -n "${APP_BUILD_NUMBER:-}" ]]; then
+  EXTRA_SETTINGS+=("CURRENT_PROJECT_VERSION=${APP_BUILD_NUMBER}")
+fi
+if [[ ${ALLOW_PROVISIONING_UPDATES} -eq 1 ]]; then
+  EXTRA_SETTINGS+=("-allowProvisioningUpdates")
+fi
+
+rm -rf "${ARCHIVE_PATH}"
+
+xcodebuild \
+  -project "${PROJECT_PATH}" \
+  -scheme "${SCHEME_NAME}" \
+  -configuration Release \
+  -destination "${DESTINATION}" \
+  -archivePath "${ARCHIVE_PATH}" \
+  DEVELOPMENT_TEAM="${TEAM_ID}" \
+  CODE_SIGN_STYLE=Automatic \
+  "${EXTRA_SETTINGS[@]}" \
+  archive
+
+echo "archive created at ${ARCHIVE_PATH}"

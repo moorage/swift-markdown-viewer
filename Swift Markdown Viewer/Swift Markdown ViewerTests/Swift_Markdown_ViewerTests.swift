@@ -355,7 +355,8 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
             ),
             initialSession: WorkspaceWindowSession(
                 rootPath: tempRoot.path,
-                selectedFile: "beta.md"
+                selectedFile: "beta.md",
+                securityScopedBookmarkData: nil
             )
         )
 
@@ -379,6 +380,19 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
         let workspace = try provider.loadRoot()
 
         XCTAssertEqual(workspace.files.map(\.path.rawValue), ["alpha.md", "beta.md"])
+    }
+
+    func testWorkspaceProviderIncludesCommonMarkdownExtensions() throws {
+        let tempRoot = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: tempRoot, withIntermediateDirectories: true)
+        try "# Notes".write(to: tempRoot.appendingPathComponent("notes.markdown"), atomically: true, encoding: .utf8)
+        try "# Draft".write(to: tempRoot.appendingPathComponent("draft.mkd"), atomically: true, encoding: .utf8)
+        try "# Ignore".write(to: tempRoot.appendingPathComponent("ignore.txt"), atomically: true, encoding: .utf8)
+
+        let provider = LocalWorkspaceProvider(rootURL: tempRoot, embeddedDocs: EmbeddedFixtures.docs)
+        let workspace = try provider.loadRoot()
+
+        XCTAssertEqual(workspace.files.map(\.path.rawValue), ["draft.mkd", "notes.markdown"])
     }
 
     @MainActor

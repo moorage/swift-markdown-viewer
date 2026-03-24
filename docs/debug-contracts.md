@@ -27,6 +27,7 @@ Stable identifiers include:
 - `nav.back`
 - `nav.forward`
 - `nav.title`
+- `toolbar.openFolder`
 - `document.scrollView`
 - `document.text`
 - `block.placeholder.0`

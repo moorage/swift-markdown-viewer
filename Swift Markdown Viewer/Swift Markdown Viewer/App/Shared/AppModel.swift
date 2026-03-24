@@ -30,10 +30,16 @@ final class AppModel: ObservableObject {
     private var screenshotWriter: ((URL) throws -> Void)?
     private var activeDocumentRequestID: UUID?
     private var hasResolvedWorkspaceSelection = false
+    private var workspaceRootBookmarkData: Data?
+    private var activeSecurityScopedWorkspaceURL: URL?
 
     init(launchOptions: HarnessLaunchOptions, initialSession: WorkspaceWindowSession? = nil) {
         self.launchOptions = launchOptions
         self.initialSession = initialSession
+    }
+
+    deinit {
+        activeSecurityScopedWorkspaceURL?.stopAccessingSecurityScopedResource()
     }
 
     var canNavigateBack: Bool {
@@ -97,7 +103,8 @@ final class AppModel: ObservableObject {
         guard let workspaceRootURL else { return nil }
         return WorkspaceWindowSession(
             rootPath: workspaceRootURL.path,
-            selectedFile: selectedPath?.rawValue
+            selectedFile: selectedPath?.rawValue,
+            securityScopedBookmarkData: workspaceRootBookmarkData
         )
     }
 
@@ -175,7 +182,7 @@ final class AppModel: ObservableObject {
 
     func openFolder(at rootURL: URL) {
         cancelActiveDocumentLoad()
-        loadWorkspace(from: rootURL)
+        loadWorkspace(selection: WorkspaceSecurityScope.selection(for: rootURL))
     }
 
     func fulfillLaunchArtifactRequestsIfNeeded() {
@@ -272,12 +279,22 @@ final class AppModel: ObservableObject {
 
     private func loadWorkspace() async {
         if !hasResolvedWorkspaceSelection {
-            let restoredRootURL = initialSession?.rootURL
             let restoredSelectedPath = initialSession?.selectedFile.map(WorkspacePath.init(rawValue:))
-            loadWorkspace(
-                from: restoredRootURL ?? launchOptions.fixtureRoot,
-                selectedPathOverride: restoredSelectedPath
-            )
+            if let initialSession {
+                loadWorkspace(
+                    selection: WorkspaceSecurityScope.selection(for: initialSession),
+                    selectedPathOverride: restoredSelectedPath
+                )
+            } else {
+                loadWorkspace(
+                    selection: WorkspaceAccessSelection(
+                        rootURL: launchOptions.fixtureRoot,
+                        bookmarkData: nil,
+                        activeSecurityScopedURL: nil
+                    ),
+                    selectedPathOverride: restoredSelectedPath
+                )
+            }
         }
 
         if commandServer == nil, let commandDirectoryURL = launchOptions.commandDirectoryURL {
@@ -287,12 +304,29 @@ final class AppModel: ObservableObject {
         }
     }
 
-    private func loadWorkspace(from rootURL: URL?, selectedPathOverride: WorkspacePath? = nil) {
+    private func loadWorkspace(
+        selection: WorkspaceAccessSelection,
+        selectedPathOverride: WorkspacePath? = nil
+    ) {
+        replaceActiveSecurityScopedWorkspace(with: selection.activeSecurityScopedURL)
+        loadWorkspace(
+            from: selection.rootURL,
+            selectedPathOverride: selectedPathOverride,
+            rootBookmarkData: selection.bookmarkData
+        )
+    }
+
+    private func loadWorkspace(
+        from rootURL: URL?,
+        selectedPathOverride: WorkspacePath? = nil,
+        rootBookmarkData: Data? = nil
+    ) {
         cancelActiveDocumentLoad()
         hasResolvedWorkspaceSelection = true
         let provider = LocalWorkspaceProvider(rootURL: rootURL, embeddedDocs: EmbeddedFixtures.docs)
         workspaceProvider = provider
         workspaceRootURL = rootURL
+        workspaceRootBookmarkData = rootBookmarkData
         do {
             let workspace = try provider.loadRoot()
             files = workspace.files
@@ -321,6 +355,7 @@ final class AppModel: ObservableObject {
             files = []
             selectedPath = nil
             workspaceRootURL = nil
+            workspaceRootBookmarkData = nil
             documentText = "Unable to load workspace: \(error.localizedDescription)"
             documentBlocks = MarkdownRenderer.blocks(from: documentText)
             isLoadingDocument = false
@@ -333,6 +368,12 @@ final class AppModel: ObservableObject {
         documentLoadTask?.cancel()
         documentLoadTask = nil
         isLoadingDocument = false
+    }
+
+    private func replaceActiveSecurityScopedWorkspace(with newURL: URL?) {
+        guard activeSecurityScopedWorkspaceURL != newURL else { return }
+        activeSecurityScopedWorkspaceURL?.stopAccessingSecurityScopedResource()
+        activeSecurityScopedWorkspaceURL = newURL
     }
 
     private func writeStateSnapshot(to url: URL) throws {

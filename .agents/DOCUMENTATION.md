@@ -7,8 +7,24 @@
   - `docs/exec-plans/active/2026-03-23-cross-block-selection.md`
   - `docs/exec-plans/active/2026-03-23-inline-animated-media.md`
   - `docs/exec-plans/active/2026-03-23-session-restore.md`
+  - `docs/exec-plans/active/2026-03-24-app-store-readiness.md`
 - current milestone:
-  - inline animated media implementation with unit coverage green, the focused signed macOS inline-media UI slice green, and the macOS smoke UI test green again after restoring the title accessibility contract
+  - app-store readiness without icon work: iPhone/iPad folder import is implemented, bookmark-backed workspace restoration is in place, release/privacy/docs scaffolding exists, macOS unit tests are green, and an iOS simulator build is green
+- commands run:
+  - `./scripts/test-unit`
+  - `xcodebuild -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -sdk iphonesimulator -derivedDataPath /tmp/swift-markdown-viewer-app-store-ios-build4 CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build`
+  - `python3 scripts/check_execplan.py`
+  - `python3 scripts/knowledge/check_docs.py`
+- important outcomes:
+  - `WindowSceneRootView` now exposes a real iPhone/iPad folder picker via `fileImporter`, and `ViewerShellView` surfaces that action in the iOS top bar with the stable accessibility identifier `toolbar.openFolder`
+  - workspace session persistence now carries bookmark-backed restoration data through `WorkspaceWindowSession.securityScopedBookmarkData` and the new `WorkspaceSecurityScope` helper instead of relying only on raw root paths
+  - the app bundle now includes `PrivacyInfo.xcprivacy`, and the project file now declares low-risk App Store metadata including display name, export-compliance, macOS category, and opening-documents-in-place behavior
+  - repo-owned release docs now define the planned public URLs under `https://www.matthewpaulmoore.com/`, draft support/privacy/terms page content, and the recommendation to use Apple’s standard EULA
+  - `scripts/archive-release` now provides a stable shell entry point for signed Release archives once `APPLE_DEVELOPMENT_TEAM` is configured locally
+  - `WorkspaceProvider` now recognizes common Markdown extensions such as `.markdown` and `.mkd`, and `scripts/export-app-store` plus `docs/release/app-review-notes.md` cover the remaining local export/review prep work
+- important discoveries:
+  - `.withSecurityScope` bookmark creation and resolution options are unavailable in iOS, so bookmark handling must use platform-conditional options even though the shared restoration model stays the same
+  - the Xcode project’s filesystem-synchronized group model automatically copied the new `PrivacyInfo.xcprivacy` resource into the app bundle without requiring manual `PBXBuildFile` entries
 - commands run:
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-unit-fix2 -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/InlineAnimatedMediaTests" test`
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-ui-fix -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerUITests/InlineAnimatedMediaUITests" test`
