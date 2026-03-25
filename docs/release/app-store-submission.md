@@ -1,6 +1,10 @@
 # App Store Submission Prep
 
-This repository now carries the parts of App Store prep that can be done locally without App Store Connect access and without icon production.
+This repository now carries the parts of App Store prep that can be done locally without App Store Connect access.
+
+Current icon source:
+
+- App icon set generated from `tmp/best 2.png`
 
 ## URL map
 
@@ -56,6 +60,8 @@ Verify that claim against the final shipped build before submission.
 
 Draft source pages live here:
 
+- `docs/release/app-store-metadata.md`
+- `docs/release/screenshot-capture.md`
 - `docs/release/swift-markdown-viewer-support.md`
 - `docs/release/privacy-policy-draft.md`
 - `docs/release/terms-of-use-draft.md`
@@ -86,9 +92,11 @@ Optional overrides for the archive script:
 
 ## Manual App Store Connect work that still remains
 
-- upload final icons and screenshots
+- review the generated candidate screenshots and upload the final set
 - create the App Store Connect app record if it does not exist yet
 - choose the final categories/content rating/review answers
 - publish the support/privacy/terms pages on the live website
 - archive with your real signing team and upload via Organizer or Transporter
 - complete the App Privacy questionnaire in App Store Connect using the final shipped behavior
+
+See `docs/release/release-completion-checklist.md` for the exact remaining steps in order.

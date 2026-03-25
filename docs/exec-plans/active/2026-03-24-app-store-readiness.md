@@ -17,6 +17,11 @@ The app should remain free. There is no monetization or StoreKit work in scope. 
 - [x] (2026-03-24T08:29Z) Added submission-facing project metadata, a privacy manifest, release/archive scripting, and repository-owned App Store / support / privacy / terms draft docs rooted at the planned website URLs.
 - [x] (2026-03-24T08:32Z) Revalidated the repo with `./scripts/test-unit`, an iOS simulator build, `python3 scripts/check_execplan.py`, and `python3 scripts/knowledge/check_docs.py`.
 - [x] (2026-03-24T08:38Z) Broadened workspace discovery to common Markdown extensions, added an App Store export helper plus App Review notes draft, and reran unit/docs validation.
+- [x] (2026-03-25T08:40Z) Generated the app icon set from `tmp/best 2.png`, added release-completion and App Store metadata docs, and kept the repo validation green.
+- [x] (2026-03-25T09:35Z) Added a polished `Fixtures/app-store/` screenshot pack, a repeatable `scripts/capture-app-store-screenshots` flow, and generated usable iPhone and iPad candidate screenshots plus harness snapshots under `artifacts/app-store-screenshots/`.
+- [x] (2026-03-25T09:35Z) Improved compact iPhone navigation so launch-selected documents open into the reader instead of staying stuck on the sidebar list, then tightened the compact top bar so capture output remains readable.
+- [x] (2026-03-25T16:12Z) Routed code-block-only documents through the structured renderer, removed iPad back/forward labels, fixed macOS capture timing, hardened the iOS screenshot script against hanging `simctl` commands, and regenerated fresh iPad/macOS screenshot artifacts.
+- [x] (2026-03-25T16:14Z) Added an explicit macOS startup icon install from the bundled `AppIcon.icns` resource so debug builds show the generated app icon in the Dock instead of the generic placeholder.
 
 ## Surprises & Discoveries
 
@@ -37,6 +42,18 @@ The app should remain free. There is no monetization or StoreKit work in scope. 
 
 - Observation: security-scoped bookmark creation and resolution are not configured identically across Apple platforms.
   Evidence: the first iOS simulator build failed because `.withSecurityScope` is unavailable in iOS bookmark creation and resolution calls, so the helper needed platform-conditional bookmark options even though `startAccessingSecurityScopedResource()` still exists on iOS.
+
+- Observation: the internal macOS harness screenshot writer still does not produce App Store-usable output in this environment, even though the state/perf snapshots are correct.
+  Evidence: generated macOS screenshots under `artifacts/app-store-screenshots/macos/` show mostly blank or black output while the paired `*.state.json` files report the expected selected file and visible blocks.
+
+- Observation: compact iPhone launches initially stayed on the file list even when a specific file was preselected, which made the first pass of iPhone screenshots unusable.
+  Evidence: the first captured iPhone screenshots under `artifacts/app-store-screenshots/iphone/` showed only the file list until the compact iPhone shell path was changed to swap between sidebar and detail explicitly.
+
+- Observation: the original iPad screenshot path was also being undermined by a poisoned preferred simulator and by `simctl terminate` / `simctl uninstall` hanging indefinitely on that device.
+  Evidence: direct subprocess probes against the preferred `iPad (A16)` simulator timed out on `xcrun simctl terminate` and `xcrun simctl uninstall`, while switching the preferred iPad destination and avoiding those calls allowed the capture flow to complete and refresh the PNGs.
+
+- Observation: the generated macOS app bundle already contained the expected icon resources, but debug launches could still present a generic Dock icon.
+  Evidence: the built app at `artifacts/DerivedData/Build/Products/Debug/Swift Markdown Viewer.app` contained both `Contents/Resources/AppIcon.icns` and `CFBundleIconName = AppIcon`, which points to runtime icon presentation rather than missing build assets.
 
 ## Decision Log
 
@@ -60,6 +77,22 @@ The app should remain free. There is no monetization or StoreKit work in scope. 
   Rationale: the app still needs bookmark-backed restoration state on both platforms, but the iOS SDK rejects the macOS-specific `.withSecurityScope` bookmark options at compile time.
   Date/Author: 2026-03-24 / Codex
 
+- Decision: add a repository-owned screenshot fixture set plus a one-command capture script instead of relying on ad hoc simulator browsing during release week.
+  Rationale: repeatable screenshot inputs reduce last-minute App Store prep churn and create concrete artifacts the user can review before uploading.
+  Date/Author: 2026-03-25 / Codex
+
+- Decision: implement a dedicated compact iPhone reading flow that switches between the sidebar and detail content explicitly.
+  Rationale: `NavigationSplitView` plus button-based sidebar rows left iPhone launches stranded on the file list, while an explicit compact swap fixes both real UX and screenshot capture quality without disturbing iPad/macOS layouts.
+  Date/Author: 2026-03-25 / Codex
+
+- Decision: delay harness screenshot writes slightly after the model reports ready, and prefer a healthy iPad simulator over a poisoned one for repeatable App Store capture.
+  Rationale: macOS screenshots were being captured while the loading overlay was still visible, and the previously preferred iPad simulator repeatedly wedged on `simctl` lifecycle calls; both issues were capture-environment problems rather than renderer correctness problems.
+  Date/Author: 2026-03-25 / Codex
+
+- Decision: explicitly install the bundled macOS app icon at launch in addition to relying on the asset catalog and Info.plist metadata.
+  Rationale: the bundle resources were correct, but an explicit `NSApplication.shared.applicationIconImage` assignment gives debug builds a deterministic Dock icon even when LaunchServices or the app cache lags behind the latest generated icon assets.
+  Date/Author: 2026-03-25 / Codex
+
 ## Outcomes & Retrospective
 
 This workstream materially improved real submission readiness without touching icons or App Store Connect. The app now exposes an actual folder-open workflow on iPhone and iPad, uses bookmark-backed workspace session state instead of raw paths alone, carries a privacy manifest, includes App Store-safe plist metadata, and ships with repository-owned drafts for the public support/privacy/terms pages that App Store Connect will need.
@@ -68,9 +101,9 @@ The highest-leverage product fix was not release metadata but replacing the iOS 
 
 The main implementation wrinkle was bookmark portability. macOS and iOS do not accept the same bookmark option set, so the helper had to split bookmark creation/resolution options by platform while keeping the higher-level restoration model shared.
 
-The remaining submission work is now mostly external: final icons, screenshots, live website publication, App Store Connect metadata entry, signing/team configuration, and the actual archive/upload flow using a real Apple Developer team.
+The remaining submission work is now mostly external: live website publication, App Store Connect metadata entry, signing/team configuration, final review of the generated screenshot candidates, and the actual archive/upload flow using a real Apple Developer team.
 
-One more incremental improvement landed after the first validation pass: the workspace scanner now accepts common Markdown extensions beyond `.md`, and the release tooling now covers both archive and export steps with repo-owned documentation for App Review notes. That closes more of the low-risk submission prep that can be done locally without Apple account access.
+One more incremental improvement landed after the first validation pass: the workspace scanner now accepts common Markdown extensions beyond `.md`, the release tooling now covers both archive and export steps with repo-owned documentation for App Review notes, and the repo now owns a polished screenshot fixture set plus repeatable capture output. The screenshot pipeline now generates upload-usable iPhone, iPad, and macOS images in this environment after the harness capture timing fix and iPad simulator fallback.
 
 ## Context and Orientation
 

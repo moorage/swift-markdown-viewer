@@ -37,6 +37,8 @@ struct WindowSceneRootView: View {
             #if os(macOS)
             .focusedSceneValue(\.openFolderAction, OpenFolderAction(handler: openFolder))
             .focusedSceneValue(\.revealInFinderAction, revealInFinderAction)
+            .focusedSceneValue(\.increaseFontSizeAction, IncreaseFontSizeAction(handler: model.increaseFontSize))
+            .focusedSceneValue(\.decreaseFontSizeAction, DecreaseFontSizeAction(handler: model.decreaseFontSize))
             .onAppear {
                 sessionStore.scheduleAdditionalWindows(openWindow: openWindow)
                 requestInitialFolderPromptIfNeeded()
@@ -151,12 +153,36 @@ struct RevealInFinderAction {
     }
 }
 
+struct IncreaseFontSizeAction {
+    let handler: () -> Void
+
+    func callAsFunction() {
+        handler()
+    }
+}
+
+struct DecreaseFontSizeAction {
+    let handler: () -> Void
+
+    func callAsFunction() {
+        handler()
+    }
+}
+
 private struct OpenFolderActionKey: FocusedValueKey {
     typealias Value = OpenFolderAction
 }
 
 private struct RevealInFinderActionKey: FocusedValueKey {
     typealias Value = RevealInFinderAction
+}
+
+private struct IncreaseFontSizeActionKey: FocusedValueKey {
+    typealias Value = IncreaseFontSizeAction
+}
+
+private struct DecreaseFontSizeActionKey: FocusedValueKey {
+    typealias Value = DecreaseFontSizeAction
 }
 
 extension FocusedValues {
@@ -169,11 +195,23 @@ extension FocusedValues {
         get { self[RevealInFinderActionKey.self] }
         set { self[RevealInFinderActionKey.self] = newValue }
     }
+
+    var increaseFontSizeAction: IncreaseFontSizeAction? {
+        get { self[IncreaseFontSizeActionKey.self] }
+        set { self[IncreaseFontSizeActionKey.self] = newValue }
+    }
+
+    var decreaseFontSizeAction: DecreaseFontSizeAction? {
+        get { self[DecreaseFontSizeActionKey.self] }
+        set { self[DecreaseFontSizeActionKey.self] = newValue }
+    }
 }
 
 struct WindowOpenFolderCommands: Commands {
     @FocusedValue(\.openFolderAction) private var openFolderAction
     @FocusedValue(\.revealInFinderAction) private var revealInFinderAction
+    @FocusedValue(\.increaseFontSizeAction) private var increaseFontSizeAction
+    @FocusedValue(\.decreaseFontSizeAction) private var decreaseFontSizeAction
 
     var body: some Commands {
         CommandGroup(after: .newItem) {
@@ -189,6 +227,20 @@ struct WindowOpenFolderCommands: Commands {
             }
             .keyboardShortcut("r", modifiers: [.command, .shift])
             .disabled(revealInFinderAction == nil)
+        }
+
+        CommandGroup(after: .toolbar) {
+            Button("Increase Font Size") {
+                increaseFontSizeAction?()
+            }
+            .keyboardShortcut("=", modifiers: [.command])
+            .disabled(increaseFontSizeAction == nil)
+
+            Button("Decrease Font Size") {
+                decreaseFontSizeAction?()
+            }
+            .keyboardShortcut("-", modifiers: [.command])
+            .disabled(decreaseFontSizeAction == nil)
         }
     }
 }

@@ -5,6 +5,10 @@ import SwiftUI
 
 @MainActor
 final class AppModel: ObservableObject {
+    static let minimumFontScale: CGFloat = 0.8
+    static let maximumFontScale: CGFloat = 1.8
+    private static let fontScaleStep: CGFloat = 0.1
+
     @Published private(set) var files: [MarkdownFileNode] = []
     @Published private(set) var documentText = "Loading…"
     @Published private(set) var documentBlocks: [MarkdownBlock] = []
@@ -14,6 +18,7 @@ final class AppModel: ObservableObject {
     @Published private(set) var forwardStack: [NavigationEntry] = []
     @Published private(set) var workspaceRootDisplay = "Fixtures/docs"
     @Published private(set) var isReady = false
+    @Published private(set) var fontScale: CGFloat = 1
     private(set) var viewportSize: CGSize = CGSize(width: 1100, height: 900)
 
     let launchOptions: HarnessLaunchOptions
@@ -72,7 +77,7 @@ final class AppModel: ObservableObject {
     }
 
     var shouldRenderBlockContent: Bool {
-        containsRenderableMedia(in: documentBlocks)
+        containsStructuredBlocks(in: documentBlocks)
     }
 
     var shouldAutoPromptForFolderOnLaunch: Bool {
@@ -85,6 +90,20 @@ final class AppModel: ObservableObject {
         guard launchOptions.dumpPerfStateURL == nil else { return false }
         guard launchOptions.screenshotPathURL == nil else { return false }
         return true
+    }
+
+    var canIncreaseFontSize: Bool {
+        fontScale < Self.maximumFontScale
+    }
+
+    var canDecreaseFontSize: Bool {
+        fontScale > Self.minimumFontScale
+    }
+
+    var shouldPreferDetailInCompactNavigation: Bool {
+        launchOptions.platformTarget == .ios &&
+        launchOptions.deviceClass == .iphone &&
+        selectedPath != nil
     }
 
     static var preview: AppModel {
@@ -125,6 +144,14 @@ final class AppModel: ObservableObject {
         viewportSize = size
     }
 
+    func increaseFontSize() {
+        setFontScale(fontScale + Self.fontScaleStep)
+    }
+
+    func decreaseFontSize() {
+        setFontScale(fontScale - Self.fontScaleStep)
+    }
+
     func openFile(_ path: WorkspacePath, recordHistory: Bool = true) {
         guard let workspaceProvider else { return }
         cancelActiveDocumentLoad()
@@ -150,6 +177,13 @@ final class AppModel: ObservableObject {
             self.readyReference = Date()
             self.documentLoadTask = nil
         }
+    }
+
+    private func setFontScale(_ proposedScale: CGFloat) {
+        let clampedScale = min(max(proposedScale, Self.minimumFontScale), Self.maximumFontScale)
+        let roundedScale = (clampedScale * 10).rounded() / 10
+        guard roundedScale != fontScale else { return }
+        fontScale = roundedScale
     }
 
     func navigateBack() {
@@ -195,7 +229,12 @@ final class AppModel: ObservableObject {
             try? writePerformanceSnapshot(to: url)
         }
         if let url = launchOptions.screenshotPathURL {
-            try? screenshotWriter?(url)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                let delayNanoseconds: UInt64 = launchOptions.platformTarget == .macos ? 350_000_000 : 150_000_000
+                try? await Task.sleep(nanoseconds: delayNanoseconds)
+                try? screenshotWriter?(url)
+            }
         }
     }
 
@@ -395,13 +434,13 @@ final class AppModel: ObservableObject {
         return flattened
     }
 
-    private func containsRenderableMedia(in blocks: [MarkdownBlock]) -> Bool {
+    private func containsStructuredBlocks(in blocks: [MarkdownBlock]) -> Bool {
         blocks.contains { block in
             switch block.kind {
-            case .image, .animatedImage, .video:
+            case .codeBlock, .table, .image, .animatedImage, .video:
                 return true
             default:
-                return containsRenderableMedia(in: block.children)
+                return containsStructuredBlocks(in: block.children)
             }
         }
     }

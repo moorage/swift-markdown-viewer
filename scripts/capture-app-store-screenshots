@@ -1,0 +1,209 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+source "$(cd "$(dirname "$0")" && pwd)/lib/xcode-env.sh"
+
+ensure_dirs
+require_project
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLATFORM="all"
+OUT_DIR="${ARTIFACTS_DIR}/app-store-screenshots"
+FIXTURE_ROOT="${ROOT_DIR}/Fixtures/app-store"
+MAC_WINDOW_SIZE="1440x1024"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --platform)
+      PLATFORM="${2:-}"
+      shift 2
+      ;;
+    --output-dir)
+      OUT_DIR="${2:-}"
+      shift 2
+      ;;
+    *)
+      echo "unknown argument: $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
+[[ -d "${FIXTURE_ROOT}" ]] || {
+  echo "missing fixture root at ${FIXTURE_ROOT}" >&2
+  exit 1
+}
+
+setopt no_bg_nice
+
+mkdir -p "${OUT_DIR}"
+
+typeset -a SHOTS=(
+  "Open Markdown Folders.md|open-markdown-folders"
+  "Architecture Overview.md|architecture-overview"
+  "Code Sample.md|code-sample"
+  "Image Preview.md|image-preview"
+  "Navigation Notes.md|navigation-notes"
+)
+
+run_simctl() {
+  python3 - "$@" <<'PY'
+import subprocess
+import sys
+
+try:
+    result = subprocess.run(
+        ["xcrun", "simctl", *sys.argv[1:]],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        timeout=10,
+        check=False,
+    )
+except subprocess.TimeoutExpired:
+    sys.exit(124)
+
+if result.stdout:
+    sys.stdout.write(result.stdout)
+if result.stderr:
+    sys.stderr.write(result.stderr)
+sys.exit(result.returncode)
+PY
+}
+
+capture_ios_platform() {
+  local device_class="$1"
+  local sim_id
+  local device_dir="${OUT_DIR}/${device_class}"
+  mkdir -p "${device_dir}"
+
+  case "${device_class}" in
+    iphone)
+      sim_id="$(iphone_sim_id)"
+      ;;
+    ipad)
+      sim_id="$(ipad_sim_id)"
+      ;;
+    *)
+      echo "expected iphone|ipad" >&2
+      exit 1
+      ;;
+  esac
+
+  [[ -n "${sim_id}" ]] || {
+    echo "unable to resolve simulator for ${device_class}" >&2
+    exit 1
+  }
+
+  "${SCRIPT_DIR}/build" --platform ios --device-class "${device_class}"
+  local app_bundle
+  app_bundle="$(ios_app_bundle_path)"
+
+  xcrun simctl boot "${sim_id}" >/dev/null 2>&1 || true
+  xcrun simctl bootstatus "${sim_id}" -b
+  run_simctl terminate "${sim_id}" "${BUNDLE_IDENTIFIER}" >/dev/null 2>&1 || true
+  run_simctl install "${sim_id}" "${app_bundle}"
+  run_simctl status_bar "${sim_id}" override --time 9:41 --dataNetwork wifi --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100 >/dev/null
+
+  local container_root
+  container_root="$(xcrun simctl get_app_container "${sim_id}" "${BUNDLE_IDENTIFIER}" data)"
+  local fixture_copy_root="${container_root}/Documents/AppStoreFixtures"
+  local media_copy_root="${container_root}/Documents/media"
+  rm -rf "${fixture_copy_root}"
+  rm -rf "${media_copy_root}"
+  mkdir -p "${fixture_copy_root}"
+  mkdir -p "${media_copy_root}"
+  cp -R "${FIXTURE_ROOT}/." "${fixture_copy_root}/"
+  cp -R "${ROOT_DIR}/Fixtures/media/." "${media_copy_root}/"
+
+  local shot
+  for shot in "${SHOTS[@]}"; do
+    local file_name="${shot%%|*}"
+    local slug="${shot##*|}"
+    local harness_dir="${container_root}/Documents/HarnessArtifacts/app-store-${device_class}-${slug}"
+    local state_path="${harness_dir}/state.json"
+    local perf_path="${harness_dir}/perf.json"
+    local screenshot_path="${device_dir}/${slug}.png"
+
+    rm -rf "${harness_dir}"
+    xcrun simctl terminate "${sim_id}" "${BUNDLE_IDENTIFIER}" >/dev/null 2>&1 || true
+    xcrun simctl launch "${sim_id}" "${BUNDLE_IDENTIFIER}" --args \
+      --fixture-root "${fixture_copy_root}" \
+      --open-file "${file_name}" \
+      --platform-target ios \
+      --device-class "${device_class}" \
+      --dump-visible-state "${state_path}" \
+      --dump-perf-state "${perf_path}" \
+      --ui-test-mode 1 >/dev/null
+
+    for _ in {1..80}; do
+      if [[ -f "${state_path}" && -f "${perf_path}" ]]; then
+        break
+      fi
+      sleep 0.25
+    done
+
+    [[ -f "${state_path}" ]] || {
+      echo "state snapshot missing for ${device_class} ${file_name}" >&2
+      exit 1
+    }
+    [[ -f "${perf_path}" ]] || {
+      echo "perf snapshot missing for ${device_class} ${file_name}" >&2
+      exit 1
+    }
+
+    sleep 1
+    xcrun simctl io "${sim_id}" screenshot "${screenshot_path}" >/dev/null
+    cp "${state_path}" "${device_dir}/${slug}.state.json"
+    cp "${perf_path}" "${device_dir}/${slug}.perf.json"
+  done
+}
+
+capture_macos_platform() {
+  local device_dir="${OUT_DIR}/macos"
+  mkdir -p "${device_dir}"
+  local shot
+  for shot in "${SHOTS[@]}"; do
+    local file_name="${shot%%|*}"
+    local slug="${shot##*|}"
+    local checkpoint="app-store-macos-${slug}"
+    zsh -o no_bg_nice "${SCRIPT_DIR}/capture-checkpoint" \
+      --fixture "${file_name}" \
+      --fixture-root "${FIXTURE_ROOT}" \
+      --platform-target macos \
+      --window-size "${MAC_WINDOW_SIZE}" \
+      --checkpoint "${checkpoint}" >/dev/null
+
+    cp "${CHECKPOINTS_DIR}/${checkpoint}/state.json" "${device_dir}/${slug}.state.json"
+    cp "${CHECKPOINTS_DIR}/${checkpoint}/perf.json" "${device_dir}/${slug}.perf.json"
+    cp "${CHECKPOINTS_DIR}/${checkpoint}/window.png" "${device_dir}/${slug}.png"
+  done
+}
+
+case "${PLATFORM}" in
+  all)
+    capture_ios_platform iphone
+    capture_ios_platform ipad
+    capture_macos_platform
+    ;;
+  ios)
+    capture_ios_platform iphone
+    capture_ios_platform ipad
+    ;;
+  iphone)
+    capture_ios_platform iphone
+    ;;
+  ipad)
+    capture_ios_platform ipad
+    ;;
+  macos)
+    capture_macos_platform
+    ;;
+  *)
+    echo "expected --platform all|ios|iphone|ipad|macos" >&2
+    exit 1
+    ;;
+esac
+
+echo "app store screenshots captured at ${OUT_DIR}"

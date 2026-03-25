@@ -5,6 +5,7 @@ import AppKit
 
 struct SelectableDocumentTextView: NSViewRepresentable {
     let blocks: [MarkdownBlock]
+    let fontScale: CGFloat
 
     func makeNSView(context: Context) -> NSScrollView {
         let scrollView = NSTextView.scrollableTextView()
@@ -33,7 +34,9 @@ struct SelectableDocumentTextView: NSViewRepresentable {
         textView.textContainer?.lineFragmentPadding = 0
         textView.textContainer?.containerSize = NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
         textView.textContainer?.widthTracksTextView = true
-        textView.textStorage?.setAttributedString(SelectableDocumentFormatter.attributedText(from: blocks))
+        textView.textStorage?.setAttributedString(
+            SelectableDocumentFormatter.attributedText(from: blocks, fontScale: fontScale)
+        )
         textView.setAccessibilityIdentifier(AccessibilityIDs.text)
 
         scrollView.setAccessibilityIdentifier(AccessibilityIDs.scrollView)
@@ -42,7 +45,7 @@ struct SelectableDocumentTextView: NSViewRepresentable {
 
     func updateNSView(_ scrollView: NSScrollView, context: Context) {
         guard let textView = scrollView.documentView as? NSTextView else { return }
-        let attributedText = SelectableDocumentFormatter.attributedText(from: blocks)
+        let attributedText = SelectableDocumentFormatter.attributedText(from: blocks, fontScale: fontScale)
         if !textView.attributedString().isEqual(to: attributedText) {
             textView.textStorage?.setAttributedString(attributedText)
         }
@@ -54,6 +57,7 @@ import UIKit
 
 struct SelectableDocumentTextView: UIViewRepresentable {
     let blocks: [MarkdownBlock]
+    let fontScale: CGFloat
 
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
@@ -64,13 +68,13 @@ struct SelectableDocumentTextView: UIViewRepresentable {
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
         textView.adjustsFontForContentSizeCategory = true
-        textView.attributedText = SelectableDocumentFormatter.attributedText(from: blocks)
+        textView.attributedText = SelectableDocumentFormatter.attributedText(from: blocks, fontScale: fontScale)
         textView.accessibilityIdentifier = AccessibilityIDs.text
         return textView
     }
 
     func updateUIView(_ textView: UITextView, context: Context) {
-        let attributedText = SelectableDocumentFormatter.attributedText(from: blocks)
+        let attributedText = SelectableDocumentFormatter.attributedText(from: blocks, fontScale: fontScale)
         if !(textView.attributedText?.isEqual(to: attributedText) ?? false) {
             textView.attributedText = attributedText
         }
@@ -87,11 +91,16 @@ private typealias PlatformColor = UIColor
 #endif
 
 enum SelectableDocumentFormatter {
-    static func attributedText(from blocks: [MarkdownBlock]) -> NSAttributedString {
+    static func attributedText(from blocks: [MarkdownBlock], fontScale: CGFloat) -> NSAttributedString {
         let rendered = NSMutableAttributedString()
 
         for index in blocks.indices {
-            append(blocks[index], to: rendered, nestingLevel: blocks[index].indentLevel)
+            append(
+                blocks[index],
+                to: rendered,
+                nestingLevel: blocks[index].indentLevel,
+                fontScale: fontScale
+            )
             if index < blocks.index(before: blocks.endIndex) {
                 rendered.append(NSAttributedString(string: "\n\n"))
             }
@@ -103,23 +112,33 @@ enum SelectableDocumentFormatter {
     private static func append(
         _ block: MarkdownBlock,
         to rendered: NSMutableAttributedString,
-        nestingLevel: Int
+        nestingLevel: Int,
+        fontScale: CGFloat
     ) {
-        rendered.append(styledText(for: block, nestingLevel: nestingLevel))
+        rendered.append(styledText(for: block, nestingLevel: nestingLevel, fontScale: fontScale))
 
         guard !block.children.isEmpty else { return }
 
         rendered.append(NSAttributedString(string: "\n"))
         for index in block.children.indices {
-            append(block.children[index], to: rendered, nestingLevel: nestingLevel + 1)
+            append(
+                block.children[index],
+                to: rendered,
+                nestingLevel: nestingLevel + 1,
+                fontScale: fontScale
+            )
             if index < block.children.index(before: block.children.endIndex) {
                 rendered.append(NSAttributedString(string: "\n"))
             }
         }
     }
 
-    private static func styledText(for block: MarkdownBlock, nestingLevel: Int) -> NSAttributedString {
-        let attributes = blockAttributes(for: block, nestingLevel: nestingLevel)
+    private static func styledText(
+        for block: MarkdownBlock,
+        nestingLevel: Int,
+        fontScale: CGFloat
+    ) -> NSAttributedString {
+        let attributes = blockAttributes(for: block, nestingLevel: nestingLevel, fontScale: fontScale)
         return NSMutableAttributedString(string: blockText(for: block), attributes: attributes)
     }
 
@@ -174,7 +193,8 @@ enum SelectableDocumentFormatter {
 
     private static func blockAttributes(
         for block: MarkdownBlock,
-        nestingLevel: Int
+        nestingLevel: Int,
+        fontScale: CGFloat
     ) -> [NSAttributedString.Key: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping
@@ -190,21 +210,21 @@ enum SelectableDocumentFormatter {
 
         switch block.kind {
         case .heading:
-            attributes[.font] = headingFont(level: block.level ?? 1)
+            attributes[.font] = headingFont(level: block.level ?? 1, fontScale: fontScale)
         case .paragraph, .unorderedListItem, .orderedListItem, .image, .animatedImage, .video:
-            attributes[.font] = bodyFont
+            attributes[.font] = bodyFont(fontScale: fontScale)
         case .blockquote:
             paragraphStyle.firstLineHeadIndent = indentWidth + 12
             paragraphStyle.headIndent = indentWidth + 12
-            attributes[.font] = italicBodyFont
+            attributes[.font] = italicBodyFont(fontScale: fontScale)
             attributes[.foregroundColor] = secondaryTextColor
         case .codeBlock:
-            attributes[.font] = monospacedBodyFont
+            attributes[.font] = monospacedBodyFont(fontScale: fontScale)
             attributes[.backgroundColor] = codeBlockBackgroundColor
         case .table:
-            attributes[.font] = monospacedBodyFont
+            attributes[.font] = monospacedBodyFont(fontScale: fontScale)
         case .rawHTML, .thematicBreak:
-            attributes[.font] = monospacedBodyFont
+            attributes[.font] = monospacedBodyFont(fontScale: fontScale)
             attributes[.foregroundColor] = secondaryTextColor
         }
 
@@ -221,20 +241,21 @@ enum SelectableDocumentFormatter {
         return "-"
     }
 
-    private static var bodyFont: PlatformFont {
-        PlatformFont.preferredFont(forTextStyle: .body)
+    private static func bodyFont(fontScale: CGFloat) -> PlatformFont {
+        scaled(PlatformFont.preferredFont(forTextStyle: .body), by: fontScale)
     }
 
-    private static var italicBodyFont: PlatformFont {
+    private static func italicBodyFont(fontScale: CGFloat) -> PlatformFont {
+        let baseFont = bodyFont(fontScale: fontScale)
         #if os(macOS)
-        return NSFontManager.shared.convert(bodyFont, toHaveTrait: .italicFontMask)
+        return NSFontManager.shared.convert(baseFont, toHaveTrait: .italicFontMask)
         #else
-        return bodyFont.withTraits(.traitItalic)
+        return baseFont.withTraits(.traitItalic)
         #endif
     }
 
-    private static var monospacedBodyFont: PlatformFont {
-        PlatformFont.monospacedSystemFont(ofSize: bodyFont.pointSize, weight: .regular)
+    private static func monospacedBodyFont(fontScale: CGFloat) -> PlatformFont {
+        PlatformFont.monospacedSystemFont(ofSize: bodyFont(fontScale: fontScale).pointSize, weight: .regular)
     }
 
     private static var codeBlockBackgroundColor: PlatformColor {
@@ -261,17 +282,22 @@ enum SelectableDocumentFormatter {
         #endif
     }
 
-    private static func headingFont(level: Int) -> PlatformFont {
+    private static func headingFont(level: Int, fontScale: CGFloat) -> PlatformFont {
+        let pointSize = bodyFont(fontScale: fontScale).pointSize
         switch level {
         case 1:
-            return PlatformFont.systemFont(ofSize: bodyFont.pointSize * 1.8, weight: .semibold)
+            return PlatformFont.systemFont(ofSize: pointSize * 1.8, weight: .semibold)
         case 2:
-            return PlatformFont.systemFont(ofSize: bodyFont.pointSize * 1.45, weight: .semibold)
+            return PlatformFont.systemFont(ofSize: pointSize * 1.45, weight: .semibold)
         case 3:
-            return PlatformFont.systemFont(ofSize: bodyFont.pointSize * 1.2, weight: .semibold)
+            return PlatformFont.systemFont(ofSize: pointSize * 1.2, weight: .semibold)
         default:
-            return PlatformFont.systemFont(ofSize: bodyFont.pointSize, weight: .semibold)
+            return PlatformFont.systemFont(ofSize: pointSize, weight: .semibold)
         }
+    }
+
+    private static func scaled(_ font: PlatformFont, by fontScale: CGFloat) -> PlatformFont {
+        font.withSize(font.pointSize * fontScale)
     }
 }
 

@@ -1142,6 +1142,12 @@ nonisolated enum MarkdownRenderer {
     }
 
     private nonisolated static func splitTableRow(_ line: String) -> [String]? {
+        guard let rawCells = rawTableCells(from: line) else { return nil }
+        let cells = rawCells.map { normalizedInlineText($0) }
+        return cells.contains(where: { !$0.isEmpty }) ? cells : nil
+    }
+
+    private nonisolated static func rawTableCells(from line: String) -> [String]? {
         let trimmed = line.trimmingCharacters(in: .whitespaces)
         guard trimmed.contains("|") else { return nil }
         var content = trimmed
@@ -1151,14 +1157,13 @@ nonisolated enum MarkdownRenderer {
         if content.hasSuffix("|") {
             content.removeLast()
         }
-        let cells = content.split(separator: "|", omittingEmptySubsequences: false).map {
-            normalizedInlineText(String($0).trimmingCharacters(in: .whitespaces))
+        return content.split(separator: "|", omittingEmptySubsequences: false).map {
+            String($0).trimmingCharacters(in: .whitespaces)
         }
-        return cells.contains(where: { !$0.isEmpty }) ? cells : nil
     }
 
     private nonisolated static func parseTableDivider(_ line: String) -> [MarkdownTableAlignment]? {
-        guard let cells = splitTableRow(line) else { return nil }
+        guard let cells = rawTableCells(from: line), cells.contains(where: { !$0.isEmpty }) else { return nil }
         var alignments: [MarkdownTableAlignment] = []
         for cell in cells {
             let trimmed = cell.trimmingCharacters(in: .whitespaces)

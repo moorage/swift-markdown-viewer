@@ -142,6 +142,131 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
     }
 
     @MainActor
+    func testAppModelIncreasesFontSizeUntilMaximum() {
+        let model = AppModel(
+            launchOptions: HarnessLaunchOptions.fromProcess(arguments: ["App", "--ui-test-mode", "1"])
+        )
+        retainForTestLifetime(model)
+
+        for _ in 0..<20 {
+            model.increaseFontSize()
+        }
+
+        XCTAssertEqual(model.fontScale, AppModel.maximumFontScale)
+        XCTAssertFalse(model.canIncreaseFontSize)
+        XCTAssertTrue(model.canDecreaseFontSize)
+    }
+
+    @MainActor
+    func testAppModelDecreasesFontSizeUntilMinimum() {
+        let model = AppModel(
+            launchOptions: HarnessLaunchOptions.fromProcess(arguments: ["App", "--ui-test-mode", "1"])
+        )
+        retainForTestLifetime(model)
+
+        model.increaseFontSize()
+        model.decreaseFontSize()
+        XCTAssertEqual(model.fontScale, 1)
+
+        for _ in 0..<20 {
+            model.decreaseFontSize()
+        }
+
+        XCTAssertEqual(model.fontScale, AppModel.minimumFontScale)
+        XCTAssertFalse(model.canDecreaseFontSize)
+        XCTAssertTrue(model.canIncreaseFontSize)
+    }
+
+    @MainActor
+    func testAppModelPrefersDetailInCompactNavigationOnIPhoneWhenFileSelected() {
+        let model = AppModel(
+            launchOptions: HarnessLaunchOptions(
+                fixtureRoot: repoRootURL.appendingPathComponent("Fixtures/app-store", isDirectory: true),
+                openFile: "Open Markdown Folders.md",
+                uiTestOpenFolderURL: nil,
+                theme: nil,
+                windowSize: nil,
+                disableFileWatch: true,
+                dumpVisibleStateURL: nil,
+                dumpPerfStateURL: nil,
+                screenshotPathURL: nil,
+                commandDirectoryURL: nil,
+                uiTestMode: true,
+                platformTarget: .ios,
+                deviceClass: .iphone
+            )
+        )
+        retainForTestLifetime(model)
+
+        model.bootstrap()
+
+        let expectation = expectation(description: "fixture loads")
+        Task { @MainActor in
+            for _ in 0..<20 {
+                if model.selectedPath?.rawValue == "Open Markdown Folders.md" {
+                    expectation.fulfill()
+                    return
+                }
+                try? await Task.sleep(nanoseconds: 50_000_000)
+            }
+        }
+        wait(for: [expectation], timeout: 2)
+
+        XCTAssertTrue(model.shouldPreferDetailInCompactNavigation)
+    }
+
+    @MainActor
+    func testAppModelDoesNotPreferDetailInCompactNavigationWithoutSelectedFile() {
+        let model = AppModel(
+            launchOptions: HarnessLaunchOptions(
+                fixtureRoot: nil,
+                openFile: nil,
+                uiTestOpenFolderURL: nil,
+                theme: nil,
+                windowSize: nil,
+                disableFileWatch: true,
+                dumpVisibleStateURL: nil,
+                dumpPerfStateURL: nil,
+                screenshotPathURL: nil,
+                commandDirectoryURL: nil,
+                uiTestMode: true,
+                platformTarget: .ios,
+                deviceClass: .iphone
+            )
+        )
+        retainForTestLifetime(model)
+
+        XCTAssertFalse(model.shouldPreferDetailInCompactNavigation)
+    }
+
+    @MainActor
+    func testAppModelUsesStructuredRendererForCodeBlockOnlyDocument() async throws {
+        let model = AppModel(
+            launchOptions: HarnessLaunchOptions(
+                fixtureRoot: repoRootURL.appendingPathComponent("Fixtures/app-store", isDirectory: true),
+                openFile: "Code Sample.md",
+                uiTestOpenFolderURL: nil,
+                theme: nil,
+                windowSize: nil,
+                disableFileWatch: true,
+                dumpVisibleStateURL: nil,
+                dumpPerfStateURL: nil,
+                screenshotPathURL: nil,
+                commandDirectoryURL: nil,
+                uiTestMode: true,
+                platformTarget: .ios,
+                deviceClass: .iphone
+            )
+        )
+        retainForTestLifetime(model)
+        model.bootstrap()
+
+        try await Task.sleep(nanoseconds: 300_000_000)
+
+        XCTAssertTrue(model.shouldRenderBlockContent)
+    }
+
+    @MainActor
     func testAutomaticFolderPromptPolicySuppressesLaunchSceneOnly() {
         var policy = AutomaticFolderPromptPolicy()
 
@@ -257,6 +382,42 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
         XCTAssertTrue(model.files.isEmpty)
         XCTAssertNil(model.selectedPath)
         XCTAssertEqual(model.documentText, "No markdown files found.")
+    }
+
+    @MainActor
+    func testAppModelUsesStructuredRendererForTableOnlyDocument() async throws {
+        let tempRoot = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: tempRoot, withIntermediateDirectories: true)
+        let fileURL = tempRoot.appendingPathComponent("table.md")
+        try """
+        | Root | Region | Purpose |
+        | --- | --- | --- |
+        | `infra/bootstrap/state` | `ca-central-1` | Terraform remote state bucket, lock table, and KMS key |
+        """.write(to: fileURL, atomically: true, encoding: .utf8)
+
+        let model = AppModel(
+            launchOptions: HarnessLaunchOptions(
+                fixtureRoot: tempRoot,
+                openFile: "table.md",
+                uiTestOpenFolderURL: nil,
+                theme: nil,
+                windowSize: nil,
+                disableFileWatch: true,
+                dumpVisibleStateURL: nil,
+                dumpPerfStateURL: nil,
+                screenshotPathURL: nil,
+                commandDirectoryURL: nil,
+                uiTestMode: true,
+                platformTarget: .macos,
+                deviceClass: .mac
+            )
+        )
+
+        model.bootstrap()
+        try await Task.sleep(nanoseconds: 300_000_000)
+
+        XCTAssertEqual(model.documentBlocks.map(\.kind), [.table])
+        XCTAssertTrue(model.shouldRenderBlockContent)
     }
 
     @MainActor
@@ -498,7 +659,7 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
         """
 
         let blocks = MarkdownRenderer.blocks(from: markdown)
-        let rendered = SelectableDocumentFormatter.attributedText(from: blocks).string
+        let rendered = SelectableDocumentFormatter.attributedText(from: blocks, fontScale: 1).string
 
         XCTAssertTrue(rendered.contains("Heading"))
         XCTAssertTrue(rendered.contains("Intro with bold text."))
@@ -536,6 +697,28 @@ final class Swift_Markdown_ViewerTests: XCTestCase {
         XCTAssertEqual(blocks[0].table?.header, ["abc", "defghi"])
         XCTAssertEqual(blocks[0].table?.rows, [["bar", "baz"]])
         XCTAssertEqual(blocks[0].table?.alignments, [.center, .trailing])
+    }
+
+    func testMarkdownRendererParsesTerraformStylePipeTable() {
+        let markdown = """
+        | Root | Region | Purpose |
+        | --- | --- | --- |
+        | `infra/bootstrap/state` | `ca-central-1` | Terraform remote state bucket, lock table, and KMS key |
+        | `infra/live/prod/mx-central-1` | `mx-central-1` | Primary production stack in Mexico |
+        """
+
+        let blocks = MarkdownRenderer.blocks(from: markdown)
+
+        XCTAssertEqual(blocks.map(\.kind), [.table])
+        XCTAssertEqual(blocks[0].table?.header, ["Root", "Region", "Purpose"])
+        XCTAssertEqual(
+            blocks[0].table?.rows,
+            [
+                ["infra/bootstrap/state", "ca-central-1", "Terraform remote state bucket, lock table, and KMS key"],
+                ["infra/live/prod/mx-central-1", "mx-central-1", "Primary production stack in Mexico"],
+            ]
+        )
+        XCTAssertEqual(blocks[0].table?.alignments, [.leading, .leading, .leading])
     }
 
     func testMarkdownRendererPreservesBlockSemanticsAroundTable() {

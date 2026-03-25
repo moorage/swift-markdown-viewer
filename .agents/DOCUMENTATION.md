@@ -9,12 +9,15 @@
   - `docs/exec-plans/active/2026-03-23-session-restore.md`
   - `docs/exec-plans/active/2026-03-24-app-store-readiness.md`
 - current milestone:
-  - app-store readiness without icon work: iPhone/iPad folder import is implemented, bookmark-backed workspace restoration is in place, release/privacy/docs scaffolding exists, macOS unit tests are green, and an iOS simulator build is green
+  - app-store readiness: icons are generated, iPhone/iPad folder import is implemented, bookmark-backed workspace restoration is in place, release/privacy/docs scaffolding exists, repeatable screenshot capture is in repo, and iPhone/iPad candidate screenshots have been generated
 - commands run:
   - `./scripts/test-unit`
   - `xcodebuild -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -sdk iphonesimulator -derivedDataPath /tmp/swift-markdown-viewer-app-store-ios-build4 CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build`
   - `python3 scripts/check_execplan.py`
   - `python3 scripts/knowledge/check_docs.py`
+  - `./scripts/capture-app-store-screenshots --platform iphone`
+  - `./scripts/capture-app-store-screenshots --platform ipad`
+  - `./scripts/capture-app-store-screenshots --platform macos`
 - important outcomes:
   - `WindowSceneRootView` now exposes a real iPhone/iPad folder picker via `fileImporter`, and `ViewerShellView` surfaces that action in the iOS top bar with the stable accessibility identifier `toolbar.openFolder`
   - workspace session persistence now carries bookmark-backed restoration data through `WorkspaceWindowSession.securityScopedBookmarkData` and the new `WorkspaceSecurityScope` helper instead of relying only on raw root paths
@@ -22,9 +25,19 @@
   - repo-owned release docs now define the planned public URLs under `https://www.matthewpaulmoore.com/`, draft support/privacy/terms page content, and the recommendation to use Apple’s standard EULA
   - `scripts/archive-release` now provides a stable shell entry point for signed Release archives once `APPLE_DEVELOPMENT_TEAM` is configured locally
   - `WorkspaceProvider` now recognizes common Markdown extensions such as `.markdown` and `.mkd`, and `scripts/export-app-store` plus `docs/release/app-review-notes.md` cover the remaining local export/review prep work
+  - `Fixtures/app-store/` now holds polished screenshot inputs, `scripts/capture-app-store-screenshots` generates deterministic candidate screenshots plus state/perf snapshots, and `docs/release/screenshot-capture.md` documents the flow
+  - compact iPhone launches now open preselected documents into the reader instead of leaving the app on the file list, and the compact reader top bar is condensed so iPhone screenshots stay readable
+  - code-block-only documents now route through the structured renderer, so App Store code screenshots use the same rounded gray card treatment as other rich block surfaces
+  - the iPad navigation chrome now uses icon-only back/forward buttons in the capture output, without the old text labels
+  - the harness now delays screenshot capture slightly after readiness and uses live-window capture on macOS, which fixed the white/loading-state macOS screenshot output
+  - `scripts/capture-app-store-screenshots` now avoids hanging `simctl uninstall`/`terminate` calls and prefers a healthy iPad simulator, so fresh screenshot artifacts now exist under `artifacts/app-store-screenshots/iphone/`, `artifacts/app-store-screenshots/ipad/`, and `artifacts/app-store-screenshots/macos/`
+  - `Swift_Markdown_ViewerApp` now installs the bundled `AppIcon.icns` into `NSApplication.shared.applicationIconImage` on macOS startup, so debug builds show the generated app icon in the Dock instead of the generic placeholder
 - important discoveries:
   - `.withSecurityScope` bookmark creation and resolution options are unavailable in iOS, so bookmark handling must use platform-conditional options even though the shared restoration model stays the same
   - the Xcode project’s filesystem-synchronized group model automatically copied the new `PrivacyInfo.xcprivacy` resource into the app bundle without requiring manual `PBXBuildFile` entries
+  - the original preferred `iPad (A16)` simulator can wedge on `simctl` lifecycle commands in this environment, so screenshot automation is more reliable when the helper picks another available iPad first
+  - the screenshot artifacts were being written as soon as the model flipped to ready, which was early enough for macOS window captures to catch the loading overlay instead of the final document content
+  - the built mac app bundle already had `AppIcon.icns` and `CFBundleIconName = AppIcon`, so the missing Dock icon was a runtime presentation problem rather than a missing asset-catalog payload
 - commands run:
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-unit-fix2 -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/InlineAnimatedMediaTests" test`
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-ui-fix -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerUITests/InlineAnimatedMediaUITests" test`

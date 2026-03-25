@@ -11,27 +11,71 @@ import UIKit
 struct ViewerShellView: View {
     @ObservedObject var model: AppModel
     let onOpenFolder: (() -> Void)?
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
+    @State private var compactShowsSidebar = true
     #if os(macOS)
     @FocusState private var sidebarFocused: Bool
     #endif
 
     var body: some View {
-        NavigationSplitView {
-            sidebarContent
-        } detail: {
-            detailContent
-        }
-        #if os(macOS)
-        .toolbar {
-            ToolbarItem(placement: .navigation) {
-                macNavigationControls
+        Group {
+            if isCompactPhoneLayout {
+                compactPhoneContent
+            } else {
+                NavigationSplitView(columnVisibility: $columnVisibility) {
+                    sidebarContent
+                } detail: {
+                    detailContent
+                }
+                .onAppear {
+                    updatePreferredColumnVisibility()
+                }
+                .onChange(of: model.selectedPath) { _ in
+                    updatePreferredColumnVisibility()
+                }
+                .onChange(of: horizontalSizeClass) { _ in
+                    updatePreferredColumnVisibility()
+                }
+                #if os(macOS)
+                .toolbar {
+                    ToolbarItem(placement: .navigation) {
+                        macNavigationControls
+                    }
+                    ToolbarItem(placement: .automatic) {
+                        fontSizeControls
+                    }
+                    ToolbarItem(placement: .primaryAction) {
+                        macRevealInFinderButton
+                    }
+                }
+                .background(MacWindowConfiguration(title: model.windowTitle, contentSize: model.launchOptions.windowSize))
+                #endif
             }
-            ToolbarItem(placement: .primaryAction) {
-                macRevealInFinderButton
+        }
+    }
+
+    private var isCompactPhoneLayout: Bool {
+        horizontalSizeClass == .compact && model.launchOptions.deviceClass == .iphone
+    }
+
+    private var compactPhoneContent: some View {
+        Group {
+            if compactShowsSidebar && !model.files.isEmpty {
+                sidebarContent
+            } else {
+                detailContent
             }
         }
-        .background(MacWindowConfiguration(title: model.windowTitle, contentSize: model.launchOptions.windowSize))
-        #endif
+        .onAppear {
+            updatePreferredColumnVisibility()
+        }
+        .onChange(of: model.selectedPath) { _ in
+            updatePreferredColumnVisibility()
+        }
+        .onChange(of: horizontalSizeClass) { _ in
+            updatePreferredColumnVisibility()
+        }
     }
 
     private var sidebarContent: some View {
@@ -66,6 +110,7 @@ struct ViewerShellView: View {
             sidebarFocused = true
             #endif
             model.openFile(file.path)
+            showDetailIfNeeded()
         } label: {
             SidebarFileRow(file: file, isSelected: isSelected)
         }
@@ -111,11 +156,12 @@ struct ViewerShellView: View {
             } else if model.shouldRenderBlockContent {
                 DocumentBlockScrollView(
                     blocks: model.documentBlocks,
-                    workspaceRootURL: model.currentWorkspaceRootURL
+                    workspaceRootURL: model.currentWorkspaceRootURL,
+                    fontScale: model.fontScale
                 )
                     .padding(20)
             } else {
-                SelectableDocumentTextView(blocks: model.documentBlocks)
+                SelectableDocumentTextView(blocks: model.documentBlocks, fontScale: model.fontScale)
                     .padding(20)
             }
 
@@ -133,38 +179,104 @@ struct ViewerShellView: View {
         #endif
         #if !os(macOS)
         .safeAreaInset(edge: .top) {
-            HStack(spacing: 12) {
+            Group {
+                if isCompactPhoneLayout {
+                    compactPhoneTopBar
+                } else {
+                    regularMobileTopBar
+                }
+            }
+        }
+        #endif
+    }
+
+    #if !os(macOS)
+    private var regularMobileTopBar: some View {
+        HStack(spacing: 12) {
+            if showsFilesButton {
+                Button(action: showSidebar) {
+                    Label("Files", systemImage: "sidebar.left")
+                }
+                .accessibilityIdentifier("\(AccessibilityIDs.openFolderButton).sidebar")
+            }
+
+            Button(action: model.navigateBack) {
+                Image(systemName: "chevron.left")
+            }
+            .disabled(!model.canNavigateBack)
+            .accessibilityIdentifier(AccessibilityIDs.backButton)
+
+            Button(action: model.navigateForward) {
+                Image(systemName: "chevron.right")
+            }
+            .disabled(!model.canNavigateForward)
+            .accessibilityIdentifier(AccessibilityIDs.forwardButton)
+
+            if let onOpenFolder {
+                Button(action: onOpenFolder) {
+                    Label("Open Folder", systemImage: "folder.badge.plus")
+                }
+                .accessibilityIdentifier(AccessibilityIDs.openFolderButton)
+            }
+
+            fontSizeControls
+
+            Text(model.windowTitle)
+                .font(ViewerFont.headline(scale: model.fontScale))
+                .lineLimit(1)
+                .accessibilityIdentifier(AccessibilityIDs.title)
+
+            Spacer()
+        }
+        .labelStyle(.iconOnly)
+        .padding(.horizontal, 20)
+        .padding(.top, 8)
+    }
+
+    private var compactPhoneTopBar: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 10) {
+                if showsFilesButton {
+                    Button(action: showSidebar) {
+                        Image(systemName: "sidebar.left")
+                    }
+                    .accessibilityIdentifier("\(AccessibilityIDs.openFolderButton).sidebar")
+                }
+
                 Button(action: model.navigateBack) {
-                    Label("Back", systemImage: "chevron.left")
+                    Image(systemName: "chevron.left")
                 }
                 .disabled(!model.canNavigateBack)
                 .accessibilityIdentifier(AccessibilityIDs.backButton)
 
                 Button(action: model.navigateForward) {
-                    Label("Forward", systemImage: "chevron.right")
+                    Image(systemName: "chevron.right")
                 }
                 .disabled(!model.canNavigateForward)
                 .accessibilityIdentifier(AccessibilityIDs.forwardButton)
 
                 if let onOpenFolder {
                     Button(action: onOpenFolder) {
-                        Label("Open Folder", systemImage: "folder.badge.plus")
+                        Image(systemName: "folder.badge.plus")
                     }
                     .accessibilityIdentifier(AccessibilityIDs.openFolderButton)
                 }
 
-                Text(model.windowTitle)
-                    .font(.headline)
-                    .lineLimit(1)
-                    .accessibilityIdentifier(AccessibilityIDs.title)
+                Spacer(minLength: 0)
 
-                Spacer()
+                fontSizeControls
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 8)
+
+            Text(model.windowTitle)
+                .font(ViewerFont.headline(scale: model.fontScale))
+                .lineLimit(1)
+                .accessibilityIdentifier(AccessibilityIDs.title)
         }
-        #endif
+        .labelStyle(.iconOnly)
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
     }
+    #endif
 
     private var loadingOverlay: some View {
         ZStack {
@@ -174,7 +286,7 @@ struct ViewerShellView: View {
                 ProgressView()
                     .controlSize(.regular)
                 Text("Loading document…")
-                    .font(.headline)
+                    .font(ViewerFont.headline(scale: model.fontScale))
             }
             .padding(24)
         }
@@ -189,10 +301,10 @@ struct ViewerShellView: View {
     private var emptyWorkspaceState: some View {
         VStack(spacing: 16) {
             Image(systemName: "folder.badge.questionmark")
-                .font(.system(size: 32, weight: .medium))
+                .font(ViewerFont.scaledSystem(size: 32, weight: .medium, scale: model.fontScale))
                 .foregroundStyle(.secondary)
             Text("No markdown files found.")
-                .font(.title3)
+                .font(ViewerFont.title3(scale: model.fontScale))
                 .multilineTextAlignment(.center)
                 .accessibilityIdentifier(AccessibilityIDs.emptyStateMessage)
             if let onOpenFolder {
@@ -241,22 +353,80 @@ struct ViewerShellView: View {
         NSWorkspace.shared.activateFileViewerSelecting([selectedFileURL])
     }
     #endif
+
+    private var fontSizeControls: some View {
+        ControlGroup {
+            Button(action: model.decreaseFontSize) {
+                Image(systemName: "textformat.size.smaller")
+            }
+            .disabled(!model.canDecreaseFontSize)
+            .accessibilityIdentifier(AccessibilityIDs.decreaseFontSizeButton)
+            .help("Decrease Font Size")
+
+            Button(action: model.increaseFontSize) {
+                Image(systemName: "textformat.size.larger")
+            }
+            .disabled(!model.canIncreaseFontSize)
+            .accessibilityIdentifier(AccessibilityIDs.increaseFontSizeButton)
+            .help("Increase Font Size")
+        }
+        .labelStyle(.iconOnly)
+    }
+
+    private var showsFilesButton: Bool {
+        isCompactPhoneLayout && !compactShowsSidebar && model.selectedPath != nil
+    }
+
+    private func showSidebar() {
+        if isCompactPhoneLayout {
+            compactShowsSidebar = true
+            return
+        }
+        guard horizontalSizeClass == .compact else { return }
+        columnVisibility = .all
+    }
+
+    private func showDetailIfNeeded() {
+        if isCompactPhoneLayout {
+            guard model.shouldPreferDetailInCompactNavigation else { return }
+            compactShowsSidebar = false
+            return
+        }
+        guard horizontalSizeClass == .compact else { return }
+        guard model.shouldPreferDetailInCompactNavigation else { return }
+        columnVisibility = .detailOnly
+    }
+
+    private func updatePreferredColumnVisibility() {
+        if isCompactPhoneLayout {
+            compactShowsSidebar = !model.shouldPreferDetailInCompactNavigation
+            return
+        }
+        guard horizontalSizeClass == .compact else {
+            columnVisibility = .automatic
+            return
+        }
+        guard model.shouldPreferDetailInCompactNavigation else { return }
+        columnVisibility = .detailOnly
+    }
 }
 
 private struct DocumentBlockScrollView: View {
     let blocks: [MarkdownBlock]
     let workspaceRootURL: URL?
+    let fontScale: CGFloat
 
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 16) {
                 ForEach(blocks) { block in
-                    MarkdownBlockView(block: block, workspaceRootURL: workspaceRootURL)
+                    MarkdownBlockView(block: block, workspaceRootURL: workspaceRootURL, fontScale: fontScale)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 4)
         }
+        .textSelection(.enabled)
         .accessibilityIdentifier(AccessibilityIDs.scrollView)
     }
 }
@@ -270,7 +440,7 @@ private struct SidebarFileRow: View {
             Image(systemName: "doc.text")
                 .foregroundStyle(isSelected ? Color.accentColor : Color.secondary)
             Text(file.name)
-                .font(.body)
+                .font(ViewerFont.body(scale: 1))
                 .lineLimit(1)
             Spacer(minLength: 0)
         }
@@ -284,21 +454,24 @@ private struct SidebarFileRow: View {
 private struct MarkdownBlockView: View {
     let block: MarkdownBlock
     let workspaceRootURL: URL?
+    let fontScale: CGFloat
 
     var body: some View {
         switch block.kind {
         case .heading:
             Text(MarkdownRenderer.attributedText(for: block))
-                .font(headingFont(for: block.level ?? 1))
+                .font(headingFont(for: block.level ?? 1, scale: fontScale))
                 .fontWeight(.semibold)
         case .paragraph:
             Text(MarkdownRenderer.attributedText(for: block))
-                .font(.body)
+                .font(ViewerFont.body(scale: fontScale))
         case .unorderedListItem:
             VStack(alignment: .leading, spacing: 12) {
                 HStack(alignment: .top, spacing: 10) {
                     Text(listMarker)
+                        .font(ViewerFont.body(scale: fontScale))
                     Text(MarkdownRenderer.attributedText(for: block))
+                        .font(ViewerFont.body(scale: fontScale))
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 if !block.children.isEmpty {
@@ -310,8 +483,10 @@ private struct MarkdownBlockView: View {
             VStack(alignment: .leading, spacing: 12) {
                 HStack(alignment: .top, spacing: 10) {
                     Text(listMarker)
+                        .font(ViewerFont.monospacedBody(scale: fontScale))
                         .monospacedDigit()
                     Text(MarkdownRenderer.attributedText(for: block))
+                        .font(ViewerFont.body(scale: fontScale))
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 if !block.children.isEmpty {
@@ -325,13 +500,14 @@ private struct MarkdownBlockView: View {
                     .fill(.quaternary)
                     .frame(width: 4)
                 Text(MarkdownRenderer.attributedText(for: block))
+                    .font(ViewerFont.body(scale: fontScale))
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         case .codeBlock:
             ScrollView(.horizontal, showsIndicators: false) {
                 Text(verbatim: block.sourceText)
-                    .font(.system(.body, design: .monospaced))
+                    .font(ViewerFont.monospacedBody(scale: fontScale))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(14)
             }
@@ -344,6 +520,7 @@ private struct MarkdownBlockView: View {
                         GridRow {
                                 ForEach(Array(table.header.enumerated()), id: \.offset) { column, cell in
                                 Text(MarkdownRenderer.attributedText(for: cell))
+                                    .font(ViewerFont.body(scale: fontScale))
                                     .fontWeight(.semibold)
                                     .frame(maxWidth: .infinity, alignment: alignment(for: table.alignments[column]))
                             }
@@ -354,6 +531,7 @@ private struct MarkdownBlockView: View {
                             GridRow {
                                     ForEach(Array(row.enumerated()), id: \.offset) { column, cell in
                                     Text(MarkdownRenderer.attributedText(for: cell))
+                                        .font(ViewerFont.body(scale: fontScale))
                                         .frame(maxWidth: .infinity, alignment: alignment(for: table.alignments[column]))
                                 }
                             }
@@ -374,16 +552,22 @@ private struct MarkdownBlockView: View {
                     image: image,
                     isAnimated: block.kind == .animatedImage,
                     blockID: block.id,
-                    workspaceRootURL: workspaceRootURL
+                    workspaceRootURL: workspaceRootURL,
+                    fontScale: fontScale
                 )
             }
         case .video:
             if let video = block.video {
-                InlineVideoBlockView(video: video, blockID: block.id, workspaceRootURL: workspaceRootURL)
+                InlineVideoBlockView(
+                    video: video,
+                    blockID: block.id,
+                    workspaceRootURL: workspaceRootURL,
+                    fontScale: fontScale
+                )
             }
         case .rawHTML:
             Text(verbatim: block.sourceText)
-                .font(.system(.body, design: .monospaced))
+                .font(ViewerFont.monospacedBody(scale: fontScale))
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(14)
@@ -395,16 +579,16 @@ private struct MarkdownBlockView: View {
         }
     }
 
-    private func headingFont(for level: Int) -> Font {
+    private func headingFont(for level: Int, scale: CGFloat) -> Font {
         switch level {
         case 1:
-            return .system(size: 30, weight: .semibold, design: .default)
+            return ViewerFont.scaledSystem(size: 30, weight: .semibold, scale: scale)
         case 2:
-            return .system(size: 24, weight: .semibold, design: .default)
+            return ViewerFont.scaledSystem(size: 24, weight: .semibold, scale: scale)
         case 3:
-            return .system(size: 20, weight: .semibold, design: .default)
+            return ViewerFont.scaledSystem(size: 20, weight: .semibold, scale: scale)
         default:
-            return .headline
+            return ViewerFont.headline(scale: scale)
         }
     }
 
@@ -422,7 +606,7 @@ private struct MarkdownBlockView: View {
     private var childBlocks: some View {
         VStack(alignment: .leading, spacing: 12) {
             ForEach(block.children) { child in
-                MarkdownBlockView(block: child, workspaceRootURL: workspaceRootURL)
+                MarkdownBlockView(block: child, workspaceRootURL: workspaceRootURL, fontScale: fontScale)
             }
         }
         .padding(.leading, 28)
@@ -445,6 +629,7 @@ private struct ImageBlockView: View {
     let isAnimated: Bool
     let blockID: String
     let workspaceRootURL: URL?
+    let fontScale: CGFloat
 
     private var imageLoadError: String? {
         mediaLoadError(
@@ -475,11 +660,11 @@ private struct ImageBlockView: View {
                     .overlay {
                         VStack(spacing: 10) {
                             Image(systemName: imageLoadError == nil ? "photo" : "exclamationmark.triangle")
-                                .font(.system(size: 36, weight: .medium))
+                                .font(ViewerFont.scaledSystem(size: 36, weight: .medium, scale: fontScale))
                                 .foregroundStyle(.secondary)
                             if let imageLoadError {
                                 Text(imageLoadError)
-                                    .font(.caption)
+                                    .font(ViewerFont.caption(scale: fontScale))
                                     .multilineTextAlignment(.center)
                                     .foregroundStyle(.secondary)
                                     .padding(.horizontal, 16)
@@ -490,19 +675,19 @@ private struct ImageBlockView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(primaryLabel)
-                    .font(.headline)
+                    .font(ViewerFont.headline(scale: fontScale))
                     .accessibilityIdentifier(AccessibilityIDs.imageBlock(blockID))
                 Text(image.sourceURL)
-                    .font(.caption)
+                    .font(ViewerFont.caption(scale: fontScale))
                     .foregroundStyle(.secondary)
                 if let title = image.title, !title.isEmpty {
                     Text(title)
-                        .font(.caption)
+                        .font(ViewerFont.caption(scale: fontScale))
                         .foregroundStyle(.secondary)
                 }
                 if let imageLoadError {
                     Text(imageLoadError)
-                        .font(.caption)
+                        .font(ViewerFont.caption(scale: fontScale))
                         .foregroundStyle(.red)
                         .textSelection(.enabled)
                 }
@@ -528,6 +713,7 @@ private struct InlineVideoBlockView: View {
     let video: MarkdownVideo
     let blockID: String
     let workspaceRootURL: URL?
+    let fontScale: CGFloat
 
     @State private var player: AVPlayer?
     @State private var playerError: String?
@@ -545,11 +731,11 @@ private struct InlineVideoBlockView: View {
                 } else {
                     VStack(spacing: 10) {
                         Image(systemName: playerError == nil ? "video" : "exclamationmark.triangle")
-                            .font(.system(size: 36, weight: .medium))
+                            .font(ViewerFont.scaledSystem(size: 36, weight: .medium, scale: fontScale))
                             .foregroundStyle(.white.opacity(0.85))
                         if let playerError {
                             Text(playerError)
-                                .font(.caption)
+                                .font(ViewerFont.caption(scale: fontScale))
                                 .multilineTextAlignment(.center)
                                 .foregroundStyle(.white.opacity(0.85))
                                 .padding(.horizontal, 16)
@@ -562,7 +748,7 @@ private struct InlineVideoBlockView: View {
                         togglePlayback()
                     } label: {
                         Label("Play", systemImage: "play.fill")
-                            .font(.headline)
+                            .font(ViewerFont.headline(scale: fontScale))
                             .padding(.horizontal, 18)
                             .padding(.vertical, 12)
                             .background(.ultraThinMaterial, in: Capsule())
@@ -577,19 +763,19 @@ private struct InlineVideoBlockView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(video.altText.isEmpty ? "Video" : video.altText)
-                    .font(.headline)
+                    .font(ViewerFont.headline(scale: fontScale))
                     .accessibilityIdentifier(AccessibilityIDs.videoBlock(blockID))
                 Text(video.sourceURL)
-                    .font(.caption)
+                    .font(ViewerFont.caption(scale: fontScale))
                     .foregroundStyle(.secondary)
                 if let title = video.title, !title.isEmpty {
                     Text(title)
-                        .font(.caption)
+                        .font(ViewerFont.caption(scale: fontScale))
                         .foregroundStyle(.secondary)
                 }
                 if let playerError {
                     Text(playerError)
-                        .font(.caption)
+                        .font(ViewerFont.caption(scale: fontScale))
                         .foregroundStyle(.red)
                         .textSelection(.enabled)
                 }
@@ -678,6 +864,57 @@ private struct InlineVideoBlockView: View {
         isPlaying.toggle()
     }
 }
+
+private enum ViewerFont {
+    static func body(scale: CGFloat) -> Font {
+        Font(platformFont(forTextStyle: .body, scale: scale))
+    }
+
+    static func headline(scale: CGFloat) -> Font {
+        Font(platformFont(forTextStyle: .headline, scale: scale))
+    }
+
+    static func title3(scale: CGFloat) -> Font {
+        Font(platformFont(forTextStyle: .title3, scale: scale))
+    }
+
+    static func caption(scale: CGFloat) -> Font {
+        Font(platformFont(forTextStyle: .caption1, scale: scale))
+    }
+
+    static func monospacedBody(scale: CGFloat) -> Font {
+        let pointSize = platformFont(forTextStyle: .body, scale: scale).pointSize
+        #if os(macOS)
+        return Font(NSFont.monospacedSystemFont(ofSize: pointSize, weight: .regular))
+        #elseif os(iOS)
+        return Font(UIFont.monospacedSystemFont(ofSize: pointSize, weight: .regular))
+        #endif
+    }
+
+    static func scaledSystem(size: CGFloat, weight: Font.Weight, scale: CGFloat) -> Font {
+        .system(size: size * scale, weight: weight, design: .default)
+    }
+
+    private static func platformFont(forTextStyle textStyle: FontTextStyle, scale: CGFloat) -> PlatformFont {
+        scaled(basePlatformFont(forTextStyle: textStyle), by: scale)
+    }
+
+    private static func scaled(_ font: PlatformFont, by scale: CGFloat) -> PlatformFont {
+        font.withSize(font.pointSize * scale)
+    }
+
+    private static func basePlatformFont(forTextStyle textStyle: FontTextStyle) -> PlatformFont {
+        PlatformFont.preferredFont(forTextStyle: textStyle)
+    }
+}
+
+#if os(macOS)
+private typealias PlatformFont = NSFont
+private typealias FontTextStyle = NSFont.TextStyle
+#elseif os(iOS)
+private typealias PlatformFont = UIFont
+private typealias FontTextStyle = UIFont.TextStyle
+#endif
 
 private func mediaLoadError(
     resolvedURL: URL?,

@@ -2,6 +2,7 @@ import SwiftUI
 
 #if os(macOS)
 import AppKit
+import CoreGraphics
 #elseif os(iOS)
 import UIKit
 #endif
@@ -42,20 +43,42 @@ enum PlatformScreenshotWriter {
     #if os(macOS)
     @MainActor
     static func write(window: NSWindow, to url: URL) throws {
-        guard let contentView = window.contentView else {
-            throw CocoaError(.fileWriteUnknown)
+        let cgImage: CGImage?
+        if let screenFrame = window.screen?.frame {
+            let windowFrame = window.frame
+            let captureRect = CGRect(
+                x: windowFrame.origin.x,
+                y: screenFrame.height - windowFrame.origin.y - windowFrame.height,
+                width: windowFrame.width,
+                height: windowFrame.height
+            )
+            cgImage = CGWindowListCreateImage(
+                captureRect,
+                .optionIncludingWindow,
+                CGWindowID(window.windowNumber),
+                [.boundsIgnoreFraming, .bestResolution]
+            )
+        } else {
+            cgImage = nil
         }
 
-        let bounds = contentView.bounds
-        guard bounds.width > 0, bounds.height > 0 else {
-            throw CocoaError(.fileWriteUnknown)
+        let imageRep: NSBitmapImageRep?
+        if let cgImage {
+            imageRep = NSBitmapImageRep(cgImage: cgImage)
+        } else if let contentView = window.contentView {
+            let bounds = contentView.bounds
+            if bounds.width <= 0 || bounds.height <= 0 {
+                throw CocoaError(.fileWriteUnknown)
+            }
+            let fallbackRep = contentView.bitmapImageRepForCachingDisplay(in: bounds)
+            fallbackRep.map { contentView.cacheDisplay(in: bounds, to: $0) }
+            imageRep = fallbackRep
+        } else {
+            imageRep = nil
         }
 
-        guard let bitmap = contentView.bitmapImageRepForCachingDisplay(in: bounds) else {
-            throw CocoaError(.fileWriteUnknown)
-        }
-        contentView.cacheDisplay(in: bounds, to: bitmap)
-        guard let pngData = bitmap.representation(using: .png, properties: [:]) else {
+        guard let imageRep,
+              let pngData = imageRep.representation(using: .png, properties: [:]) else {
             throw CocoaError(.fileWriteUnknown)
         }
 

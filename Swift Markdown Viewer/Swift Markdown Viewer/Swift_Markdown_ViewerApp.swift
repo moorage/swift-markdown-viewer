@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if os(macOS)
+import AppKit
+#endif
 
 @main
 struct Swift_Markdown_ViewerApp: App {
@@ -19,6 +22,9 @@ struct Swift_Markdown_ViewerApp: App {
         _sessionStore = StateObject(
             wrappedValue: WorkspaceWindowSessionStore(launchOptions: resolvedLaunchOptions)
         )
+        #if os(macOS)
+        Self.installApplicationIcon()
+        #endif
     }
 
     var body: some Scene {
@@ -37,4 +43,18 @@ struct Swift_Markdown_ViewerApp: App {
         }
         #endif
     }
+
+    #if os(macOS)
+    private static func installApplicationIcon() {
+        if let iconURL = Bundle.main.url(forResource: "AppIcon", withExtension: "icns"),
+           let iconImage = NSImage(contentsOf: iconURL) {
+            NSApplication.shared.applicationIconImage = iconImage
+            return
+        }
+
+        if let iconImage = NSImage(named: "AppIcon") {
+            NSApplication.shared.applicationIconImage = iconImage
+        }
+    }
+    #endif
 }

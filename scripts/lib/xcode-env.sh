@@ -85,10 +85,10 @@ iphone_sim_id() {
 ipad_sim_id() {
   local id
   id="$(preferred_sim_id \
-    "iPad (A16)" \
     "iPad Air 11-inch (M3)" \
     "iPad Pro 11-inch (M5)" \
     "iPad mini (A17 Pro)" \
+    "iPad (A16)" \
     "iPad Pro 11-inch (M4)" \
     "iPad Pro (11-inch) (4th generation)" \
     "iPad Air 11-inch (M2)" \

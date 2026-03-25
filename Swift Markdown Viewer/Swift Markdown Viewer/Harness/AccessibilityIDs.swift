@@ -7,6 +7,8 @@ enum AccessibilityIDs {
     static let title = "nav.title"
     static let openFolderButton = "toolbar.openFolder"
     static let revealInFinderButton = "toolbar.revealInFinder"
+    static let decreaseFontSizeButton = "toolbar.decreaseFontSize"
+    static let increaseFontSizeButton = "toolbar.increaseFontSize"
     static let scrollView = "document.scrollView"
     static let text = "document.text"
     static let placeholderBlock = "block.placeholder.0"
