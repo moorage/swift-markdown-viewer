@@ -83,9 +83,7 @@ struct ViewerShellView: View {
 
     private var sidebarContent: some View {
         VStack(spacing: 0) {
-            #if os(macOS)
             sidebarFilterField
-            #endif
 
             List(filteredFiles) { file in
                 sidebarRow(for: file)
@@ -118,15 +116,21 @@ struct ViewerShellView: View {
         #endif
     }
 
-    #if os(macOS)
     private var sidebarFilterField: some View {
         HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.secondary)
 
             TextField("Quick Filter", text: $sidebarFilterText)
+                .accessibilityIdentifier(AccessibilityIDs.sidebarFilterField)
+                #if os(macOS)
                 .textFieldStyle(.plain)
                 .focused($sidebarFilterFocused)
+                #else
+                .textFieldStyle(.roundedBorder)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled(true)
+                #endif
 
             if !sidebarFilterText.isEmpty {
                 Button {
@@ -137,16 +141,28 @@ struct ViewerShellView: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Clear Quick Filter")
+                .accessibilityIdentifier(AccessibilityIDs.sidebarFilterClearButton)
             }
         }
+        #if os(macOS)
         .padding(.horizontal, 10)
         .padding(.vertical, 8)
         .background(Color(nsColor: .windowBackgroundColor))
         .overlay(alignment: .bottom) {
             Divider()
         }
+        #else
+        .padding(.horizontal, 12)
+        .padding(.top, 10)
+        .padding(.bottom, 8)
+        .background {
+            Color(uiColor: .systemBackground)
+        }
+        .overlay(alignment: .bottom) {
+            Divider()
+        }
+        #endif
     }
-    #endif
 
     private var filteredFiles: [MarkdownFileNode] {
         AppModel.filteredFiles(from: model.files, matching: sidebarFilterText)

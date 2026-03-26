@@ -2,6 +2,8 @@ import Foundation
 
 enum AccessibilityIDs {
     static let sidebarList = "sidebar.list"
+    static let sidebarFilterField = "sidebar.filterField"
+    static let sidebarFilterClearButton = "sidebar.filterClear"
     static let backButton = "nav.back"
     static let forwardButton = "nav.forward"
     static let title = "nav.title"

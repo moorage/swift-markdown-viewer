@@ -24,6 +24,8 @@ Supported debug launch arguments:
 Stable identifiers include:
 
 - `sidebar.list`
+- `sidebar.filterField`
+- `sidebar.filterClear`
 - `nav.back`
 - `nav.forward`
 - `nav.title`

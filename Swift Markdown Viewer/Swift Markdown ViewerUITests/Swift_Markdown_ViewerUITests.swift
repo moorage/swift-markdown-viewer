@@ -146,6 +146,39 @@ final class Swift_Markdown_ViewerUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Keyboard Workspace > beta.md"].waitForExistence(timeout: 5))
     }
 
+    #if os(iOS)
+    @MainActor
+    func testiPhoneDrawerQuickFilterNarrowsSidebarFiles() throws {
+        let app = XCUIApplication()
+        let workspace = try makeWorkspace(named: "iPhone Filter Workspace", files: [
+            "alpha.md": "# Alpha\n\nFirst file.",
+            "beta-notes.md": "# Beta\n\nSecond file.",
+            "release-plan.md": "# Release\n\nThird file."
+        ])
+
+        app.launchArguments = [
+            "--fixture-root", workspace.path,
+            "--open-file", "alpha.md",
+            "--platform-target", "ios",
+            "--device-class", "iphone",
+            "--ui-test-mode", "1",
+        ]
+        app.launch()
+
+        XCTAssertTrue(app.buttons["toolbar.openFolder.sidebar"].waitForExistence(timeout: 5))
+        app.buttons["toolbar.openFolder.sidebar"].tap()
+
+        let filterField = app.textFields["sidebar.filterField"]
+        XCTAssertTrue(filterField.waitForExistence(timeout: 5))
+        filterField.tap()
+        filterField.typeText("beta")
+
+        XCTAssertTrue(app.buttons["sidebar.node.beta-notes.md"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["sidebar.node.alpha.md"].waitForExistence(timeout: 1))
+        XCTAssertFalse(app.buttons["sidebar.node.release-plan.md"].waitForExistence(timeout: 1))
+    }
+    #endif
+
     @MainActor
     func testLaunchPerformance() throws {
         measure(metrics: [XCTApplicationLaunchMetric()]) {
