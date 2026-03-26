@@ -196,6 +196,7 @@ struct ViewerShellView: View {
         showDetailIfNeeded()
     }
 
+    #if os(macOS)
     private func toggleSidebarKeyboardFocus() {
         if sidebarFilterFocused {
             sidebarFilterFocused = false
@@ -205,6 +206,7 @@ struct ViewerShellView: View {
             sidebarFilterFocused = true
         }
     }
+    #endif
 
     private func sidebarRowBackground(isSelected: Bool) -> some View {
         Group {
@@ -613,7 +615,7 @@ private struct MarkdownBlockView: View {
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         case .table:
             if let table = block.table {
-                ScrollView(.horizontal, showsIndicators: false) {
+                ScrollView(.horizontal, showsIndicators: true) {
                     Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 10) {
                         GridRow {
                                 ForEach(Array(table.header.enumerated()), id: \.offset) { column, cell in
