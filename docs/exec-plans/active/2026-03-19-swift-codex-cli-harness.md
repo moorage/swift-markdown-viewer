@@ -1,4 +1,4 @@
-# Bootstrap a Swift/Xcode Codex Harness for the Universal Apple Markdown Viewer
+# Bootstrap a Swift/Xcode Codex Harness for the Universal Apple Free Markdown Viewer
 
 This ExecPlan is a living document. The sections `Progress`, `Surprises & Discoveries`, `Decision Log`, and `Outcomes & Retrospective` must be kept up to date as work proceeds.
 
@@ -14,7 +14,7 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
 
 - [x] (2026-03-23T08:05Z) Removed the obsolete macOS-only product brief file and cleaned the remaining control-plane references so the universal brief is the only product source of truth left in-repo.
 - [x] (2026-03-23T06:20Z) Reworked `MarkdownRenderer` table handling so mixed documents segment tables as first-class blocks instead of downgrading the entire chunk to the legacy parser, and added a regression test covering headings before and after a table.
-- [x] (2026-03-20T06:51Z) Read the older macOS-only product brief, the reference harness docs/scripts in `tmp/codex-harness-to-migrate/`, and the current Xcode scaffold under `Swift Markdown Viewer/`.
+- [x] (2026-03-20T06:51Z) Read the older macOS-only product brief, the reference harness docs/scripts in `tmp/codex-harness-to-migrate/`, and the current Xcode scaffold under `Free Markdown Viewer/`.
 - [x] (2026-03-20T06:51Z) Drafted the bootstrap plan-routing file `docs/PLANS.md`, anchored `docs/exec-plans/`, and wrote the initial active harness ExecPlan.
 - [x] (2026-03-20T07:07Z) Diffed `codex_execplan_native_universal_gfm_viewer.md` against the macOS brief and rewrote this plan to target a universal macOS + iPhone + iPad harness instead of a macOS-only one.
 - [x] (2026-03-20T07:24Z) Created the durable control-plane docs, `.agents/` prompts, `.codex/` metadata, docs validation scripts, and macOS GitHub workflows described in Milestone 1.
@@ -31,22 +31,22 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
   Evidence: `codex_execplan_native_universal_gfm_viewer.md` still used the older filename in its kickoff brief, and `docs/generated/repo-map.json` still listed the removed file until the repo map was refreshed.
 
 - Observation: documents that mix GFM tables with ordinary Markdown blocks currently lose heading semantics because table detection forces the whole chunk through a legacy fallback parser.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/MarkdownRenderer.swift` routes any chunk that satisfies `containsTableSyntax(in:)` into `legacyBlocks(from:)`, and that fallback only emits `.table`, `.paragraph`, `.image`, or `.rawHTML` blocks.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/App/Shared/MarkdownRenderer.swift` routes any chunk that satisfies `containsTableSyntax(in:)` into `legacyBlocks(from:)`, and that fallback only emits `.table`, `.paragraph`, `.image`, or `.rawHTML` blocks.
 
 - Observation: the repository is no longer just the Xcode scaffold, but the durable control plane is still only partially bootstrapped.
   Evidence: `docs/PLANS.md` and `docs/exec-plans/active/2026-03-19-swift-codex-cli-harness.md` now exist, but there is still no root `README.md`, `AGENTS.md`, `ARCHITECTURE.md`, `.agents/`, or `scripts/` tree in the live repo.
 
 - Observation: the existing Xcode target is already a multiplatform template, which now aligns better with the updated universal brief than with the original macOS-only one.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj/project.pbxproj` sets `SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator"` and `TARGETED_DEVICE_FAMILY = "1,2,7"` for the app and test targets.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer.xcodeproj/project.pbxproj` sets `SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator"` and `TARGETED_DEVICE_FAMILY = "1,2,7"` for the app and test targets.
 
 - Observation: the current scheme already resolves through `xcodebuild`, so the harness can continue bootstrapping from the existing project rather than recreating it.
-  Evidence: `xcodebuild -list -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj'` reports the scheme `Swift Markdown Viewer`.
+  Evidence: `xcodebuild -list -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj'` reports the scheme `Free Markdown Viewer`.
 
 - Observation: the app and tests are still placeholders, so the harness must create shared abstractions before it can meaningfully verify platform behavior.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/ContentView.swift` still renders `Hello, world!`, while the unit and UI tests remain the default template methods with no cross-platform product assertions.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/ContentView.swift` still renders `Hello, world!`, while the unit and UI tests remain the default template methods with no cross-platform product assertions.
 
 - Observation: both the repository’s Xcode subdirectory and the project name contain spaces.
-  Evidence: the live paths are `Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj` and `Swift Markdown Viewer/Swift Markdown Viewer/`. Wrapper scripts are required so future agents do not repeat fragile quoting logic across macOS and simulator destinations.
+  Evidence: the live paths are `Free Markdown Viewer/Free Markdown Viewer.xcodeproj` and `Free Markdown Viewer/Free Markdown Viewer/`. Wrapper scripts are required so future agents do not repeat fragile quoting logic across macOS and simulator destinations.
 
 - Observation: the universal brief makes simulator coverage part of correctness, not just an optional later add-on.
   Evidence: `codex_execplan_native_universal_gfm_viewer.md` adds iPhone and iPad requirements, universal shell behavior, `scripts/test-ui-ios`, simulator prerequisites, and platform fields in the debug/perf contracts.
@@ -64,10 +64,10 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
   Evidence: the earlier XCTest helper mixed `NSAttributedString(.html)` and `XMLParser`, which surfaced tag names, attributes, and comment content as visible text for some fixtures. Replacing it with a deterministic reducer plus renderer-side plain-text fixes produced a repo-faithful probe result of `failureCount=0`.
 
 - Observation: the remaining validation blocker is now host disk capacity, not renderer correctness.
-  Evidence: targeted `xcodebuild` runs after the semantic fixes fail while creating log stores or `.xcresult` diagnostics with `No space left on device`, including `/tmp/swift-markdown-viewer-commonmark-noresult/Logs/*` and `/var/folders/.../result.xcresult`.
+  Evidence: targeted `xcodebuild` runs after the semantic fixes fail while creating log stores or `.xcresult` diagnostics with `No space left on device`, including `/tmp/free-markdown-viewer-commonmark-noresult/Logs/*` and `/var/folders/.../result.xcresult`.
 
 - Observation: the host-based XCTest path still crashes inside `MarkdownRenderer.attributedBlocks(from:)` with a libmalloc double-free when renderer tests execute under the app host, even though the same parsing path succeeds in a standalone `swiftc` probe.
-  Evidence: `~/Library/Logs/DiagnosticReports/Swift Markdown Viewer-2026-03-22-231526.ips` and `~/Library/Logs/DiagnosticReports/Swift Markdown Viewer-2026-03-22-231541.ips` both terminate in `MarkdownRenderer.BlockBuilder.__deallocating_deinit` with `pointer being freed was not allocated` during `testMarkdownRendererParsesMultipleBlockKinds` and `testMarkdownRendererPreservesBlockSemanticsAroundTable`.
+  Evidence: `~/Library/Logs/DiagnosticReports/Free Markdown Viewer-2026-03-22-231526.ips` and `~/Library/Logs/DiagnosticReports/Free Markdown Viewer-2026-03-22-231541.ips` both terminate in `MarkdownRenderer.BlockBuilder.__deallocating_deinit` with `pointer being freed was not allocated` during `testMarkdownRendererParsesMultipleBlockKinds` and `testMarkdownRendererPreservesBlockSemanticsAroundTable`.
 
 ## Decision Log
 
@@ -99,7 +99,7 @@ The user-visible proof is simple. A newcomer should be able to open the reposito
   Rationale: the product brief demands machine-readable state dumps, deterministic checkpoints, and non-fragile control seams. A file-backed bridge is shell-friendly, easy for Codex to drive, and avoids permissions problems that come with external screen recording or coordinate-based automation. The same bridge can be shared across macOS and simulator runs.
   Date/Author: 2026-03-19 / Codex
 
-- Decision: keep the existing `Swift Markdown ViewerTests` and `Swift Markdown ViewerUITests` targets initially, and add platform-specific test files plus destination filtering before splitting into dedicated macOS/iOS UI targets.
+- Decision: keep the existing `Free Markdown ViewerTests` and `Free Markdown ViewerUITests` targets initially, and add platform-specific test files plus destination filtering before splitting into dedicated macOS/iOS UI targets.
   Rationale: the repository is still empty. Xcode target sprawl would add maintenance before there is enough code to justify it. Scripts can abstract the difference between one UI target with multiple destinations and later dedicated targets if the project grows into that shape.
   Date/Author: 2026-03-20 / Codex
 
@@ -131,7 +131,7 @@ The latest mixed-table correction improves block-structure fidelity: headings an
 
 ## Context and Orientation
 
-The live repository currently has one meaningful code area: `Swift Markdown Viewer/`, which contains the Xcode project, the app target, the unit-test target, and the UI-test target. The app entry point is `Swift Markdown Viewer/Swift Markdown Viewer/Swift_Markdown_ViewerApp.swift`. The placeholder root view is `Swift Markdown Viewer/Swift Markdown Viewer/ContentView.swift`. The default tests live in `Swift Markdown Viewer/Swift Markdown ViewerTests/Swift_Markdown_ViewerTests.swift` and `Swift Markdown Viewer/Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests.swift`. The current product source of truth is `codex_execplan_native_universal_gfm_viewer.md`, which supersedes the older macOS brief.
+The live repository currently has one meaningful code area: `Free Markdown Viewer/`, which contains the Xcode project, the app target, the unit-test target, and the UI-test target. The app entry point is `Free Markdown Viewer/Free Markdown Viewer/Free_Markdown_ViewerApp.swift`. The placeholder root view is `Free Markdown Viewer/Free Markdown Viewer/ContentView.swift`. The default tests live in `Free Markdown Viewer/Free Markdown ViewerTests/Free_Markdown_ViewerTests.swift` and `Free Markdown Viewer/Free Markdown ViewerUITests/Free_Markdown_ViewerUITests.swift`. The current product source of truth is `codex_execplan_native_universal_gfm_viewer.md`, which supersedes the older macOS brief.
 
 When this plan says “harness”, it means four things together. First, it means durable control-plane documentation such as `README.md`, `AGENTS.md`, `ARCHITECTURE.md`, and the ExecPlan standards. Second, it means shell wrappers that hide `xcodebuild` complexity and give Codex one stable build/test/capture interface across macOS and simulator destinations. Third, it means an in-app debug seam that can open fixtures, change state, and dump structured artifacts without human clicking. Fourth, it means knowledge-maintenance automation such as repo-map generation, ExecPlan validation, and docs verification so the control plane does not rot as the app grows.
 
@@ -159,9 +159,9 @@ The wrapper layer must hide all path quoting, destination selection, simulator b
 
 ### Milestone 3: Add the shared in-app harness seam and deterministic artifact writers
 
-Refactor the placeholder app shell enough to host harness code without waiting for the full renderer. Keep `Swift Markdown Viewer/Swift Markdown Viewer/Swift_Markdown_ViewerApp.swift` as the app entry point, but move the real shell into structured files under `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/`, `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/`, and `Swift Markdown Viewer/Swift Markdown Viewer/App/Platform/`. Create `HarnessLaunchOptions.swift` to parse launch flags like `--fixture-root`, `--open-file`, `--theme`, `--window-size`, `--disable-file-watch`, `--dump-visible-state`, `--dump-perf-state`, `--screenshot-dir`, `--ui-test-mode`, `--harness-command-dir`, `--platform-target`, and `--device-class`. Create `HarnessStateSnapshot.swift` and `HarnessPerformanceSnapshot.swift` as `Codable` types whose JSON shape matches the universal product brief. Even before the full renderer exists, these types must already include stable fields for `platform`, `deviceClass`, `workspaceRoot`, `selectedFile`, `history`, `viewport`, `visibleBlocks`, sidebar selection, launch timing, visible block count, and media counters.
+Refactor the placeholder app shell enough to host harness code without waiting for the full renderer. Keep `Free Markdown Viewer/Free Markdown Viewer/Free_Markdown_ViewerApp.swift` as the app entry point, but move the real shell into structured files under `Free Markdown Viewer/Free Markdown Viewer/App/Shared/`, `Free Markdown Viewer/Free Markdown Viewer/App/Shell/`, and `Free Markdown Viewer/Free Markdown Viewer/App/Platform/`. Create `HarnessLaunchOptions.swift` to parse launch flags like `--fixture-root`, `--open-file`, `--theme`, `--window-size`, `--disable-file-watch`, `--dump-visible-state`, `--dump-perf-state`, `--screenshot-dir`, `--ui-test-mode`, `--harness-command-dir`, `--platform-target`, and `--device-class`. Create `HarnessStateSnapshot.swift` and `HarnessPerformanceSnapshot.swift` as `Codable` types whose JSON shape matches the universal product brief. Even before the full renderer exists, these types must already include stable fields for `platform`, `deviceClass`, `workspaceRoot`, `selectedFile`, `history`, `viewport`, `visibleBlocks`, sidebar selection, launch timing, visible block count, and media counters.
 
-Implement a debug-only file-backed command bridge under `Swift Markdown Viewer/Swift Markdown Viewer/Harness/` or an equivalent shared harness folder. The bridge should watch a command directory passed in through `--harness-command-dir`, read one JSON request at a time, execute it on the main app shell, and write a matching JSON response. Use stable request types such as `openWorkspace`, `openFile`, `setWindowSize`, `scrollToY`, `scrollToBlock`, `dumpState`, `dumpPerf`, `captureWindow`, `playMedia`, and `pauseMedia`. Add platform-specific artifact writers beneath `App/Platform/macOS/` and `App/Platform/iOS/` as needed, but keep the command codec and snapshot contracts shared. Do not depend on `screencapture`, screen-recording permissions, or coordinate-based clicking for the core artifact loop.
+Implement a debug-only file-backed command bridge under `Free Markdown Viewer/Free Markdown Viewer/Harness/` or an equivalent shared harness folder. The bridge should watch a command directory passed in through `--harness-command-dir`, read one JSON request at a time, execute it on the main app shell, and write a matching JSON response. Use stable request types such as `openWorkspace`, `openFile`, `setWindowSize`, `scrollToY`, `scrollToBlock`, `dumpState`, `dumpPerf`, `captureWindow`, `playMedia`, and `pauseMedia`. Add platform-specific artifact writers beneath `App/Platform/macOS/` and `App/Platform/iOS/` as needed, but keep the command codec and snapshot contracts shared. Do not depend on `screencapture`, screen-recording permissions, or coordinate-based clicking for the core artifact loop.
 
 This milestone must also define the shared workspace abstraction that the universal brief requires. Add a `WorkspacePath` value type and a `WorkspaceProvider` protocol in a shared location, then create a macOS filesystem provider plus an iOS/iPad test-fixture or document-provider-backed provider stub. The shell should also expose a central accessibility identifier catalog, for example `AccessibilityIDs.swift`, with stable IDs shared across platforms. It should surface `sidebar.outline` or `sidebar.list`, `nav.back`, `nav.forward`, `nav.title`, `document.scrollView`, and at least one placeholder block identifier early so UI tests and snapshots can stabilize before the full block renderer is complete.
 
@@ -175,7 +175,7 @@ This milestone must create the first checked-in expected outputs in `Fixtures/ex
 
 ### Milestone 5: Add native tests and knowledge-maintenance automation
 
-Turn the placeholder test bundles into real harness coverage. Inside `Swift Markdown Viewer/Swift Markdown ViewerTests/`, add tests for launch-option parsing, command-request decoding, command-response encoding, artifact path normalization, fixture path resolution, `WorkspaceProvider` behavior, and snapshot schema stability. Add integration-named tests in the same target for the bridge-to-shell flow, for example opening a fixture and observing a valid state dump without using XCUITest. Inside `Swift Markdown Viewer/Swift Markdown ViewerUITests/`, add harness smoke tests that launch the app with `--fixture-root`, assert the stable accessibility identifiers, and validate that the shell creates the requested dump files when the launch arguments ask for them. Split the test files by destination behavior, for example `HarnessSmokeMacOSTests.swift` and `HarnessSmokeIOSTests.swift`, even if they still live inside one XCUITest target at first.
+Turn the placeholder test bundles into real harness coverage. Inside `Free Markdown Viewer/Free Markdown ViewerTests/`, add tests for launch-option parsing, command-request decoding, command-response encoding, artifact path normalization, fixture path resolution, `WorkspaceProvider` behavior, and snapshot schema stability. Add integration-named tests in the same target for the bridge-to-shell flow, for example opening a fixture and observing a valid state dump without using XCUITest. Inside `Free Markdown Viewer/Free Markdown ViewerUITests/`, add harness smoke tests that launch the app with `--fixture-root`, assert the stable accessibility identifiers, and validate that the shell creates the requested dump files when the launch arguments ask for them. Split the test files by destination behavior, for example `HarnessSmokeMacOSTests.swift` and `HarnessSmokeIOSTests.swift`, even if they still live inside one XCUITest target at first.
 
 Create `scripts/check_execplan.py` plus `scripts/knowledge/check_docs.py`, `scripts/knowledge/generate_repo_map.py`, `scripts/knowledge/update_quality_score.py`, and `scripts/knowledge/suggest_doc_updates.py`. These should follow the reference harness pattern but adapt to this repository’s native layout. The repo-map generator must ignore `artifacts/`, `.git/`, `DerivedData`, `xcuserdata`, `tmp/`, and any generated screenshot/result-bundle directories. `check_docs.py` must verify the presence of the control-plane docs and call `scripts/check_execplan.py`. `update_quality_score.py` should summarize harness debt such as missing docs, missing fixture outputs, missing test layers, missing simulator coverage, and missing checkpoint coverage. Add `docs/generated/repo-map.json` as a checked-in artifact.
 
@@ -189,13 +189,13 @@ This milestone is the proof that the harness is not just documentation and scrip
 
 ## Concrete Steps
 
-Run all commands from `/Users/matthewmoore/Projects/swift-markdown-viewer` unless stated otherwise.
+Run all commands from `/Users/matthewmoore/Projects/free-markdown-viewer` unless stated otherwise.
 
 1. Verify the current bootstrap assumptions before editing scripts or docs:
 
-       xcodebuild -list -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj'
+       xcodebuild -list -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj'
 
-   Expected result: the scheme list includes `Swift Markdown Viewer`.
+   Expected result: the scheme list includes `Free Markdown Viewer`.
 
 2. Create the control-plane docs and metadata from Milestone 1, then confirm the new plan-routing layer exists:
 
@@ -349,7 +349,7 @@ The wrapper scripts should standardize artifacts like this:
 
 Create `scripts/lib/xcode-env.sh` with exported variables for the project path, scheme, macOS destination, iPhone simulator destination, iPad simulator destination, DerivedData directory, result-bundle directory, fixture root, and artifacts root. All other shell scripts must source this file instead of duplicating those values.
 
-In a shared harness file such as `Swift Markdown Viewer/Swift Markdown Viewer/Harness/HarnessLaunchOptions.swift`, define types equivalent to:
+In a shared harness file such as `Free Markdown Viewer/Free Markdown Viewer/Harness/HarnessLaunchOptions.swift`, define types equivalent to:
 
     enum HarnessPlatformTarget: String, Codable {
         case macOS
@@ -377,7 +377,7 @@ In a shared harness file such as `Swift Markdown Viewer/Swift Markdown Viewer/Ha
         let deviceClass: HarnessDeviceClass
     }
 
-In a shared workspace file such as `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/WorkspaceProvider.swift`, define the universal workspace contract required by the product brief:
+In a shared workspace file such as `Free Markdown Viewer/Free Markdown Viewer/App/Shared/WorkspaceProvider.swift`, define the universal workspace contract required by the product brief:
 
     struct WorkspacePath: Hashable, Codable {
         let rawValue: String
@@ -389,9 +389,9 @@ In a shared workspace file such as `Swift Markdown Viewer/Swift Markdown Viewer/
         func resolveMediaURL(for path: WorkspacePath) async throws -> URL
     }
 
-In `Swift Markdown Viewer/Swift Markdown Viewer/Harness/HarnessCommand.swift`, define request and response types for the file-backed bridge. The request side must support at least `openWorkspace`, `openFile`, `setWindowSize`, `scrollToY`, `scrollToBlock`, `dumpState`, `dumpPerf`, `captureWindow`, `playMedia`, and `pauseMedia`. The response side must always echo the request `id` and include either a typed `result` payload or an explicit failure payload with a readable message.
+In `Free Markdown Viewer/Free Markdown Viewer/Harness/HarnessCommand.swift`, define request and response types for the file-backed bridge. The request side must support at least `openWorkspace`, `openFile`, `setWindowSize`, `scrollToY`, `scrollToBlock`, `dumpState`, `dumpPerf`, `captureWindow`, `playMedia`, and `pauseMedia`. The response side must always echo the request `id` and include either a typed `result` payload or an explicit failure payload with a readable message.
 
-In shared harness files such as `Swift Markdown Viewer/Swift Markdown Viewer/Harness/HarnessStateSnapshot.swift` and `Swift Markdown Viewer/Swift Markdown Viewer/Harness/HarnessPerformanceSnapshot.swift`, define the stable JSON contracts used by the harness artifacts. These files are part of the public harness contract inside the repository. If their shape changes, update `docs/debug-contracts.md`, the tests, the expected fixtures, and the plan in the same change.
+In shared harness files such as `Free Markdown Viewer/Free Markdown Viewer/Harness/HarnessStateSnapshot.swift` and `Free Markdown Viewer/Free Markdown Viewer/Harness/HarnessPerformanceSnapshot.swift`, define the stable JSON contracts used by the harness artifacts. These files are part of the public harness contract inside the repository. If their shape changes, update `docs/debug-contracts.md`, the tests, the expected fixtures, and the plan in the same change.
 
 Use system frameworks only unless a later milestone proves a missing capability. The core dependencies should be SwiftUI for the app shell, Foundation for JSON and file I/O, XCTest/XCUITest for tests, Python 3 standard library for docs and repo-map scripts, AppKit for macOS host adapters only, and UIKit for iOS/iPad host adapters only. Do not introduce `WKWebView`, HTML rendering, JavaScript execution, npm-based control scripts, or any dependency that weakens the native-renderer or shared-core constraints.
 

@@ -16,10 +16,10 @@ Restore the same sidebar quick-filter affordance on iPhone and iPad that already
 ## Surprises & Discoveries
 
 - Observation: the filtering behavior itself is already cross-platform because `filteredFiles` always delegates to `AppModel.filteredFiles(from:matching:)`; only the input UI is missing on iOS.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/ViewerShellView.swift` defines `sidebarFilterText` and `filteredFiles` outside platform guards, but wraps `sidebarFilterField` and its insertion in `#if os(macOS)`.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/App/Shell/ViewerShellView.swift` defines `sidebarFilterText` and `filteredFiles` outside platform guards, but wraps `sidebarFilterField` and its insertion in `#if os(macOS)`.
 
-- Observation: the new iPhone UITest compiled successfully for iOS, but the local simulator refused to launch `Swift-Markdown-ViewerUITests.xctrunner`, so the new UI regression could not be executed end to end in this environment.
-  Evidence: the focused `xcodebuild ... "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testiPhoneDrawerQuickFilterNarrowsSidebarFiles" test` run failed with `FBSOpenApplicationServiceErrorDomain Code=1` and `RequestDenied` while launching `com.matthewpaulmoore.Swift-Markdown-ViewerUITests.xctrunner`.
+- Observation: the new iPhone UITest compiled successfully for iOS, but the local simulator refused to launch `Free-Markdown-ViewerUITests.xctrunner`, so the new UI regression could not be executed end to end in this environment.
+  Evidence: the focused `xcodebuild ... "-only-testing:Free Markdown ViewerUITests/Free_Markdown_ViewerUITests/testiPhoneDrawerQuickFilterNarrowsSidebarFiles" test` run failed with `FBSOpenApplicationServiceErrorDomain Code=1` and `RequestDenied` while launching `com.matthewpaulmoore.Free-Markdown-ViewerUITests.xctrunner`.
 
 - Observation: the existing `./scripts/test-ui-ios --device iphone --smoke` wrapper still builds the app and boots the simulator, but the capture phase can exit with a generic `No such file or directory` before copying the harness artifacts.
   Evidence: the smoke run reported `** BUILD SUCCEEDED **` and completed `simctl bootstatus`, then exited with `NSPOSIXErrorDomain, code=2` and left `artifacts/checkpoints/shell-smoke-iphone/` empty.
@@ -40,10 +40,10 @@ The implementation stayed intentionally small. Rather than inventing an iOS-only
 
 Relevant files:
 
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/ViewerShellView.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/Harness/AccessibilityIDs.swift`
-- `Swift Markdown Viewer/Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests.swift`
-- `Swift Markdown Viewer/Swift Markdown ViewerTests/Swift_Markdown_ViewerTests.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shell/ViewerShellView.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/Harness/AccessibilityIDs.swift`
+- `Free Markdown Viewer/Free Markdown ViewerUITests/Free_Markdown_ViewerUITests.swift`
+- `Free Markdown Viewer/Free Markdown ViewerTests/Free_Markdown_ViewerTests.swift`
 - `docs/debug-contracts.md`
 
 ## Plan of Work
@@ -77,15 +77,15 @@ The change is limited to the shared sidebar view, accessibility identifiers, and
 
 Planned validation commands:
 
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-ios-filter -destination "platform=iOS Simulator,name=iPhone 16" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testiPhoneDrawerQuickFilterNarrowsSidebarFiles" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-ios-filter -destination "platform=iOS Simulator,name=iPhone 16" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerUITests/Free_Markdown_ViewerUITests/testiPhoneDrawerQuickFilterNarrowsSidebarFiles" test`
 - `python3 scripts/check_execplan.py`
 - `python3 scripts/knowledge/check_docs.py`
 
 Validation completed:
 
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-ios-filter -destination 'platform=iOS Simulator,id=32B9E37C-0C26-4514-9BBE-65718682A713' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testiPhoneDrawerQuickFilterNarrowsSidebarFiles" test` failed in the environment while launching `Swift-Markdown-ViewerUITests.xctrunner` on the simulator.
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-filter-unit -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelFiltersFilesByQuickFilterQuery" test`
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -sdk iphonesimulator -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-ios-filter-build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= build`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-ios-filter -destination 'platform=iOS Simulator,id=32B9E37C-0C26-4514-9BBE-65718682A713' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerUITests/Free_Markdown_ViewerUITests/testiPhoneDrawerQuickFilterNarrowsSidebarFiles" test` failed in the environment while launching `Free-Markdown-ViewerUITests.xctrunner` on the simulator.
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-filter-unit -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelFiltersFilesByQuickFilterQuery" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -sdk iphonesimulator -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-ios-filter-build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= build`
 - `./scripts/test-ui-ios --device iphone --smoke` built and booted the simulator but failed in the existing capture wrapper before artifacts were copied.
 - `python3 scripts/check_execplan.py`
 - `python3 scripts/knowledge/check_docs.py`

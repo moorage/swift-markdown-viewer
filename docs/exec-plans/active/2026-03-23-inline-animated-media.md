@@ -33,13 +33,13 @@ This initial slice intentionally stops before implementation. It seeds determini
   Evidence: `strings -a tmp/rickrolled.png | rg 'acTL|fcTL|fdAT|IDAT'` returns APNG chunks, and `xxd -g 1 -l 256 tmp/rickrolled.png` shows `acTL` and `fcTL` chunk headers near the start of the file.
 
 - Observation: the current renderer and harness do not yet expose the media contract that the brief expects.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/Models.swift` has no dedicated animated-image or video block kind, `SelectableDocumentFormatter` turns `.image` blocks into `"Image:"` / `"Source:"` text, and `AppModel.performanceSnapshot()` hard-codes both media counters to zero.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/App/Shared/Models.swift` has no dedicated animated-image or video block kind, `SelectableDocumentFormatter` turns `.image` blocks into `"Image:"` / `"Source:"` text, and `AppModel.performanceSnapshot()` hard-codes both media counters to zero.
 
 - Observation: the macOS UI-test environment currently fails before any new media assertion can run.
-  Evidence: `/tmp/swift-markdown-viewer-inline-media-ui-check/Logs/Test/Test-Swift Markdown Viewer-2026.03.23_22-39-14--0700.xcresult` reports `Swift Markdown ViewerUITests-Runner ... Early unexpected exit ... Test crashed with signal kill before establishing connection`, and macOS surfaced the dialog that the runner app was "damaged" and should be moved to the Trash.
+  Evidence: `/tmp/free-markdown-viewer-inline-media-ui-check/Logs/Test/Test-Free Markdown Viewer-2026.03.23_22-39-14--0700.xcresult` reports `Free Markdown ViewerUITests-Runner ... Early unexpected exit ... Test crashed with signal kill before establishing connection`, and macOS surfaced the dialog that the runner app was "damaged" and should be moved to the Trash.
 
 - Observation: the UITest runner provenance marker remains on the built macOS runner bundle even after direct `xattr -d` attempts.
-  Evidence: `xattr -l /tmp/swift-markdown-viewer-inline-media-ui-bft/Build/Products/Debug/Swift Markdown ViewerUITests-Runner.app` still reports `com.apple.provenance` after explicit removal commands returned success.
+  Evidence: `xattr -l /tmp/free-markdown-viewer-inline-media-ui-bft/Build/Products/Debug/Free Markdown ViewerUITests-Runner.app` still reports `com.apple.provenance` after explicit removal commands returned success.
 
 - Observation: on macOS 26.3.1 / Xcode 26.3, the local UITest runner failure was caused by the unsigned runner bundle layout rather than by the provenance marker alone.
   Evidence: the unsigned `build-for-testing` bundle fails `codesign --verify --deep --strict` with missing sealed resources, while the default-signed bundle still carries `com.apple.provenance` but passes the same strict verification and boots XCTest successfully.
@@ -95,15 +95,15 @@ Relevant files for the follow-up implementation:
 - `Fixtures/media/rickrolled.gif`
 - `Fixtures/media/rickrolled.png`
 - `Fixtures/media/rickrolled.mp4`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/Models.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/MarkdownRenderer.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/AppModel.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Platform/SelectableDocumentTextView.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/ViewerShellView.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/Harness/AccessibilityIDs.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/Harness/HarnessSnapshots.swift`
-- `Swift Markdown Viewer/Swift Markdown ViewerTests/InlineAnimatedMediaTests.swift`
-- `Swift Markdown Viewer/Swift Markdown ViewerUITests/InlineAnimatedMediaUITests.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/Models.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/MarkdownRenderer.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/AppModel.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Platform/SelectableDocumentTextView.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shell/ViewerShellView.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/Harness/AccessibilityIDs.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/Harness/HarnessSnapshots.swift`
+- `Free Markdown Viewer/Free Markdown ViewerTests/InlineAnimatedMediaTests.swift`
+- `Free Markdown Viewer/Free Markdown ViewerUITests/InlineAnimatedMediaUITests.swift`
 
 ## Plan of Work
 
@@ -125,7 +125,7 @@ Update state snapshots, accessibility IDs, and perf snapshots so the harness can
 
 ## Concrete Steps
 
-Run all commands from `/Users/matthewmoore/Projects/swift-markdown-viewer` unless stated otherwise.
+Run all commands from `/Users/matthewmoore/Projects/free-markdown-viewer` unless stated otherwise.
 
 1. Verify the seeded media fixtures are present and unchanged:
 
@@ -143,13 +143,13 @@ Run all commands from `/Users/matthewmoore/Projects/swift-markdown-viewer` unles
 
 3. Implement the shared parsing and classification changes, then run the targeted unit slice:
 
-       xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-unit -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/InlineAnimatedMediaTests" test
+       xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-unit -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/InlineAnimatedMediaTests" test
 
    Expected result: `InlineAnimatedMediaTests` pass with visible block kinds `animatedImage` for GIF/APNG and `video` for MP4.
 
 4. Implement accessible inline media hosts, then run the targeted UI slice:
 
-       xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-ui -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerUITests/InlineAnimatedMediaUITests" test
+       xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-ui -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerUITests/InlineAnimatedMediaUITests" test
 
    Expected result: the app exposes at least one `block.image.<id>` element for GIF/APNG fixtures and both `block.video.<id>` and `video.playButton.<id>` for the MP4 fixture.
 
@@ -187,29 +187,29 @@ Validation commands run for this planning slice:
 
 - `python3 scripts/check_execplan.py`
 - `python3 scripts/knowledge/check_docs.py`
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-unit-check -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/InlineAnimatedMediaTests" test`
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-ui-check -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerUITests/InlineAnimatedMediaUITests" test`
-- `xcrun xcresulttool get object --legacy --path '/tmp/swift-markdown-viewer-inline-media-ui-check/Logs/Test/Test-Swift Markdown Viewer-2026.03.23_22-39-14--0700.xcresult' --format json`
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-ui-bft -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= build-for-testing`
-- `xattr -d com.apple.provenance '/tmp/swift-markdown-viewer-inline-media-ui-bft/Build/Products/Debug/Swift Markdown ViewerUITests-Runner.app'`
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-regression -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/InlineAnimatedMediaTests" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testSelectableDocumentFormatterUsesRenderedDocumentText" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererParsesDirectImageFixture" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererParsesReferenceImageFixture" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-unit-check -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/InlineAnimatedMediaTests" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-ui-check -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerUITests/InlineAnimatedMediaUITests" test`
+- `xcrun xcresulttool get object --legacy --path '/tmp/free-markdown-viewer-inline-media-ui-check/Logs/Test/Test-Free Markdown Viewer-2026.03.23_22-39-14--0700.xcresult' --format json`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-ui-bft -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= build-for-testing`
+- `xattr -d com.apple.provenance '/tmp/free-markdown-viewer-inline-media-ui-bft/Build/Products/Debug/Free Markdown ViewerUITests-Runner.app'`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-regression -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/InlineAnimatedMediaTests" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testSelectableDocumentFormatterUsesRenderedDocumentText" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testMarkdownRendererParsesDirectImageFixture" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testMarkdownRendererParsesReferenceImageFixture" test`
 - `sw_vers`
 - `xcodebuild -version`
-- `xattr -lr '/tmp/swift-markdown-viewer-inline-media-ui-bft/Build/Products/Debug/Swift Markdown ViewerUITests-Runner.app'`
-- `codesign --verify --deep --strict --verbose=4 '/tmp/swift-markdown-viewer-inline-media-ui-bft/Build/Products/Debug/Swift Markdown ViewerUITests-Runner.app'`
-- `spctl -a -vv '/tmp/swift-markdown-viewer-inline-media-ui-bft/Build/Products/Debug/Swift Markdown ViewerUITests-Runner.app'`
-- `xcodebuild -quiet -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj' -scheme 'Swift Markdown Viewer' -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-ui-signed -destination 'platform=macOS,arch=arm64' "-only-testing:Swift Markdown ViewerUITests/InlineAnimatedMediaUITests" test`
-- `xcodebuild -quiet -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj' -scheme 'Swift Markdown Viewer' -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-ui-signed-bft -destination 'platform=macOS,arch=arm64' build-for-testing`
-- `codesign --verify --deep --strict --verbose=2 '/tmp/swift-markdown-viewer-inline-media-ui-signed-bft/Build/Products/Debug/Swift Markdown ViewerUITests-Runner.app'`
-- `xcodebuild -quiet -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj' -scheme 'Swift Markdown Viewer' -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-unit-final2 -destination 'platform=macOS,arch=arm64' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/InlineAnimatedMediaTests" test`
-- `xcodebuild -quiet -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj' -scheme 'Swift Markdown Viewer' -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-ui-signed-fix4 -destination 'platform=macOS,arch=arm64' "-only-testing:Swift Markdown ViewerUITests/InlineAnimatedMediaUITests" test`
-- `xcodebuild -quiet -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj' -scheme 'Swift Markdown Viewer' -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-ui-smoke-signed-fix2 -destination 'platform=macOS,arch=arm64' "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testSmokeLaunchShowsHarnessShell" test`
+- `xattr -lr '/tmp/free-markdown-viewer-inline-media-ui-bft/Build/Products/Debug/Free Markdown ViewerUITests-Runner.app'`
+- `codesign --verify --deep --strict --verbose=4 '/tmp/free-markdown-viewer-inline-media-ui-bft/Build/Products/Debug/Free Markdown ViewerUITests-Runner.app'`
+- `spctl -a -vv '/tmp/free-markdown-viewer-inline-media-ui-bft/Build/Products/Debug/Free Markdown ViewerUITests-Runner.app'`
+- `xcodebuild -quiet -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj' -scheme 'Free Markdown Viewer' -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-ui-signed -destination 'platform=macOS,arch=arm64' "-only-testing:Free Markdown ViewerUITests/InlineAnimatedMediaUITests" test`
+- `xcodebuild -quiet -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj' -scheme 'Free Markdown Viewer' -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-ui-signed-bft -destination 'platform=macOS,arch=arm64' build-for-testing`
+- `codesign --verify --deep --strict --verbose=2 '/tmp/free-markdown-viewer-inline-media-ui-signed-bft/Build/Products/Debug/Free Markdown ViewerUITests-Runner.app'`
+- `xcodebuild -quiet -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj' -scheme 'Free Markdown Viewer' -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-unit-final2 -destination 'platform=macOS,arch=arm64' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/InlineAnimatedMediaTests" test`
+- `xcodebuild -quiet -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj' -scheme 'Free Markdown Viewer' -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-ui-signed-fix4 -destination 'platform=macOS,arch=arm64' "-only-testing:Free Markdown ViewerUITests/InlineAnimatedMediaUITests" test`
+- `xcodebuild -quiet -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj' -scheme 'Free Markdown Viewer' -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-ui-smoke-signed-fix2 -destination 'platform=macOS,arch=arm64' "-only-testing:Free Markdown ViewerUITests/Free_Markdown_ViewerUITests/testSmokeLaunchShowsHarnessShell" test`
 - `swift - <<'SWIFT' ... NSImage(contentsOf:) probe for Fixtures/media/rickrolled.gif and Fixtures/media/rickrolled.png ... SWIFT`
 - `swift - <<'SWIFT' ... AVURLAsset probe for Fixtures/media/rickrolled.mp4 ... SWIFT`
-- `xcodebuild -quiet -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj' -scheme 'Swift Markdown Viewer' -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-unit-renderfix -destination 'platform=macOS,arch=arm64' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/InlineAnimatedMediaTests" test`
-- `xcodebuild -quiet -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj' -scheme 'Swift Markdown Viewer' -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-inline-media-ui-renderfix -destination 'platform=macOS,arch=arm64' "-only-testing:Swift Markdown ViewerUITests/InlineAnimatedMediaUITests" test`
-- `xcodebuild -quiet -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj' -scheme 'Swift Markdown Viewer' -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-ui-smoke-after-media-fix -destination 'platform=macOS,arch=arm64' "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testSmokeLaunchShowsHarnessShell" test`
-- `xcodebuild -quiet -project 'Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj' -scheme 'Swift Markdown Viewer' -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-ui-smoke-titlefix -destination 'platform=macOS,arch=arm64' "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testSmokeLaunchShowsHarnessShell" test`
+- `xcodebuild -quiet -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj' -scheme 'Free Markdown Viewer' -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-unit-renderfix -destination 'platform=macOS,arch=arm64' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/InlineAnimatedMediaTests" test`
+- `xcodebuild -quiet -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj' -scheme 'Free Markdown Viewer' -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-inline-media-ui-renderfix -destination 'platform=macOS,arch=arm64' "-only-testing:Free Markdown ViewerUITests/InlineAnimatedMediaUITests" test`
+- `xcodebuild -quiet -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj' -scheme 'Free Markdown Viewer' -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-ui-smoke-after-media-fix -destination 'platform=macOS,arch=arm64' "-only-testing:Free Markdown ViewerUITests/Free_Markdown_ViewerUITests/testSmokeLaunchShowsHarnessShell" test`
+- `xcodebuild -quiet -project 'Free Markdown Viewer/Free Markdown Viewer.xcodeproj' -scheme 'Free Markdown Viewer' -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-ui-smoke-titlefix -destination 'platform=macOS,arch=arm64' "-only-testing:Free Markdown ViewerUITests/Free_Markdown_ViewerUITests/testSmokeLaunchShowsHarnessShell" test`
 
 ## Interfaces and Dependencies
 

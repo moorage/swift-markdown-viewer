@@ -25,7 +25,7 @@ Purpose:
 
 Primary code area:
 
-- `Swift Markdown Viewer/Swift Markdown Viewer/`
+- `Free Markdown Viewer/Free Markdown Viewer/`
 
 Stable concepts:
 
@@ -43,8 +43,8 @@ Purpose:
 
 Primary code areas:
 
-- `Swift Markdown Viewer/Swift Markdown ViewerTests/`
-- `Swift Markdown Viewer/Swift Markdown ViewerUITests/`
+- `Free Markdown Viewer/Free Markdown ViewerTests/`
+- `Free Markdown Viewer/Free Markdown ViewerUITests/`
 
 ### Fixtures and artifacts
 

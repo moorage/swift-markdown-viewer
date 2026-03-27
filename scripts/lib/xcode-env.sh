@@ -11,9 +11,11 @@ else
 fi
 
 ROOT_DIR="$(cd "$(dirname "${XCODE_ENV_SOURCE_PATH}")/../.." && pwd)"
-PROJECT_PATH="${ROOT_DIR}/Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj"
-SCHEME_NAME="Swift Markdown Viewer"
-BUNDLE_IDENTIFIER="com.souschefstudio.Swift-Markdown-Viewer"
+source "${ROOT_DIR}/scripts/lib/product-identity.sh"
+
+PROJECT_PATH="${ROOT_DIR}/${APP_PROJECT_DIR_NAME}/${APP_PROJECT_FILE_NAME}"
+SCHEME_NAME="${APP_SCHEME_NAME}"
+BUNDLE_IDENTIFIER="${APP_BUNDLE_IDENTIFIER}"
 ARTIFACTS_DIR="${ROOT_DIR}/artifacts"
 XCODEBUILD_DIR="${ARTIFACTS_DIR}/xcodebuild"
 TEST_RESULTS_DIR="${ARTIFACTS_DIR}/test-results"
@@ -180,15 +182,15 @@ result_bundle_path() {
 }
 
 app_bundle_path() {
-  printf '%s/Build/Products/Debug/Swift Markdown Viewer.app\n' "${DERIVED_DATA_DIR}"
+  printf '%s/Build/Products/Debug/%s.app\n' "${DERIVED_DATA_DIR}" "${APP_PRODUCT_NAME}"
 }
 
 ios_app_bundle_path() {
-  printf '%s/Build/Products/Debug-iphonesimulator/Swift Markdown Viewer.app\n' "${DERIVED_DATA_DIR}"
+  printf '%s/Build/Products/Debug-iphonesimulator/%s.app\n' "${DERIVED_DATA_DIR}" "${APP_PRODUCT_NAME}"
 }
 
 app_binary_path() {
-  printf '%s/Contents/MacOS/Swift Markdown Viewer\n' "$(app_bundle_path)"
+  printf '%s/Contents/MacOS/%s\n' "$(app_bundle_path)" "${APP_PRODUCT_NAME}"
 }
 
 ios_platform_installed() {

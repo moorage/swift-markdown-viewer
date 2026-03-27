@@ -1,5 +1,5 @@
 import XCTest
-@testable import Swift_Markdown_Viewer
+@testable import Free_Markdown_Viewer
 
 final class InlineAnimatedMediaTests: XCTestCase {
     private var repoRootURL: URL {

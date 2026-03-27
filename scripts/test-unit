@@ -20,5 +20,5 @@ xcodebuild \
   CODE_SIGNING_ALLOWED=NO \
   CODE_SIGNING_REQUIRED=NO \
   CODE_SIGN_IDENTITY="" \
-  -only-testing:"Swift Markdown ViewerTests" \
+  -only-testing:"${APP_UNIT_TEST_TARGET_NAME}" \
   test

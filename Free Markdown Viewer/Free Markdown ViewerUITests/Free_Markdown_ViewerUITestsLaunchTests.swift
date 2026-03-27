@@ -1,13 +1,13 @@
 //
-//  Swift_Markdown_ViewerUITestsLaunchTests.swift
-//  Swift Markdown ViewerUITests
+//  Free_Markdown_ViewerUITestsLaunchTests.swift
+//  Free Markdown ViewerUITests
 //
 //  Created by Matthew Moore on 3/19/26.
 //
 
 import XCTest
 
-final class Swift_Markdown_ViewerUITestsLaunchTests: XCTestCase {
+final class Free_Markdown_ViewerUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

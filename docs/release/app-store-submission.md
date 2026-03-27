@@ -10,17 +10,17 @@ Current icon source:
 
 Recommended public URLs:
 
-- Product / marketing URL: `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer`
-- Support URL: `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer/support`
+- Product / marketing URL: `https://www.matthewpaulmoore.com/apps/free-markdown-viewer`
+- Support URL: `https://www.matthewpaulmoore.com/apps/free-markdown-viewer/support`
 - Privacy policy URL: `https://www.matthewpaulmoore.com/legal/privacy`
 - Terms of use URL: `https://www.matthewpaulmoore.com/legal/terms`
 
 Recommended mapping in App Store Connect:
 
-- App name: `Markdown Viewer`
+- App name: `Free Markdown Viewer`
 - Pricing: `Free`
-- Support URL: `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer/support`
-- Marketing URL: `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer`
+- Support URL: `https://www.matthewpaulmoore.com/apps/free-markdown-viewer/support`
+- Marketing URL: `https://www.matthewpaulmoore.com/apps/free-markdown-viewer`
 - Privacy Policy URL: `https://www.matthewpaulmoore.com/legal/privacy`
 
 ## Default legal posture
@@ -62,7 +62,7 @@ Draft source pages live here:
 
 - `docs/release/app-store-metadata.md`
 - `docs/release/screenshot-capture.md`
-- `docs/release/swift-markdown-viewer-support.md`
+- `docs/release/free-markdown-viewer-support.md`
 - `docs/release/privacy-policy-draft.md`
 - `docs/release/terms-of-use-draft.md`
 - `docs/release/app-review-notes.md`
@@ -104,10 +104,10 @@ Create the app record manually in App Store Connect. Apple currently requires th
 Recommended values for the first create step:
 
 - Platforms: `iOS` and `macOS`
-- App name: `Markdown Viewer`
+- App name: `Free Markdown Viewer`
 - Primary language: `English (U.S.)`
-- Bundle ID: `com.souschefstudio.Swift-Markdown-Viewer`
-- SKU: `com.souschefstudio.Swift-Markdown-Viewer`
+- Bundle ID: `com.souschefstudio.Free-Markdown-Viewer`
+- SKU: `FREEMD`
 - User access: `Full Access` unless you intentionally want to limit the app record
 
 The repo-owned App Store Connect helper can confirm the current state before and after that step:

@@ -1,14 +1,14 @@
-# Swift Markdown Viewer Support
+# Free Markdown Viewer Support
 
 Recommended live URL:
 
-- `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer/support`
+- `https://www.matthewpaulmoore.com/apps/free-markdown-viewer/support`
 
 Suggested page content:
 
 ## Overview
 
-Swift Markdown Viewer is a free app for viewing Markdown folders on macOS, iPhone, and iPad.
+Free Markdown Viewer is a free app for viewing Markdown folders on macOS, iPhone, and iPad.
 
 ## Supported workflow
 

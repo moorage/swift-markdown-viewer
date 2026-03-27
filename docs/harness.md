@@ -17,7 +17,7 @@ The harness is the shell-first control plane for this repository.
 - `./scripts/export-app-store --platform ios --archive-path <xcarchive> --export-options-plist <plist>`
 - `./scripts/export-app-store --platform macos --archive-path <xcarchive> --export-options-plist <plist>`
 - `./scripts/app-store-connect inspect-app`
-- `./scripts/app-store-connect request GET /v1/apps --query 'filter[bundleId]=com.souschefstudio.Swift-Markdown-Viewer'`
+- `./scripts/app-store-connect request GET /v1/apps --query 'filter[bundleId]=com.souschefstudio.Free-Markdown-Viewer'`
 - `./scripts/agent-loop`
 
 ## Artifacts

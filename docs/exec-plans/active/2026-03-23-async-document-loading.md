@@ -17,10 +17,10 @@ After this change, document selection no longer blocks the app window while mark
 ## Surprises & Discoveries
 
 - Observation: the sidebar next/previous behavior already routes through one helper, so load cancellation can be centralized in `openFile(_:)`.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/AppModel.swift` sends arrow-key movement through `selectAdjacentFile(offset:)`, which already resolves a target path then calls `openFile(_:)`.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/App/Shared/AppModel.swift` sends arrow-key movement through `selectAdjacentFile(offset:)`, which already resolves a target path then calls `openFile(_:)`.
 
 - Observation: the module’s default main-actor isolation was not just noisy for parser helpers; under host-based renderer tests it could escalate into an abort once parsing ran off the main actor.
-  Evidence: the targeted selection-validation slice crashed in `Swift_Markdown_ViewerTests.testMarkdownRendererParsesMultipleBlockKinds()` until `MarkdownRenderer` itself was marked `nonisolated`.
+  Evidence: the targeted selection-validation slice crashed in `Free_Markdown_ViewerTests.testMarkdownRendererParsesMultipleBlockKinds()` until `MarkdownRenderer` itself was marked `nonisolated`.
 
 ## Decision Log
 
@@ -40,9 +40,9 @@ After this change, document selection no longer blocks the app window while mark
 
 Relevant files:
 
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/AppModel.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/ViewerShellView.swift`
-- `Swift Markdown Viewer/Swift Markdown ViewerTests/Swift_Markdown_ViewerTests.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/AppModel.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shell/ViewerShellView.swift`
+- `Free Markdown Viewer/Free Markdown ViewerTests/Free_Markdown_ViewerTests.swift`
 
 ## Plan of Work
 
@@ -77,7 +77,7 @@ This change is limited to in-process state management. If async loading regresse
 
 Expected validation command:
 
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-async-loading -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAdjacentFilePathMovesSidebarSelection" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelAutoPromptsForFolderOnNormalMacLaunch" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelSkipsAutoPromptDuringUITestLaunch" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-async-loading -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAdjacentFilePathMovesSidebarSelection" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelAutoPromptsForFolderOnNormalMacLaunch" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelSkipsAutoPromptDuringUITestLaunch" test`
 - `python3 scripts/check_execplan.py`
 - `python3 scripts/knowledge/check_docs.py`
 

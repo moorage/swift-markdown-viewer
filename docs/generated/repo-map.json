@@ -34,6 +34,10 @@
       ]
     },
     {
+      "type": "file",
+      "name": ".env"
+    },
+    {
       "type": "dir",
       "name": ".github",
       "children": [
@@ -66,9 +70,47 @@
       "name": "ARCHITECTURE.md"
     },
     {
+      "type": "file",
+      "name": "AuthKey.p8"
+    },
+    {
+      "type": "file",
+      "name": "CertificateSigningRequest.certSigningRequest"
+    },
+    {
       "type": "dir",
       "name": "Fixtures",
       "children": [
+        {
+          "type": "dir",
+          "name": "app-store",
+          "children": [
+            {
+              "type": "file",
+              "name": "Architecture Overview.md"
+            },
+            {
+              "type": "file",
+              "name": "Code Sample.md"
+            },
+            {
+              "type": "file",
+              "name": "Image Preview.md"
+            },
+            {
+              "type": "file",
+              "name": "Navigation Notes.md"
+            },
+            {
+              "type": "file",
+              "name": "Open Markdown Folders.md"
+            },
+            {
+              "type": "file",
+              "name": "preview-icon.png"
+            }
+          ]
+        },
         {
           "type": "dir",
           "name": "docs",
@@ -76,6 +118,14 @@
             {
               "type": "file",
               "name": "anchors_and_relative_links.md"
+            },
+            {
+              "type": "file",
+              "name": "animated_apng.md"
+            },
+            {
+              "type": "file",
+              "name": "animated_gif.md"
             },
             {
               "type": "file",
@@ -88,6 +138,10 @@
             {
               "type": "file",
               "name": "stress_1000_blocks.md"
+            },
+            {
+              "type": "file",
+              "name": "video_local_mp4.md"
             }
           ]
         },
@@ -3749,6 +3803,24 @@
         },
         {
           "type": "dir",
+          "name": "media",
+          "children": [
+            {
+              "type": "file",
+              "name": "rickrolled.gif"
+            },
+            {
+              "type": "file",
+              "name": "rickrolled.mp4"
+            },
+            {
+              "type": "file",
+              "name": "rickrolled.png"
+            }
+          ]
+        },
+        {
+          "type": "dir",
           "name": "window-workspaces",
           "children": [
             {
@@ -3776,20 +3848,12 @@
       ]
     },
     {
-      "type": "file",
-      "name": "README.md"
-    },
-    {
-      "type": "file",
-      "name": "README_FOR_APES.md"
-    },
-    {
       "type": "dir",
-      "name": "Swift Markdown Viewer",
+      "name": "Free Markdown Viewer",
       "children": [
         {
           "type": "dir",
-          "name": "Swift Markdown Viewer",
+          "name": "Free Markdown Viewer",
           "children": [
             {
               "type": "dir",
@@ -3849,6 +3913,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "WorkspaceSecurityScope.swift"
+                    },
+                    {
+                      "type": "file",
                       "name": "WorkspaceWindowSessionStore.swift"
                     }
                   ]
@@ -3894,6 +3962,58 @@
                     {
                       "type": "file",
                       "name": "Contents.json"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-ios-1024-dark.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-ios-1024-tinted.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-ios-1024.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-mac-128.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-mac-128@2x.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-mac-16.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-mac-16@2x.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-mac-256.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-mac-256@2x.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-mac-32.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-mac-32@2x.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-mac-512.png"
+                    },
+                    {
+                      "type": "file",
+                      "name": "icon-mac-512@2x.png"
                     }
                   ]
                 },
@@ -3906,6 +4026,10 @@
             {
               "type": "file",
               "name": "ContentView.swift"
+            },
+            {
+              "type": "file",
+              "name": "Free_Markdown_ViewerApp.swift"
             },
             {
               "type": "dir",
@@ -3939,13 +4063,13 @@
             },
             {
               "type": "file",
-              "name": "Swift_Markdown_ViewerApp.swift"
+              "name": "PrivacyInfo.xcprivacy"
             }
           ]
         },
         {
           "type": "dir",
-          "name": "Swift Markdown Viewer.xcodeproj",
+          "name": "Free Markdown Viewer.xcodeproj",
           "children": [
             {
               "type": "file",
@@ -3982,25 +4106,79 @@
         },
         {
           "type": "dir",
-          "name": "Swift Markdown ViewerTests",
+          "name": "Free Markdown ViewerTests",
           "children": [
             {
               "type": "file",
-              "name": "Swift_Markdown_ViewerTests.swift"
+              "name": "Free_Markdown_ViewerTests.swift"
+            },
+            {
+              "type": "file",
+              "name": "InlineAnimatedMediaTests.swift"
             }
           ]
         },
         {
           "type": "dir",
-          "name": "Swift Markdown ViewerUITests",
+          "name": "Free Markdown ViewerUITests",
           "children": [
             {
               "type": "file",
-              "name": "Swift_Markdown_ViewerUITests.swift"
+              "name": "Free_Markdown_ViewerUITests.swift"
             },
             {
               "type": "file",
-              "name": "Swift_Markdown_ViewerUITestsLaunchTests.swift"
+              "name": "Free_Markdown_ViewerUITestsLaunchTests.swift"
+            },
+            {
+              "type": "file",
+              "name": "InlineAnimatedMediaUITests.swift"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": "README.md"
+    },
+    {
+      "type": "file",
+      "name": "README_FOR_APES.md"
+    },
+    {
+      "type": "dir",
+      "name": "Swift Markdown Viewer",
+      "children": [
+        {
+          "type": "dir",
+          "name": "Swift Markdown Viewer.xcodeproj",
+          "children": [
+            {
+              "type": "dir",
+              "name": "project.xcworkspace",
+              "children": [
+                {
+                  "type": "file",
+                  "name": "contents.xcworkspacedata"
+                },
+                {
+                  "type": "dir",
+                  "name": "xcuserdata",
+                  "children": [
+                    {
+                      "type": "dir",
+                      "name": "matthewmoore.xcuserdatad",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "UserInterfaceState.xcuserstate"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -4013,6 +4191,10 @@
     {
       "type": "file",
       "name": "default.profraw"
+    },
+    {
+      "type": "file",
+      "name": "distribution.cer"
     },
     {
       "type": "dir",
@@ -4060,11 +4242,35 @@
                 },
                 {
                   "type": "file",
+                  "name": "2026-03-23-inline-animated-media.md"
+                },
+                {
+                  "type": "file",
                   "name": "2026-03-23-session-restore.md"
                 },
                 {
                   "type": "file",
                   "name": "2026-03-23-window-scoped-workspaces.md"
+                },
+                {
+                  "type": "file",
+                  "name": "2026-03-24-app-store-readiness.md"
+                },
+                {
+                  "type": "file",
+                  "name": "2026-03-25-relative-markdown-links.md"
+                },
+                {
+                  "type": "file",
+                  "name": "2026-03-26-app-store-connect-release-setup.md"
+                },
+                {
+                  "type": "file",
+                  "name": "2026-03-26-ios-drawer-filter.md"
+                },
+                {
+                  "type": "file",
+                  "name": "2026-03-27-free-markdown-viewer-rename.md"
                 }
               ]
             },
@@ -4093,6 +4299,48 @@
         {
           "type": "file",
           "name": "harness.md"
+        },
+        {
+          "type": "dir",
+          "name": "release",
+          "children": [
+            {
+              "type": "file",
+              "name": "app-review-notes.md"
+            },
+            {
+              "type": "file",
+              "name": "app-store-metadata.md"
+            },
+            {
+              "type": "file",
+              "name": "app-store-submission.md"
+            },
+            {
+              "type": "file",
+              "name": "free-markdown-viewer-support.md"
+            },
+            {
+              "type": "file",
+              "name": "index.md"
+            },
+            {
+              "type": "file",
+              "name": "privacy-policy-draft.md"
+            },
+            {
+              "type": "file",
+              "name": "release-completion-checklist.md"
+            },
+            {
+              "type": "file",
+              "name": "screenshot-capture.md"
+            },
+            {
+              "type": "file",
+              "name": "terms-of-use-draft.md"
+            }
+          ]
         }
       ]
     },
@@ -4103,6 +4351,14 @@
         {
           "type": "file",
           "name": "agent-loop"
+        },
+        {
+          "type": "file",
+          "name": "app-store-connect"
+        },
+        {
+          "type": "file",
+          "name": "archive-release"
         },
         {
           "type": "file",
@@ -4119,6 +4375,10 @@
         {
           "type": "file",
           "name": "build_markdown_fixtures.py"
+        },
+        {
+          "type": "file",
+          "name": "capture-app-store-screenshots"
         },
         {
           "type": "file",
@@ -4139,6 +4399,10 @@
         {
           "type": "file",
           "name": "compare_renderer_to_safari.py"
+        },
+        {
+          "type": "file",
+          "name": "export-app-store"
         },
         {
           "type": "file",
@@ -4172,6 +4436,14 @@
           "children": [
             {
               "type": "file",
+              "name": "app_store_connect.py"
+            },
+            {
+              "type": "file",
+              "name": "product-identity.sh"
+            },
+            {
+              "type": "file",
               "name": "xcode-env.sh"
             }
           ]
@@ -4199,6 +4471,10 @@
         {
           "type": "file",
           "name": "test-unit"
+        },
+        {
+          "type": "file",
+          "name": "verify-product-identity"
         }
       ]
     }

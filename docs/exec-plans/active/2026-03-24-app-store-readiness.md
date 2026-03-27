@@ -26,16 +26,16 @@ The app should remain free. There is no monetization or StoreKit work in scope. 
 ## Surprises & Discoveries
 
 - Observation: the app is materially less submission-ready on iPhone and iPad than on macOS because the only real user-triggered workspace picker is macOS `NSOpenPanel`.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/WindowSceneRootView.swift` wires `openFolder()` only for `os(macOS)` and returns `nil` for the non-macOS `openFolderAction`.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/App/Shell/WindowSceneRootView.swift` wires `openFolder()` only for `os(macOS)` and returns `nil` for the non-macOS `openFolderAction`.
 
 - Observation: the current project uses generated Info.plists and has only a thin layer of submission-facing metadata configured.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj/project.pbxproj` contains deployment targets, bundle identifiers, and generated scene/launch keys, but no document-type declarations, no app category, no export-compliance key, and no explicit display-name/legal metadata.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer.xcodeproj/project.pbxproj` contains deployment targets, bundle identifiers, and generated scene/launch keys, but no document-type declarations, no app category, no export-compliance key, and no explicit display-name/legal metadata.
 
 - Observation: the app icon catalog structure exists, but the catalog currently contains no image payloads.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/Assets.xcassets/AppIcon.appiconset` currently contains only `Contents.json`. Icon work is intentionally out of scope for this plan.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/Assets.xcassets/AppIcon.appiconset` currently contains only `Contents.json`. Icon work is intentionally out of scope for this plan.
 
 - Observation: the project currently has no privacy manifest file at all.
-  Evidence: a repository search for `PrivacyInfo.xcprivacy` returned no matches under `Swift Markdown Viewer/`.
+  Evidence: a repository search for `PrivacyInfo.xcprivacy` returned no matches under `Free Markdown Viewer/`.
 
 - Observation: App Store submission still requires website-hosted operational/legal pages even for a free app with no analytics or account system.
   Evidence: the support URL and privacy policy URL live outside the Xcode project and must be supplied in App Store Connect. The Apple standard EULA page also remains a viable default when no custom EULA is provided.
@@ -53,7 +53,7 @@ The app should remain free. There is no monetization or StoreKit work in scope. 
   Evidence: direct subprocess probes against the preferred `iPad (A16)` simulator timed out on `xcrun simctl terminate` and `xcrun simctl uninstall`, while switching the preferred iPad destination and avoiding those calls allowed the capture flow to complete and refresh the PNGs.
 
 - Observation: the generated macOS app bundle already contained the expected icon resources, but debug launches could still present a generic Dock icon.
-  Evidence: the built app at `artifacts/DerivedData/Build/Products/Debug/Swift Markdown Viewer.app` contained both `Contents/Resources/AppIcon.icns` and `CFBundleIconName = AppIcon`, which points to runtime icon presentation rather than missing build assets.
+  Evidence: the built app at `artifacts/DerivedData/Build/Products/Debug/Free Markdown Viewer.app` contained both `Contents/Resources/AppIcon.icns` and `CFBundleIconName = AppIcon`, which points to runtime icon presentation rather than missing build assets.
 
 ## Decision Log
 
@@ -109,20 +109,20 @@ One more incremental improvement landed after the first validation pass: the wor
 
 The highest-impact product code lives in:
 
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/WindowSceneRootView.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/AppRootView.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/ViewerShellView.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/AppModel.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/WorkspaceProvider.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/WorkspaceWindowSessionStore.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj/project.pbxproj`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shell/WindowSceneRootView.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shell/AppRootView.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shell/ViewerShellView.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/AppModel.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/WorkspaceProvider.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/WorkspaceWindowSessionStore.swift`
+- `Free Markdown Viewer/Free Markdown Viewer.xcodeproj/project.pbxproj`
 
 The supporting repository-owned release docs should live under `docs/` and the shell-first release helpers should live under `scripts/`.
 
 Recommended website URLs for this app:
 
-- `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer`
-- `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer/support`
+- `https://www.matthewpaulmoore.com/apps/free-markdown-viewer`
+- `https://www.matthewpaulmoore.com/apps/free-markdown-viewer/support`
 - `https://www.matthewpaulmoore.com/legal/privacy`
 - `https://www.matthewpaulmoore.com/legal/terms`
 

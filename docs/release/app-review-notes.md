@@ -4,7 +4,7 @@ Use this as the starting point for the App Review Notes field in App Store Conne
 
 ## Suggested notes
 
-Markdown Viewer is a free, local-first Markdown viewer for macOS, iPhone, and iPad.
+Free Markdown Viewer is a free, local-first Markdown viewer for macOS, iPhone, and iPad.
 
 - No account or sign-in is required.
 - No in-app purchases are used.

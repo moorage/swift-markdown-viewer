@@ -8,7 +8,7 @@ After this change, each macOS window owns its own workspace selection instead of
 
 ## Progress
 
-- [x] (2026-03-23T20:04Z) Confirmed the current bug source: `Swift_Markdown_ViewerApp` owns one `@StateObject AppModel`, so every `WindowGroup` scene instance shares the same workspace and navigation state.
+- [x] (2026-03-23T20:04Z) Confirmed the current bug source: `Free_Markdown_ViewerApp` owns one `@StateObject AppModel`, so every `WindowGroup` scene instance shares the same workspace and navigation state.
 - [x] (2026-03-23T20:13Z) Moved `AppModel` ownership into a per-window `WindowSceneRootView` and routed `Open Folder…` through a focused-scene action so the active window handles its own folder changes.
 - [x] (2026-03-23T20:13Z) Added one-shot macOS startup prompting for windows launched without an explicit harness workspace source, while leaving harness and UI-test launch paths gated off.
 - [x] (2026-03-23T20:13Z) Added targeted unit coverage for auto-prompt gating, ran the narrow unit slice successfully, and captured the existing macOS UI-test bootstrap crash as a validation gap.
@@ -19,13 +19,13 @@ After this change, each macOS window owns its own workspace selection instead of
 ## Surprises & Discoveries
 
 - Observation: the shared-folder behavior is architectural, not a bug inside `AppModel`.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/Swift_Markdown_ViewerApp.swift` creates one `@StateObject private var model` and injects it into every `WindowGroup` content instance.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/Free_Markdown_ViewerApp.swift` creates one `@StateObject private var model` and injects it into every `WindowGroup` content instance.
 
 - Observation: the existing macOS `Open Folder…` command already bypasses `NSOpenPanel` in UI-test mode.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/Swift_Markdown_ViewerApp.swift` checks `launchOptions.uiTestMode` and calls `model.openFolder(at:)` with `uiTestOpenFolderURL`.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/Free_Markdown_ViewerApp.swift` checks `launchOptions.uiTestMode` and calls `model.openFolder(at:)` with `uiTestOpenFolderURL`.
 
 - Observation: app-hosted renderer paths are still unstable in XCTest and can abort before deeper per-window integration assertions complete.
-  Evidence: `~/Library/Logs/DiagnosticReports/Swift Markdown Viewer-2026-03-23-130930.ips` crashes in `MarkdownRenderer.BlockBuilder.__deallocating_deinit` during `AppModel.openFolder(at:)`, and the existing macOS UI test runner exits early before establishing the automation connection.
+  Evidence: `~/Library/Logs/DiagnosticReports/Free Markdown Viewer-2026-03-23-130930.ips` crashes in `MarkdownRenderer.BlockBuilder.__deallocating_deinit` during `AppModel.openFolder(at:)`, and the existing macOS UI test runner exits early before establishing the automation connection.
 
 - Observation: the remaining "same folder in every window" behavior came from a race inside one window, not from scene ownership after the earlier refactor.
   Evidence: `AppModel.bootstrap()` could still apply the initial fixture/restored workspace after `openFolder(at:)` had already loaded a different folder, so the later bootstrap load replaced the user's newer selection.
@@ -57,12 +57,12 @@ Validation is now split between deterministic model coverage and the narrower pa
 
 The relevant code lives in:
 
-- `Swift Markdown Viewer/Swift Markdown Viewer/Swift_Markdown_ViewerApp.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/ContentView.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/AppRootView.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/AppModel.swift`
-- `Swift Markdown Viewer/Swift Markdown ViewerTests/Swift_Markdown_ViewerTests.swift`
-- `Swift Markdown Viewer/Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/Free_Markdown_ViewerApp.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/ContentView.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shell/AppRootView.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/AppModel.swift`
+- `Free Markdown Viewer/Free Markdown ViewerTests/Free_Markdown_ViewerTests.swift`
+- `Free Markdown Viewer/Free Markdown ViewerUITests/Free_Markdown_ViewerUITests.swift`
 
 The current app-level `@StateObject` causes every macOS window to share the same `AppModel`. New-window behavior should remain macOS-specific; iPhone and iPad do not create independent top-level windows in this app flow.
 
@@ -100,12 +100,12 @@ This change is UI-state-only and should be safe to rerun. If the auto-prompt log
 
 Expected validation commands:
 
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-window-workspaces -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelAutoPromptsForFolderOnNormalMacLaunch" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelSkipsAutoPromptDuringUITestLaunch" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelsMaintainIndependentWorkspaceSelections" test`
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-launch-prompt-fix -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAutomaticFolderPromptPolicySuppressesLaunchSceneOnly" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAutomaticFolderPromptPolicySuppressesRestoredScenes" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelAutoPromptsForFolderOnNormalMacLaunch" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelSkipsAutoPromptDuringUITestLaunch" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelRestoresInitialWorkspaceSession" test`
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-multiwindow-unit-final -destination "platform=macOS,arch=arm64" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testLaunchOptionsParseMultipleUITestOpenFolders" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testOpenFolderSelectionWinsOverPendingBootstrapLoad" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testWindowScopedModelsKeepDifferentFoldersAfterOpeningNewWorkspace" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testIntegrationWorkspaceLoadsFixtureAndSnapshot" test`
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-openfolder-ui-final -destination "platform=macOS,arch=arm64" "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testOpenFolderCommandUpdatesSidebarAndTitle" test`
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-empty-state-unit -destination "platform=macOS,arch=arm64" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testEmptyWorkspaceShowsNoMarkdownFilesMessage" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testWorkspaceProviderUsesChosenFolderWithoutFixtureFallback" test`
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-empty-state-ui-2 -destination "platform=macOS,arch=arm64" "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testOpenFolderCommandUpdatesSidebarAndTitle" "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testEmptyWorkspaceShowsCenteredOpenFolderCallToAction" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-window-workspaces -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelAutoPromptsForFolderOnNormalMacLaunch" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelSkipsAutoPromptDuringUITestLaunch" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelsMaintainIndependentWorkspaceSelections" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-launch-prompt-fix -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAutomaticFolderPromptPolicySuppressesLaunchSceneOnly" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAutomaticFolderPromptPolicySuppressesRestoredScenes" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelAutoPromptsForFolderOnNormalMacLaunch" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelSkipsAutoPromptDuringUITestLaunch" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelRestoresInitialWorkspaceSession" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-multiwindow-unit-final -destination "platform=macOS,arch=arm64" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testLaunchOptionsParseMultipleUITestOpenFolders" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testOpenFolderSelectionWinsOverPendingBootstrapLoad" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testWindowScopedModelsKeepDifferentFoldersAfterOpeningNewWorkspace" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testIntegrationWorkspaceLoadsFixtureAndSnapshot" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-openfolder-ui-final -destination "platform=macOS,arch=arm64" "-only-testing:Free Markdown ViewerUITests/Free_Markdown_ViewerUITests/testOpenFolderCommandUpdatesSidebarAndTitle" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-empty-state-unit -destination "platform=macOS,arch=arm64" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testEmptyWorkspaceShowsNoMarkdownFilesMessage" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testWorkspaceProviderUsesChosenFolderWithoutFixtureFallback" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-empty-state-ui-2 -destination "platform=macOS,arch=arm64" "-only-testing:Free Markdown ViewerUITests/Free_Markdown_ViewerUITests/testOpenFolderCommandUpdatesSidebarAndTitle" "-only-testing:Free Markdown ViewerUITests/Free_Markdown_ViewerUITests/testEmptyWorkspaceShowsCenteredOpenFolderCallToAction" test`
 - `python3 scripts/check_execplan.py`
 - `python3 scripts/knowledge/check_docs.py`
 

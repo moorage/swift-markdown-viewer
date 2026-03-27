@@ -17,7 +17,7 @@ After this change, users can select and copy text across the entire visible docu
 ## Surprises & Discoveries
 
 - Observation: `.textSelection(.enabled)` on the current `VStack` of block views does not create a unified selection region across child blocks.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/ViewerShellView.swift` wraps separate `MarkdownBlockView` instances in a `ScrollView`, which still yields per-block selection behavior.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/App/Shell/ViewerShellView.swift` wraps separate `MarkdownBlockView` instances in a `ScrollView`, which still yields per-block selection behavior.
 
 - Observation: the raw-markdown fallback technically fixes selection, but it breaks the core viewer expectation because users stop seeing rendered markdown.
   Evidence: `ViewerShellView.detailContent` was wired to `model.documentText`, which shows source markers like `#`, list fences, and code fences instead of the parsed block presentation the app previously rendered.
@@ -38,8 +38,8 @@ The detail pane now uses one native selectable text view rather than many block-
 
 Relevant files:
 
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/ViewerShellView.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Platform/`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shell/ViewerShellView.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Platform/`
 
 ## Plan of Work
 
@@ -73,7 +73,7 @@ The change is confined to the detail-pane view layer. If the native text view re
 
 Targeted validation command:
 
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-selection-fix -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testSelectableDocumentFormatterUsesRenderedDocumentText" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererParsesMultipleBlockKinds" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAdjacentFilePathMovesSidebarSelection" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-selection-fix -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testSelectableDocumentFormatterUsesRenderedDocumentText" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testMarkdownRendererParsesMultipleBlockKinds" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAdjacentFilePathMovesSidebarSelection" test`
 - `python3 scripts/check_execplan.py`
 - `python3 scripts/knowledge/check_docs.py`
 

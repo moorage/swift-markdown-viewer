@@ -11,14 +11,41 @@
   - `docs/exec-plans/active/2026-03-25-relative-markdown-links.md`
   - `docs/exec-plans/active/2026-03-26-ios-drawer-filter.md`
   - `docs/exec-plans/active/2026-03-26-app-store-connect-release-setup.md`
+  - `docs/exec-plans/active/2026-03-27-free-markdown-viewer-rename.md`
 - current milestone:
   - app-store readiness: icons are generated, iPhone/iPad folder import is implemented, bookmark-backed workspace restoration is in place, release/privacy/docs scaffolding exists, repeatable screenshot capture is in repo, and iPhone/iPad candidate screenshots have been generated
   - live App Store Connect release setup: app `6761209087` now has repo-owned metadata, Europe excluded from availability, valid iOS and macOS builds uploaded and attached to the draft versions, and App Store screenshot assets uploaded for iPhone, iPad, and macOS
+  - rename implementation: the checked-in app, tests, scripts, release docs, and Xcode project now use `Free Markdown Viewer`; Apple-side state now includes bundle ID `com.souschefstudio.Free-Markdown-Viewer` as resource `9ZAXC5Y677`, new app record `6761271951`, attached valid iOS/macOS builds, complete iPhone/iPad/macOS screenshot sets, review-detail records on both draft versions, and storefront availability matching the legacy Europe-excluded policy
 - commands run:
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-ios-filter -destination 'platform=iOS Simulator,id=32B9E37C-0C26-4514-9BBE-65718682A713' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testiPhoneDrawerQuickFilterNarrowsSidebarFiles" test`
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-filter-unit -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelFiltersFilesByQuickFilterQuery" test`
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -sdk iphonesimulator -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-ios-filter-build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= build`
   - `./scripts/test-ui-ios --device iphone --smoke`
+  - `./scripts/build --platform all`
+  - `./scripts/test-unit`
+  - `./scripts/test-integration`
+  - `python3 scripts/knowledge/generate_repo_map.py`
+  - `./scripts/app-store-connect ensure-bundle-id --identifier com.souschefstudio.Free-Markdown-Viewer --name 'Free Markdown Viewer'`
+  - `./scripts/app-store-connect inspect-bundle-id --identifier com.souschefstudio.Free-Markdown-Viewer`
+  - `./scripts/app-store-connect inspect-app --bundle-id com.souschefstudio.Free-Markdown-Viewer --raw`
+  - `./scripts/app-store-connect request GET /v1/apps/6761271951/appInfos --query include=appInfoLocalizations`
+  - `./scripts/app-store-connect request GET /v1/apps/6761271951/appStoreVersions --query include=appStoreVersionLocalizations,appStoreReviewDetail`
+  - `./scripts/app-store-connect patch-app-info-localization --id a83ddb48-e426-468e-bdca-02050428dc15 --name 'Free Markdown Viewer' --subtitle 'Open Markdown folders fast' --privacy-policy-url 'https://www.matthewpaulmoore.com/legal/privacy'`
+  - `./scripts/app-store-connect patch-version-localization --id 46cadd66-1413-4ff7-a61d-dc892bee4197 ...`
+  - `./scripts/app-store-connect patch-version-localization --id 561918f2-9ec7-41d1-baa1-c619aa1b3591 ...`
+  - `APPLE_DEVELOPMENT_TEAM=GG34PA8F4A ./scripts/archive-release --platform ios --allow-provisioning-updates`
+  - `APPLE_DEVELOPMENT_TEAM=GG34PA8F4A ./scripts/archive-release --platform macos --allow-provisioning-updates`
+  - `./scripts/export-app-store --platform ios --archive-path 'artifacts/archives/Free Markdown Viewer-ios.xcarchive' --export-options-plist 'artifacts/export-options/ios-app-store-connect.plist' --allow-provisioning-updates`
+  - `./scripts/export-app-store --platform macos --archive-path 'artifacts/archives/Free Markdown Viewer-macos.xcarchive' --export-options-plist 'artifacts/export-options/macos-app-store-connect.plist' --allow-provisioning-updates`
+  - `source scripts/lib/xcode-env.sh && xcrun altool --upload-package 'artifacts/exports/ios/Free Markdown Viewer.ipa' --api-key "$ASC_KEY_ID" --api-issuer "$ASC_ISSUER_ID" --p8-file-path "$ASC_KEY_PATH" --api-key-subject user --wait --output-format json`
+  - `source scripts/lib/xcode-env.sh && xcrun altool --upload-package 'artifacts/exports/macos/Free Markdown Viewer.pkg' --api-key "$ASC_KEY_ID" --api-issuer "$ASC_ISSUER_ID" --p8-file-path "$ASC_KEY_PATH" --api-key-subject user --wait --output-format json`
+  - `./scripts/app-store-connect request PATCH /v1/appStoreVersions/ad142231-153d-4b40-b149-bb55cd70b73e/relationships/build --body '{"data":{"type":"builds","id":"a4578450-2f16-41ba-ba91-5875d914359c"}}'`
+  - `./scripts/app-store-connect request PATCH /v1/appStoreVersions/90e1bb1e-5a62-4623-a866-08b2b16262e2/relationships/build --body '{"data":{"type":"builds","id":"503a3d42-abbc-4043-b017-8ec6d2ffe540"}}'`
+  - `./scripts/app-store-connect upload-screenshot --set-id 1111ad35-0c83-475e-b243-4bc8128351e9 --file 'artifacts/app-store-screenshots/macos/architecture-overview.png'`
+  - `./scripts/app-store-connect request POST /v1/appStoreReviewDetails --body '{...appStoreVersion ad142231-153d-4b40-b149-bb55cd70b73e...}'`
+  - `./scripts/app-store-connect request POST /v1/appStoreReviewDetails --body '{...appStoreVersion 90e1bb1e-5a62-4623-a866-08b2b16262e2...}'`
+  - `./scripts/app-store-connect request GET /v1/apps/6761271951/relationships/appAvailabilityV2`
+  - `python3 - <<'PY' ... compare /v2/appAvailabilities/6761209087 and /v2/appAvailabilities/6761271951 territory disable sets ... PY`
   - `python3 scripts/check_execplan.py`
   - `python3 scripts/knowledge/check_docs.py`
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-relative-links -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testSelectableDocumentFormatterPreservesRelativeMarkdownLinks" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererPreservesRelativeLinksInsideTables" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelOpensRelativeMarkdownLinkWithinWorkspace" test`
@@ -45,6 +72,11 @@
   - `WindowSceneRootView` now exposes a real iPhone/iPad folder picker via `fileImporter`, and `ViewerShellView` surfaces that action in the iOS top bar with the stable accessibility identifier `toolbar.openFolder`
   - workspace session persistence now carries bookmark-backed restoration data through `WorkspaceWindowSession.securityScopedBookmarkData` and the new `WorkspaceSecurityScope` helper instead of relying only on raw root paths
   - the app bundle now includes `PrivacyInfo.xcprivacy`, and the project file now declares low-risk App Store metadata including display name, export-compliance, macOS category, and opening-documents-in-place behavior
+  - the checked-in product identity is now centralized in `scripts/lib/product-identity.sh`, the Xcode project tree and target/module names are renamed to `Free Markdown Viewer`, and `scripts/verify-product-identity` enforces that the old app identity does not reappear in operational surfaces
+  - App Store Connect bundle-id automation now supports the rename workflow end to end; `./scripts/app-store-connect ensure-bundle-id --identifier com.souschefstudio.Free-Markdown-Viewer --name 'Free Markdown Viewer'` created bundle-ID resource `9ZAXC5Y677`
+  - the new App Store Connect record `6761271951` now exists for `Free Markdown Viewer`; app-info localization `a83ddb48-e426-468e-bdca-02050428dc15` has the final name/subtitle/privacy URL, and both version localizations (`46cadd66-1413-4ff7-a61d-dc892bee4197` for iOS, `561918f2-9ec7-41d1-baa1-c619aa1b3591` for macOS) now carry the repo-owned description, keywords, marketing URL, promotional text, and support URL
+  - the new `Free Markdown Viewer` app record now also has App Store-eligible iOS/macOS build attachments (`a4578450-2f16-41ba-ba91-5875d914359c` and `503a3d42-abbc-4043-b017-8ec6d2ffe540`), complete screenshot sets for iPhone/iPad/macOS, and App Review detail resources (`12b5d659-58b7-4adf-b736-66477a19bea9` for iOS and `d9779019-7bf4-4632-a046-f114d364782a` for macOS)
+  - the new app record's availability is now fully initialized as well, and its 42 disabled storefronts match the legacy record exactly with no missing or extra territory exclusions
   - repo-owned release docs now define the planned public URLs under `https://www.matthewpaulmoore.com/`, draft support/privacy/terms page content, and the recommendation to use Apple’s standard EULA
   - `scripts/archive-release` now provides a stable shell entry point for signed Release archives once `APPLE_DEVELOPMENT_TEAM` is configured locally
   - `scripts/app-store-connect` now provides a repo-owned App Store Connect API helper that authenticates with the local API key and can inspect live app and bundle-ID state without exposing the secret material in chat
@@ -72,6 +104,7 @@
   - once Pricing and Availability is saved once in the App Store Connect UI, the actual availability data lives behind a mixed v1/v2 surface: discovery comes from `GET /v1/apps/{id}/relationships/appAvailabilityV2`, while the territory payload comes from `GET /v2/appAvailabilities/{id}/territoryAvailabilities`
   - `xcodebuild` export/authentication key support is stricter than the repo shell helpers: the ASC key path must be absolute before `-authenticationKeyPath` will be accepted, so repo-root-relative `.env` paths must be normalized
   - App Store Connect screenshot upload accepts `APP_IPHONE_67`, `APP_IPAD_PRO_3GEN_129`, and `APP_DESKTOP` for the current generated assets; the older `APP_IPAD_PRO_129` bucket rejects the modern 13-inch iPad captures with `IMAGE_INCORRECT_DIMENSIONS`
+  - posting `appStoreReviewDetails` directly against a draft `appStoreVersion` works for the new record, but the relationship can lag in `include=appStoreReviewDetail` responses even when the direct `/appStoreReviewDetail` endpoint already resolves
   - Apple currently returns `500 UNEXPECTED_ERROR` when deleting the empty obsolete `APP_IPAD_PRO_129` screenshot set, even after its failed screenshot record has been removed
   - the original preferred `iPad (A16)` simulator can wedge on `simctl` lifecycle commands in this environment, so screenshot automation is more reliable when the helper picks another available iPad first
   - the screenshot artifacts were being written as soon as the model flipped to ready, which was early enough for macOS window captures to catch the loading overlay instead of the final document content
@@ -200,4 +233,5 @@
   - session ordering is preserved by scene activation order rather than a user-visible window identity, so the specific restored front-to-back ordering may still differ from the exact pre-quit arrangement
   - direct automated proof that two simultaneously open macOS windows can each keep distinct markdown workspace selections is still blocked by the separate macOS UI-test runner bootstrap failure
   - full `xcodebuild` confirmation is currently blocked by host disk exhaustion while Xcode writes log stores and result bundles
+  - the repo's `./scripts/build --platform all` path is still environment-sensitive here because the iOS simulator destination probe can fail when CoreSimulator services are unavailable in the local session, even though the renamed macOS build and tests are green
   - Safari visual parity remains poor even though CommonMark semantic parity is now at zero mismatches under the repository contract

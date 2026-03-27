@@ -1,0 +1,39 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+source "${ROOT_DIR}/scripts/lib/product-identity.sh"
+
+patterns=(
+  'Swift Markdown Viewer'
+  'Swift-Markdown-Viewer'
+  'Swift_Markdown_Viewer'
+  'SWIFTMD'
+)
+
+scan_paths=(
+  "${ROOT_DIR}/README.md"
+  "${ROOT_DIR}/README_FOR_APES.md"
+  "${ROOT_DIR}/AGENTS.md"
+  "${ROOT_DIR}/ARCHITECTURE.md"
+  "${ROOT_DIR}/docs/release"
+  "${ROOT_DIR}/docs/harness.md"
+  "${ROOT_DIR}/docs/debug-contracts.md"
+  "${ROOT_DIR}/scripts"
+  "${ROOT_DIR}/${APP_PROJECT_DIR_NAME}"
+)
+
+exit_code=0
+for pattern in "${patterns[@]}"; do
+  if rg -n --hidden -S --glob '!verify-product-identity' "${pattern}" "${scan_paths[@]}"; then
+    exit_code=1
+  fi
+done
+
+if [[ ${exit_code} -ne 0 ]]; then
+  echo "product identity verification failed" >&2
+  exit 1
+fi
+
+echo "product identity verification passed"

@@ -17,15 +17,15 @@ This file is the shortest path from the current repo state to a live App Store r
 
 Publish these pages at the live URLs already referenced by the release docs:
 
-- `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer`
-- `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer/support`
+- `https://www.matthewpaulmoore.com/apps/free-markdown-viewer`
+- `https://www.matthewpaulmoore.com/apps/free-markdown-viewer/support`
 - `https://www.matthewpaulmoore.com/legal/privacy`
 - `https://www.matthewpaulmoore.com/legal/terms`
 
 Starting draft files:
 
 - `docs/release/app-store-metadata.md`
-- `docs/release/swift-markdown-viewer-support.md`
+- `docs/release/free-markdown-viewer-support.md`
 - `docs/release/privacy-policy-draft.md`
 - `docs/release/terms-of-use-draft.md`
 - `docs/release/app-review-notes.md`
@@ -47,14 +47,14 @@ If you prefer, place `APPLE_DEVELOPMENT_TEAM` and App Store Connect API settings
 
 Use these defaults unless you want to rename the product:
 
-- App name: `Markdown Viewer`
+- App name: `Free Markdown Viewer`
 - Platforms: `iOS` and `macOS`
 - Primary language: `English (U.S.)`
-- Bundle ID: `com.souschefstudio.Swift-Markdown-Viewer`
-- SKU: `com.souschefstudio.Swift-Markdown-Viewer`
+- Bundle ID: `com.souschefstudio.Free-Markdown-Viewer`
+- SKU: `FREEMD`
 - Pricing: `Free`
-- Support URL: `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer/support`
-- Marketing URL: `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer`
+- Support URL: `https://www.matthewpaulmoore.com/apps/free-markdown-viewer/support`
+- Marketing URL: `https://www.matthewpaulmoore.com/apps/free-markdown-viewer`
 - Privacy Policy URL: `https://www.matthewpaulmoore.com/legal/privacy`
 - Category: `Productivity`
 - EULA: Apple standard EULA

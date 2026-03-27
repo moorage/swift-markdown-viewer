@@ -19,10 +19,10 @@ Restore visible and navigable Markdown links for repo-local `.md` files. The tar
   Evidence: a local `swift -e` probe against `AttributedString(markdown: "[doc](./app-store-submission.md)")` produced a run with `link = ./app-store-submission.md`.
 
 - Observation: the current selectable formatter applies block-level presentation by rebuilding raw `String` content, which discards all inline attributes including `.link`.
-  Evidence: `Swift Markdown Viewer/Swift Markdown Viewer/App/Platform/SelectableDocumentTextView.swift` previously rendered `NSMutableAttributedString(string: blockText(for: block), attributes: ...)` from `block.plainText`.
+  Evidence: `Free Markdown Viewer/Free Markdown Viewer/App/Platform/SelectableDocumentTextView.swift` previously rendered `NSMutableAttributedString(string: blockText(for: block), attributes: ...)` from `block.plainText`.
 
 - Observation: relative workspace links need app-level routing, not just visual styling, because system URL opening does not know the current document directory or workspace root.
-  Evidence: the app had no existing `openURL` interception or text-view delegate link handler anywhere under `Swift Markdown Viewer/Swift Markdown Viewer/App/`.
+  Evidence: the app had no existing `openURL` interception or text-view delegate link handler anywhere under `Free Markdown Viewer/Free Markdown Viewer/App/`.
 
 - Observation: the structured SwiftUI renderer also needs the same routing path, otherwise table-cell links in block-rendered documents would still bypass workspace navigation.
   Evidence: table-containing documents render via `ViewerShellView.detailContent -> DocumentBlockScrollView`, not through the selectable text view path.
@@ -47,12 +47,12 @@ The highest-leverage fix was preserving attributed content instead of trying to 
 
 Relevant files:
 
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/MarkdownRenderer.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/Models.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shared/AppModel.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Platform/SelectableDocumentTextView.swift`
-- `Swift Markdown Viewer/Swift Markdown Viewer/App/Shell/ViewerShellView.swift`
-- `Swift Markdown Viewer/Swift Markdown ViewerTests/Swift_Markdown_ViewerTests.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/MarkdownRenderer.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/Models.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shared/AppModel.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Platform/SelectableDocumentTextView.swift`
+- `Free Markdown Viewer/Free Markdown Viewer/App/Shell/ViewerShellView.swift`
+- `Free Markdown Viewer/Free Markdown ViewerTests/Free_Markdown_ViewerTests.swift`
 
 ## Plan of Work
 
@@ -87,13 +87,13 @@ The change is confined to parsing, document rendering, and link routing. If link
 
 Planned validation commands:
 
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-relative-links -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testSelectableDocumentFormatterPreservesRelativeMarkdownLinks" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererPreservesRelativeLinksInsideTables" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelOpensRelativeMarkdownLinkWithinWorkspace" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-relative-links -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testSelectableDocumentFormatterPreservesRelativeMarkdownLinks" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testMarkdownRendererPreservesRelativeLinksInsideTables" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelOpensRelativeMarkdownLinkWithinWorkspace" test`
 - `python3 scripts/check_execplan.py`
 - `python3 scripts/knowledge/check_docs.py`
 
 Validation completed:
 
-- `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-relative-links -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testSelectableDocumentFormatterPreservesRelativeMarkdownLinks" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testMarkdownRendererPreservesRelativeLinksInsideTables" "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelOpensRelativeMarkdownLinkWithinWorkspace" test`
+- `xcodebuild -quiet -project "Free Markdown Viewer/Free Markdown Viewer.xcodeproj" -scheme "Free Markdown Viewer" -configuration Debug -derivedDataPath /tmp/free-markdown-viewer-relative-links -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testSelectableDocumentFormatterPreservesRelativeMarkdownLinks" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testMarkdownRendererPreservesRelativeLinksInsideTables" "-only-testing:Free Markdown ViewerTests/Free_Markdown_ViewerTests/testAppModelOpensRelativeMarkdownLinkWithinWorkspace" test`
 - `python3 scripts/check_execplan.py`
 - `python3 scripts/knowledge/check_docs.py`
 

@@ -1,4 +1,4 @@
-# Swift Markdown Viewer
+# Free Markdown Viewer
 
 Universal Apple-platform Markdown viewer for macOS, iPhone, and iPad.
 
@@ -58,7 +58,7 @@ Capture a deterministic checkpoint:
 
 ## Repo map
 
-- `Swift Markdown Viewer/` - Xcode project, app target, unit tests, and UI tests
+- `Free Markdown Viewer/` - Xcode project, app target, unit tests, and UI tests
 - `Fixtures/` - deterministic markdown/media fixtures and expected outputs
 - `scripts/` - build, test, capture, docs, and knowledge tooling
 - `docs/` - durable planning, harness contracts, and internal reliability/security docs

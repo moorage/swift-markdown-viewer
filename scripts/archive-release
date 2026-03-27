@@ -45,11 +45,11 @@ ARCHIVE_DERIVED_DATA_DIR="${ARTIFACTS_DIR}/DerivedData-archive-${PLATFORM}"
 case "${PLATFORM}" in
   ios)
     DESTINATION="generic/platform=iOS"
-    ARCHIVE_PATH="${ARCHIVES_DIR}/Swift Markdown Viewer-ios.xcarchive"
+    ARCHIVE_PATH="${ARCHIVES_DIR}/${APP_PRODUCT_NAME}-ios.xcarchive"
     ;;
   macos)
     DESTINATION="generic/platform=macOS"
-    ARCHIVE_PATH="${ARCHIVES_DIR}/Swift Markdown Viewer-macos.xcarchive"
+    ARCHIVE_PATH="${ARCHIVES_DIR}/${APP_PRODUCT_NAME}-macos.xcarchive"
     ;;
   *)
     echo "expected --platform ios|macos" >&2

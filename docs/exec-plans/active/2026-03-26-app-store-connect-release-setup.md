@@ -10,9 +10,9 @@ Use the locally configured App Store Connect API key to move the app from reposi
 
 - [x] (2026-03-26T18:54Z) Created this ExecPlan and started auditing the existing repository release scripts, docs, and App Store Connect prerequisites.
 - [x] (2026-03-26T19:36Z) Added a repo-owned `scripts/app-store-connect` helper that authenticates with the local API key, issues App Store Connect API requests, and can inspect the app-record state for the repo bundle ID.
-- [x] (2026-03-26T19:44Z) Confirmed that the real bundle ID is `com.souschefstudio.Swift-Markdown-Viewer`, that its bundle ID record already exists in Apple’s systems, and that no App Store Connect app record exists yet.
+- [x] (2026-03-26T19:44Z) Confirmed that the real bundle ID is `com.souschefstudio.Free-Markdown-Viewer`, that its bundle ID record already exists in Apple’s systems, and that no App Store Connect app record exists yet.
 - [x] (2026-03-26T19:46Z) Confirmed via a live API attempt that App Store Connect does not allow app-record creation through the REST API for this resource; the app record must be created manually in the UI before post-creation automation can proceed.
-- [x] (2026-03-26T19:49Z) Corrected the repo helper bundle-ID default to `com.souschefstudio.Swift-Markdown-Viewer` and documented the new App Store Connect helper plus the required manual app-record creation step in the release docs.
+- [x] (2026-03-26T19:49Z) Corrected the repo helper bundle-ID default to `com.souschefstudio.Free-Markdown-Viewer` and documented the new App Store Connect helper plus the required manual app-record creation step in the release docs.
 - [x] (2026-03-26T20:18Z) After the user created app record `6761209087`, confirmed that App Store Connect now has both `IOS` and `MAC_OS` app-store versions in `PREPARE_FOR_SUBMISSION`.
 - [x] (2026-03-26T20:28Z) Applied repo-owned listing metadata through the API: primary category `PRODUCTIVITY`, subtitle, privacy policy URL, support URL, marketing URL, promotional text, description, and keywords.
 - [x] (2026-03-26T20:31Z) Confirmed that the app-availability resource is still not materialized through the API, so storefront restriction setup remains blocked on a Pricing and Availability UI step in App Store Connect.
@@ -28,10 +28,10 @@ Use the locally configured App Store Connect API key to move the app from reposi
   Evidence: `scripts/` contains archive/export/screenshot helpers, while a repo-wide search shows no App Store Connect API client or JWT helper.
 
 - Observation: the repository’s helper shell config had drifted away from the actual app target bundle identifier.
-  Evidence: `scripts/lib/xcode-env.sh` was still using `com.matthewpaulmoore.Swift-Markdown-Viewer`, while `Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj/project.pbxproj` sets the app target bundle ID to `com.souschefstudio.Swift-Markdown-Viewer`.
+  Evidence: `scripts/lib/xcode-env.sh` was still using `com.matthewpaulmoore.Free-Markdown-Viewer`, while `Free Markdown Viewer/Free Markdown Viewer.xcodeproj/project.pbxproj` sets the app target bundle ID to `com.souschefstudio.Free-Markdown-Viewer`.
 
 - Observation: the bundle identifier already exists in Apple’s bundle ID registry, but the App Store Connect app record does not.
-  Evidence: `./scripts/app-store-connect request GET /v1/bundleIds --query 'filter[identifier]=com.souschefstudio.Swift-Markdown-Viewer' --query limit=5` returned bundle ID `GCX8SVH7K3`, while both `./scripts/app-store-connect inspect-app` and `./scripts/app-store-connect request GET /v1/apps --query 'filter[bundleId]=com.souschefstudio.Swift-Markdown-Viewer' --query limit=5` returned zero app records.
+  Evidence: `./scripts/app-store-connect request GET /v1/bundleIds --query 'filter[identifier]=com.souschefstudio.Free-Markdown-Viewer' --query limit=5` returned bundle ID `GCX8SVH7K3`, while both `./scripts/app-store-connect inspect-app` and `./scripts/app-store-connect request GET /v1/apps --query 'filter[bundleId]=com.souschefstudio.Free-Markdown-Viewer' --query limit=5` returned zero app records.
 
 - Observation: the App Store Connect REST API rejects app-record creation for the `apps` resource.
   Evidence: `./scripts/app-store-connect request POST /v1/apps ...` returned `FORBIDDEN_ERROR` with `The resource 'apps' does not allow 'CREATE'. Allowed operations are: GET_COLLECTION, GET_INSTANCE, UPDATE`.
@@ -52,7 +52,7 @@ Use the locally configured App Store Connect API key to move the app from reposi
   Evidence: both `./scripts/export-app-store` invocations failed with `The -authenticationKeyPath flag must be an absolute path to an existing file` until `scripts/lib/xcode-env.sh` started resolving repo-root-relative `.env` paths to absolute paths.
 
 - Observation: Apple transport rejected the first iOS upload because the 1024 App Store icon assets still contained an alpha channel.
-  Evidence: `xcrun altool --upload-package "artifacts/exports/ios/Swift Markdown Viewer.ipa" ...` returned `Invalid large app icon ... can’t be transparent or contain an alpha channel`, and `sips -g hasAlpha` reported `yes` for all three `icon-ios-1024*.png` variants before they were flattened.
+  Evidence: `xcrun altool --upload-package "artifacts/exports/ios/Free Markdown Viewer.ipa" ...` returned `Invalid large app icon ... can’t be transparent or contain an alpha channel`, and `sips -g hasAlpha` reported `yes` for all three `icon-ios-1024*.png` variants before they were flattened.
 
 - Observation: the repo screenshot capture defaults were aimed at preview-friendly device/window sizes, not the exact App Store upload buckets.
   Evidence: the first generated screenshot set measured `1206x2622` on iPhone, `1668x2420` on iPad, and `2880x2048` on macOS; after updating the capture preferences and Mac window size, the regenerated set measured `1320x2868`, `2064x2752`, and `2880x1800`.
@@ -134,10 +134,10 @@ Key live commands used in this session:
 
 - `APPLE_DEVELOPMENT_TEAM=GG34PA8F4A ./scripts/archive-release --platform ios`
 - `APPLE_DEVELOPMENT_TEAM=GG34PA8F4A ./scripts/archive-release --platform macos`
-- `./scripts/export-app-store --platform ios --archive-path "artifacts/archives/Swift Markdown Viewer-ios.xcarchive" --export-options-plist "artifacts/export-options/ios-app-store-connect.plist" --allow-provisioning-updates`
-- `./scripts/export-app-store --platform macos --archive-path "artifacts/archives/Swift Markdown Viewer-macos.xcarchive" --export-options-plist "artifacts/export-options/macos-app-store-connect.plist" --allow-provisioning-updates`
-- `xcrun altool --upload-package "artifacts/exports/ios/Swift Markdown Viewer.ipa" ...`
-- `xcrun altool --upload-package "artifacts/exports/macos/Swift Markdown Viewer.pkg" ...`
+- `./scripts/export-app-store --platform ios --archive-path "artifacts/archives/Free Markdown Viewer-ios.xcarchive" --export-options-plist "artifacts/export-options/ios-app-store-connect.plist" --allow-provisioning-updates`
+- `./scripts/export-app-store --platform macos --archive-path "artifacts/archives/Free Markdown Viewer-macos.xcarchive" --export-options-plist "artifacts/export-options/macos-app-store-connect.plist" --allow-provisioning-updates`
+- `xcrun altool --upload-package "artifacts/exports/ios/Free Markdown Viewer.ipa" ...`
+- `xcrun altool --upload-package "artifacts/exports/macos/Free Markdown Viewer.pkg" ...`
 - `./scripts/app-store-connect request PATCH /v1/appStoreVersions/{id}/relationships/build ...`
 - `./scripts/capture-app-store-screenshots --platform iphone`
 - `./scripts/capture-app-store-screenshots --platform ipad`

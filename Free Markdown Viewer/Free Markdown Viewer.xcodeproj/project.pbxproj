@@ -12,37 +12,37 @@
 			containerPortal = DDF3C5DC2F6D23CD0040640B /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = DDF3C5E32F6D23CD0040640B;
-			remoteInfo = "Swift Markdown Viewer";
+			remoteInfo = "Free Markdown Viewer";
 		};
 		DDF3C5FC2F6D23CF0040640B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DDF3C5DC2F6D23CD0040640B /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = DDF3C5E32F6D23CD0040640B;
-			remoteInfo = "Swift Markdown Viewer";
+			remoteInfo = "Free Markdown Viewer";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		DDF3C5E42F6D23CD0040640B /* Swift Markdown Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift Markdown Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DDF3C5F12F6D23CF0040640B /* Swift Markdown ViewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swift Markdown ViewerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DDF3C5FB2F6D23CF0040640B /* Swift Markdown ViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swift Markdown ViewerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDF3C5E42F6D23CD0040640B /* Free Markdown Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Free Markdown Viewer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDF3C5F12F6D23CF0040640B /* Free Markdown ViewerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Free Markdown ViewerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDF3C5FB2F6D23CF0040640B /* Free Markdown ViewerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Free Markdown ViewerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		DDF3C5E62F6D23CD0040640B /* Swift Markdown Viewer */ = {
+		DDF3C5E62F6D23CD0040640B /* Free Markdown Viewer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Swift Markdown Viewer";
+			path = "Free Markdown Viewer";
 			sourceTree = "<group>";
 		};
-		DDF3C5F42F6D23CF0040640B /* Swift Markdown ViewerTests */ = {
+		DDF3C5F42F6D23CF0040640B /* Free Markdown ViewerTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Swift Markdown ViewerTests";
+			path = "Free Markdown ViewerTests";
 			sourceTree = "<group>";
 		};
-		DDF3C5FE2F6D23CF0040640B /* Swift Markdown ViewerUITests */ = {
+		DDF3C5FE2F6D23CF0040640B /* Free Markdown ViewerUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Swift Markdown ViewerUITests";
+			path = "Free Markdown ViewerUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,9 +75,9 @@
 		DDF3C5DB2F6D23CD0040640B = {
 			isa = PBXGroup;
 			children = (
-				DDF3C5E62F6D23CD0040640B /* Swift Markdown Viewer */,
-				DDF3C5F42F6D23CF0040640B /* Swift Markdown ViewerTests */,
-				DDF3C5FE2F6D23CF0040640B /* Swift Markdown ViewerUITests */,
+				DDF3C5E62F6D23CD0040640B /* Free Markdown Viewer */,
+				DDF3C5F42F6D23CF0040640B /* Free Markdown ViewerTests */,
+				DDF3C5FE2F6D23CF0040640B /* Free Markdown ViewerUITests */,
 				DDF3C5E52F6D23CD0040640B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -85,9 +85,9 @@
 		DDF3C5E52F6D23CD0040640B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DDF3C5E42F6D23CD0040640B /* Swift Markdown Viewer.app */,
-				DDF3C5F12F6D23CF0040640B /* Swift Markdown ViewerTests.xctest */,
-				DDF3C5FB2F6D23CF0040640B /* Swift Markdown ViewerUITests.xctest */,
+				DDF3C5E42F6D23CD0040640B /* Free Markdown Viewer.app */,
+				DDF3C5F12F6D23CF0040640B /* Free Markdown ViewerTests.xctest */,
+				DDF3C5FB2F6D23CF0040640B /* Free Markdown ViewerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,9 +95,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DDF3C5E32F6D23CD0040640B /* Swift Markdown Viewer */ = {
+		DDF3C5E32F6D23CD0040640B /* Free Markdown Viewer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DDF3C6052F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Swift Markdown Viewer" */;
+			buildConfigurationList = DDF3C6052F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Free Markdown Viewer" */;
 			buildPhases = (
 				DDF3C5E02F6D23CD0040640B /* Sources */,
 				DDF3C5E12F6D23CD0040640B /* Frameworks */,
@@ -108,18 +108,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				DDF3C5E62F6D23CD0040640B /* Swift Markdown Viewer */,
+				DDF3C5E62F6D23CD0040640B /* Free Markdown Viewer */,
 			);
-			name = "Swift Markdown Viewer";
+			name = "Free Markdown Viewer";
 			packageProductDependencies = (
 			);
-			productName = "Swift Markdown Viewer";
-			productReference = DDF3C5E42F6D23CD0040640B /* Swift Markdown Viewer.app */;
+			productName = "Free Markdown Viewer";
+			productReference = DDF3C5E42F6D23CD0040640B /* Free Markdown Viewer.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DDF3C5F02F6D23CF0040640B /* Swift Markdown ViewerTests */ = {
+		DDF3C5F02F6D23CF0040640B /* Free Markdown ViewerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DDF3C6082F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Swift Markdown ViewerTests" */;
+			buildConfigurationList = DDF3C6082F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Free Markdown ViewerTests" */;
 			buildPhases = (
 				DDF3C5ED2F6D23CF0040640B /* Sources */,
 				DDF3C5EE2F6D23CF0040640B /* Frameworks */,
@@ -131,18 +131,18 @@
 				DDF3C5F32F6D23CF0040640B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				DDF3C5F42F6D23CF0040640B /* Swift Markdown ViewerTests */,
+				DDF3C5F42F6D23CF0040640B /* Free Markdown ViewerTests */,
 			);
-			name = "Swift Markdown ViewerTests";
+			name = "Free Markdown ViewerTests";
 			packageProductDependencies = (
 			);
-			productName = "Swift Markdown ViewerTests";
-			productReference = DDF3C5F12F6D23CF0040640B /* Swift Markdown ViewerTests.xctest */;
+			productName = "Free Markdown ViewerTests";
+			productReference = DDF3C5F12F6D23CF0040640B /* Free Markdown ViewerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		DDF3C5FA2F6D23CF0040640B /* Swift Markdown ViewerUITests */ = {
+		DDF3C5FA2F6D23CF0040640B /* Free Markdown ViewerUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DDF3C60B2F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Swift Markdown ViewerUITests" */;
+			buildConfigurationList = DDF3C60B2F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Free Markdown ViewerUITests" */;
 			buildPhases = (
 				DDF3C5F72F6D23CF0040640B /* Sources */,
 				DDF3C5F82F6D23CF0040640B /* Frameworks */,
@@ -154,13 +154,13 @@
 				DDF3C5FD2F6D23CF0040640B /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				DDF3C5FE2F6D23CF0040640B /* Swift Markdown ViewerUITests */,
+				DDF3C5FE2F6D23CF0040640B /* Free Markdown ViewerUITests */,
 			);
-			name = "Swift Markdown ViewerUITests";
+			name = "Free Markdown ViewerUITests";
 			packageProductDependencies = (
 			);
-			productName = "Swift Markdown ViewerUITests";
-			productReference = DDF3C5FB2F6D23CF0040640B /* Swift Markdown ViewerUITests.xctest */;
+			productName = "Free Markdown ViewerUITests";
+			productReference = DDF3C5FB2F6D23CF0040640B /* Free Markdown ViewerUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -186,7 +186,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DDF3C5DF2F6D23CD0040640B /* Build configuration list for PBXProject "Swift Markdown Viewer" */;
+			buildConfigurationList = DDF3C5DF2F6D23CD0040640B /* Build configuration list for PBXProject "Free Markdown Viewer" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -200,9 +200,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DDF3C5E32F6D23CD0040640B /* Swift Markdown Viewer */,
-				DDF3C5F02F6D23CF0040640B /* Swift Markdown ViewerTests */,
-				DDF3C5FA2F6D23CF0040640B /* Swift Markdown ViewerUITests */,
+				DDF3C5E32F6D23CD0040640B /* Free Markdown Viewer */,
+				DDF3C5F02F6D23CF0040640B /* Free Markdown ViewerTests */,
+				DDF3C5FA2F6D23CF0040640B /* Free Markdown ViewerUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -258,12 +258,12 @@
 /* Begin PBXTargetDependency section */
 		DDF3C5F32F6D23CF0040640B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DDF3C5E32F6D23CD0040640B /* Swift Markdown Viewer */;
+			target = DDF3C5E32F6D23CD0040640B /* Free Markdown Viewer */;
 			targetProxy = DDF3C5F22F6D23CF0040640B /* PBXContainerItemProxy */;
 		};
 		DDF3C5FD2F6D23CF0040640B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = DDF3C5E32F6D23CD0040640B /* Swift Markdown Viewer */;
+			target = DDF3C5E32F6D23CD0040640B /* Free Markdown Viewer */;
 			targetProxy = DDF3C5FC2F6D23CF0040640B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -409,7 +409,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Markdown Viewer";
+				INFOPLIST_KEY_CFBundleDisplayName = "Free Markdown Viewer";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				"INFOPLIST_KEY_LSApplicationCategoryType[sdk=macosx*]" = "public.app-category.productivity";
@@ -431,7 +431,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.souschefstudio.Swift-Markdown-Viewer";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.souschefstudio.Free-Markdown-Viewer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
@@ -470,7 +470,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Markdown Viewer";
+				INFOPLIST_KEY_CFBundleDisplayName = "Free Markdown Viewer";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				"INFOPLIST_KEY_LSApplicationCategoryType[sdk=macosx*]" = "public.app-category.productivity";
@@ -492,7 +492,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.souschefstudio.Swift-Markdown-Viewer";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.souschefstudio.Free-Markdown-Viewer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
@@ -518,7 +518,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.matthewpaulmoore.Swift-Markdown-ViewerTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.matthewpaulmoore.Free-Markdown-ViewerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -528,7 +528,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swift Markdown Viewer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Swift Markdown Viewer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Free Markdown Viewer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Free Markdown Viewer";
 			};
 			name = Debug;
 		};
@@ -543,7 +543,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.matthewpaulmoore.Swift-Markdown-ViewerTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.matthewpaulmoore.Free-Markdown-ViewerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -553,7 +553,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swift Markdown Viewer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Swift Markdown Viewer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Free Markdown Viewer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Free Markdown Viewer";
 			};
 			name = Release;
 		};
@@ -567,7 +567,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.matthewpaulmoore.Swift-Markdown-ViewerUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.matthewpaulmoore.Free-Markdown-ViewerUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -577,7 +577,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Swift Markdown Viewer";
+				TEST_TARGET_NAME = "Free Markdown Viewer";
 			};
 			name = Debug;
 		};
@@ -591,7 +591,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.matthewpaulmoore.Swift-Markdown-ViewerUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.matthewpaulmoore.Free-Markdown-ViewerUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -601,14 +601,14 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Swift Markdown Viewer";
+				TEST_TARGET_NAME = "Free Markdown Viewer";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DDF3C5DF2F6D23CD0040640B /* Build configuration list for PBXProject "Swift Markdown Viewer" */ = {
+		DDF3C5DF2F6D23CD0040640B /* Build configuration list for PBXProject "Free Markdown Viewer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DDF3C6032F6D23CF0040640B /* Debug */,
@@ -617,7 +617,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DDF3C6052F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Swift Markdown Viewer" */ = {
+		DDF3C6052F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Free Markdown Viewer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DDF3C6062F6D23CF0040640B /* Debug */,
@@ -626,7 +626,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DDF3C6082F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Swift Markdown ViewerTests" */ = {
+		DDF3C6082F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Free Markdown ViewerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DDF3C6092F6D23CF0040640B /* Debug */,
@@ -635,7 +635,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DDF3C60B2F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Swift Markdown ViewerUITests" */ = {
+		DDF3C60B2F6D23CF0040640B /* Build configuration list for PBXNativeTarget "Free Markdown ViewerUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DDF3C60C2F6D23CF0040640B /* Debug */,
