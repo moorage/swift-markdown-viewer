@@ -18,6 +18,7 @@ The Apple-side work also cannot be treated as a pure in-place rename. The curren
 
 ## Progress
 
+- [x] (2026-03-27T19:00Z) Replaced the remaining old repository-slug references with `moorage/free-markdown-viewer`, including the support URL, the Git remote config, and stale `.git/FETCH_HEAD` metadata.
 - [x] (2026-03-27T16:31Z) Read the repository control-plane docs, active release plans, and repo-specific ExecPlan rules before drafting the rename plan.
 - [x] (2026-03-27T16:31Z) Audited the checked-in rename blast radius across the Xcode project, scripts, release docs, support URLs, generated docs, and active plans.
 - [x] (2026-03-27T16:31Z) Queried the live App Store Connect and bundle-ID state with the repo-owned helper so this plan is grounded in the current Apple-side identifiers and submission status rather than stale assumptions.
@@ -49,8 +50,8 @@ The Apple-side work also cannot be treated as a pure in-place rename. The curren
 - Observation: the checked-in repo contains both tracked rename targets and tracked generated files that will need regeneration rather than hand-editing.
   Evidence: tracked paths still include `Swift Markdown Viewer/...`, `docs/release/swift-markdown-viewer-support.md`, `docs/generated/repo-map.json`, and many `Fixtures/expected/spec-safari/**/reference-safari-metadata.json` files that embed the repo slug in absolute paths.
 
-- Observation: the repo rename validation gate should target product identity, not the current repository slug.
-  Evidence: after the first implementation pass, `scripts/verify-product-identity` flagged `swift-markdown-viewer` hits in `scripts/lib/product-identity.sh` and the current GitHub issues URL even though the working repository itself still lives at `moorage/swift-markdown-viewer`.
+- Observation: the repo rename still needed a final repository-slug follow-up after the product-name migration.
+  Evidence: a direct exact-slug scan still found the support URL, `.git/config`, and `.git/FETCH_HEAD` referencing the old slug until this follow-up pass updated them to `moorage/free-markdown-viewer`.
 
 - Observation: sandboxed `xcodebuild test` is not sufficient for every macOS-backed validation path in this environment.
   Evidence: `./scripts/test-integration` failed under the default sandbox with `testmanagerd.control ... Sandbox restriction` and then passed immediately when rerun outside the sandbox.

@@ -28,7 +28,7 @@ If a document or media file does not appear:
 
 Replace this section with your real support contact path before publication:
 
-- <https://github.com/moorage/swift-markdown-viewer/issues>
+- <https://github.com/moorage/free-markdown-viewer/issues>
 
 ## Privacy
 
