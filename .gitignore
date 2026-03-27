@@ -33,3 +33,4 @@ seccomp_profile.json
 tmp
 distribution.cer
 CertificateSigningRequest.certSigningRequest
+AuthKey.p8

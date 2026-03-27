@@ -40,6 +40,7 @@ fi
 
 ARCHIVES_DIR="${ARTIFACTS_DIR}/archives"
 mkdir -p "${ARCHIVES_DIR}"
+ARCHIVE_DERIVED_DATA_DIR="${ARTIFACTS_DIR}/DerivedData-archive-${PLATFORM}"
 
 case "${PLATFORM}" in
   ios)
@@ -68,14 +69,19 @@ if [[ -n "${APP_BUILD_NUMBER:-}" ]]; then
 fi
 if [[ ${ALLOW_PROVISIONING_UPDATES} -eq 1 ]]; then
   EXTRA_SETTINGS+=("-allowProvisioningUpdates")
+  while IFS= read -r flag; do
+    EXTRA_SETTINGS+=("${flag}")
+  done < <(xcode_auth_flags)
 fi
 
 rm -rf "${ARCHIVE_PATH}"
+rm -rf "${ARCHIVE_DERIVED_DATA_DIR}"
 
 xcodebuild \
   -project "${PROJECT_PATH}" \
   -scheme "${SCHEME_NAME}" \
   -configuration Release \
+  -derivedDataPath "${ARCHIVE_DERIVED_DATA_DIR}" \
   -destination "${DESTINATION}" \
   -archivePath "${ARCHIVE_PATH}" \
   DEVELOPMENT_TEAM="${TEAM_ID}" \

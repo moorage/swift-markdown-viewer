@@ -49,6 +49,9 @@ mkdir -p "${EXPORTS_DIR}"
 EXTRA_FLAGS=()
 if [[ ${ALLOW_PROVISIONING_UPDATES} -eq 1 ]]; then
   EXTRA_FLAGS+=("-allowProvisioningUpdates")
+  while IFS= read -r flag; do
+    EXTRA_FLAGS+=("${flag}")
+  done < <(xcode_auth_flags)
 fi
 
 xcodebuild \

@@ -41,17 +41,29 @@ APPLE_DEVELOPMENT_TEAM=<YOUR_TEAM_ID> ./scripts/archive-release --platform ios
 APPLE_DEVELOPMENT_TEAM=<YOUR_TEAM_ID> ./scripts/archive-release --platform macos
 ```
 
+If you prefer, place `APPLE_DEVELOPMENT_TEAM` and App Store Connect API settings such as `ASC_KEY_ID`, `ASC_ISSUER_ID`, and `ASC_KEY_PATH` in a repo-root `.env` file. Repo scripts now auto-load `.env`, while explicit shell environment values still override it.
+
 ### 3. Create the App Store Connect record
 
 Use these defaults unless you want to rename the product:
 
 - App name: `Markdown Viewer`
+- Platforms: `iOS` and `macOS`
+- Primary language: `English (U.S.)`
+- Bundle ID: `com.souschefstudio.Swift-Markdown-Viewer`
+- SKU: `com.souschefstudio.Swift-Markdown-Viewer`
 - Pricing: `Free`
 - Support URL: `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer/support`
 - Marketing URL: `https://www.matthewpaulmoore.com/apps/swift-markdown-viewer`
 - Privacy Policy URL: `https://www.matthewpaulmoore.com/legal/privacy`
 - Category: `Productivity`
 - EULA: Apple standard EULA
+
+Check whether the record already exists with:
+
+```bash
+./scripts/app-store-connect inspect-app
+```
 
 ### 4. Fill out App Store Connect metadata
 

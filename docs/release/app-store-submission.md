@@ -73,6 +73,7 @@ Local validation:
 
 - `./scripts/test-unit`
 - `./scripts/build --platform macos`
+- `./scripts/app-store-connect inspect-app`
 
 Release archive once signing is configured:
 
@@ -84,6 +85,12 @@ Export after archiving:
 - `./scripts/export-app-store --platform ios --archive-path <xcarchive> --export-options-plist <plist>`
 - `./scripts/export-app-store --platform macos --archive-path <xcarchive> --export-options-plist <plist>`
 
+Environment loading:
+
+- repo scripts now auto-load a repo-root `.env` file before running
+- existing shell environment values still win over `.env` entries
+- keep secrets such as `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_PATH`, and `APPLE_DEVELOPMENT_TEAM` in `.env` or your shell environment, not in checked-in files
+
 Optional overrides for the archive script:
 
 - `APP_BUNDLE_IDENTIFIER_OVERRIDE`
@@ -92,8 +99,22 @@ Optional overrides for the archive script:
 
 ## Manual App Store Connect work that still remains
 
+Create the app record manually in App Store Connect. Apple currently requires the app record itself to be created in the UI before later metadata, pricing, and submission work can continue.
+
+Recommended values for the first create step:
+
+- Platforms: `iOS` and `macOS`
+- App name: `Markdown Viewer`
+- Primary language: `English (U.S.)`
+- Bundle ID: `com.souschefstudio.Swift-Markdown-Viewer`
+- SKU: `com.souschefstudio.Swift-Markdown-Viewer`
+- User access: `Full Access` unless you intentionally want to limit the app record
+
+The repo-owned App Store Connect helper can confirm the current state before and after that step:
+
+- `./scripts/app-store-connect inspect-app`
+
 - review the generated candidate screenshots and upload the final set
-- create the App Store Connect app record if it does not exist yet
 - choose the final categories/content rating/review answers
 - publish the support/privacy/terms pages on the live website
 - archive with your real signing team and upload via Organizer or Transporter

@@ -11,7 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLATFORM="all"
 OUT_DIR="${ARTIFACTS_DIR}/app-store-screenshots"
 FIXTURE_ROOT="${ROOT_DIR}/Fixtures/app-store"
-MAC_WINDOW_SIZE="1440x1024"
+MAC_WINDOW_SIZE="1440x900"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -58,7 +58,6 @@ try:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
-        timeout=10,
         check=False,
     )
 except subprocess.TimeoutExpired:
@@ -72,6 +71,27 @@ sys.exit(result.returncode)
 PY
 }
 
+capture_sim_id() {
+  python3 - "$@" <<'PY'
+import json
+import subprocess
+import sys
+
+preferred_names = sys.argv[1:]
+payload = json.loads(subprocess.check_output(["xcrun", "simctl", "list", "-j", "devices", "available"], text=True))
+devices_by_runtime = payload.get("devices", {})
+
+for runtime in sorted(devices_by_runtime.keys(), reverse=True):
+    devices = [device for device in devices_by_runtime[runtime] if device.get("isAvailable")]
+    names_to_ids = {device.get("name"): device.get("udid") for device in devices}
+    for name in preferred_names:
+        if name in names_to_ids:
+            print(names_to_ids[name])
+            raise SystemExit(0)
+raise SystemExit(1)
+PY
+}
+
 capture_ios_platform() {
   local device_class="$1"
   local sim_id
@@ -80,10 +100,22 @@ capture_ios_platform() {
 
   case "${device_class}" in
     iphone)
-      sim_id="$(iphone_sim_id)"
+      sim_id="$(capture_sim_id \
+        "iPhone 17 Pro Max" \
+        "iPhone 16 Pro Max" \
+        "iPhone 15 Pro Max" \
+        "iPhone 16 Plus" \
+        "iPhone 15 Plus" \
+        "iPhone Air")"
       ;;
     ipad)
-      sim_id="$(ipad_sim_id)"
+      sim_id="$(capture_sim_id \
+        "iPad Pro 13-inch (M5)" \
+        "iPad Pro 13-inch (M4)" \
+        "iPad Air 13-inch (M4)" \
+        "iPad Air 13-inch (M3)" \
+        "iPad Air 13-inch (M2)" \
+        "iPad Pro 12.9-inch (6th generation)")"
       ;;
     *)
       echo "expected iphone|ipad" >&2

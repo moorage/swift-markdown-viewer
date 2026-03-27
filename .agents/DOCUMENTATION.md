@@ -10,8 +10,10 @@
   - `docs/exec-plans/active/2026-03-24-app-store-readiness.md`
   - `docs/exec-plans/active/2026-03-25-relative-markdown-links.md`
   - `docs/exec-plans/active/2026-03-26-ios-drawer-filter.md`
+  - `docs/exec-plans/active/2026-03-26-app-store-connect-release-setup.md`
 - current milestone:
   - app-store readiness: icons are generated, iPhone/iPad folder import is implemented, bookmark-backed workspace restoration is in place, release/privacy/docs scaffolding exists, repeatable screenshot capture is in repo, and iPhone/iPad candidate screenshots have been generated
+  - live App Store Connect release setup: app `6761209087` now has repo-owned metadata, Europe excluded from availability, valid iOS and macOS builds uploaded and attached to the draft versions, and App Store screenshot assets uploaded for iPhone, iPad, and macOS
 - commands run:
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-ios-filter -destination 'platform=iOS Simulator,id=32B9E37C-0C26-4514-9BBE-65718682A713' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerUITests/Swift_Markdown_ViewerUITests/testiPhoneDrawerQuickFilterNarrowsSidebarFiles" test`
   - `xcodebuild -quiet -project "Swift Markdown Viewer/Swift Markdown Viewer.xcodeproj" -scheme "Swift Markdown Viewer" -configuration Debug -derivedDataPath /tmp/swift-markdown-viewer-filter-unit -destination "platform=macOS,arch=arm64" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= "-only-testing:Swift Markdown ViewerTests/Swift_Markdown_ViewerTests/testAppModelFiltersFilesByQuickFilterQuery" test`
@@ -27,6 +29,16 @@
   - `./scripts/capture-app-store-screenshots --platform iphone`
   - `./scripts/capture-app-store-screenshots --platform ipad`
   - `./scripts/capture-app-store-screenshots --platform macos`
+  - `APPLE_DEVELOPMENT_TEAM=GG34PA8F4A ./scripts/archive-release --platform ios`
+  - `APPLE_DEVELOPMENT_TEAM=GG34PA8F4A ./scripts/archive-release --platform macos`
+  - `./scripts/export-app-store --platform ios --archive-path "artifacts/archives/Swift Markdown Viewer-ios.xcarchive" --export-options-plist "artifacts/export-options/ios-app-store-connect.plist" --allow-provisioning-updates`
+  - `./scripts/export-app-store --platform macos --archive-path "artifacts/archives/Swift Markdown Viewer-macos.xcarchive" --export-options-plist "artifacts/export-options/macos-app-store-connect.plist" --allow-provisioning-updates`
+  - `xcrun altool --upload-package "artifacts/exports/ios/Swift Markdown Viewer.ipa" --api-key "$ASC_KEY_ID" --api-issuer "$ASC_ISSUER_ID" --p8-file-path "$ASC_KEY_PATH" --api-key-subject user --wait --output-format json`
+  - `xcrun altool --upload-package "artifacts/exports/macos/Swift Markdown Viewer.pkg" --api-key "$ASC_KEY_ID" --api-issuer "$ASC_ISSUER_ID" --p8-file-path "$ASC_KEY_PATH" --api-key-subject user --wait --output-format json`
+  - `./scripts/app-store-connect request PATCH /v1/appStoreVersions/9fe8035c-4b97-462a-b51a-5b796b4a74f8/relationships/build --body '{"data":{"type":"builds","id":"5dc4b118-cae5-4fe8-924c-c44ae5922e7b"}}'`
+  - `./scripts/app-store-connect request PATCH /v1/appStoreVersions/3e7ec5c9-2fc8-4c19-8604-cbaa13060783/relationships/build --body '{"data":{"type":"builds","id":"7c04432d-0708-43b9-9dfe-a8098a07d7a8"}}'`
+  - `python3 scripts/check_execplan.py`
+  - `python3 scripts/knowledge/check_docs.py`
 - important outcomes:
   - `ViewerShellView` now shows the sidebar quick-filter on iPhone and iPad instead of hiding it behind `#if os(macOS)`, and the new `sidebar.filterField` / `sidebar.filterClear` accessibility identifiers give iOS drawer automation a stable hook
   - relative Markdown links now stay visible and navigable in both selectable documents and tables because `MarkdownRenderer` preserves attributed table cells, `SelectableDocumentFormatter` keeps `.link` runs, and `ViewerShellView` routes internal `.md` links through `AppModel.openMarkdownLink(_:)`
@@ -35,6 +47,12 @@
   - the app bundle now includes `PrivacyInfo.xcprivacy`, and the project file now declares low-risk App Store metadata including display name, export-compliance, macOS category, and opening-documents-in-place behavior
   - repo-owned release docs now define the planned public URLs under `https://www.matthewpaulmoore.com/`, draft support/privacy/terms page content, and the recommendation to use Apple’s standard EULA
   - `scripts/archive-release` now provides a stable shell entry point for signed Release archives once `APPLE_DEVELOPMENT_TEAM` is configured locally
+  - `scripts/app-store-connect` now provides a repo-owned App Store Connect API helper that authenticates with the local API key and can inspect live app and bundle-ID state without exposing the secret material in chat
+  - live App Store Connect metadata for app `6761209087` now has `PRODUCTIVITY` as the primary category plus repo-owned subtitle, privacy policy URL, support URL, marketing URL, promotional text, description, and keywords applied through the API
+  - live App Store Connect storefront availability for app `6761209087` now matches the requested release posture: European storefronts are disabled and there are no disabled storefronts outside that Europe set
+  - the signed release path now works end to end from the repo: both platforms archive/export successfully with the local ASC key, App Store Connect accepted the iOS `.ipa` and macOS `.pkg`, and both resulting builds are attached to their draft app-store versions
+  - the iOS App Store icon variants no longer contain alpha, which removed the `Invalid large app icon` transport rejection and let the iOS upload complete successfully
+  - `scripts/capture-app-store-screenshots` now targets App Store-accepted 6.9-inch iPhone, 13-inch iPad, and `2880x1800` macOS outputs by default, and the live App Store Connect record now has five uploaded screenshots for each of the iPhone, iPad, and desktop buckets
   - `WorkspaceProvider` now recognizes common Markdown extensions such as `.markdown` and `.mkd`, and `scripts/export-app-store` plus `docs/release/app-review-notes.md` cover the remaining local export/review prep work
   - `Fixtures/app-store/` now holds polished screenshot inputs, `scripts/capture-app-store-screenshots` generates deterministic candidate screenshots plus state/perf snapshots, and `docs/release/screenshot-capture.md` documents the flow
   - compact iPhone launches now open preselected documents into the reader instead of leaving the app on the file list, and the compact reader top bar is condensed so iPhone screenshots stay readable
@@ -48,6 +66,13 @@
   - `./scripts/test-ui-ios --device iphone --smoke` still reaches `** BUILD SUCCEEDED **` and simulator boot, but the current wrapper can exit with `NSPOSIXErrorDomain Code=2` before copying harness artifacts back into `artifacts/checkpoints/shell-smoke-iphone/`
   - `.withSecurityScope` bookmark creation and resolution options are unavailable in iOS, so bookmark handling must use platform-conditional options even though the shared restoration model stays the same
   - the Xcode project’s filesystem-synchronized group model automatically copied the new `PrivacyInfo.xcprivacy` resource into the app bundle without requiring manual `PBXBuildFile` entries
+  - the real app bundle identifier for release is still `com.souschefstudio.Swift-Markdown-Viewer`; the earlier `scripts/lib/xcode-env.sh` helper had drifted to a different identifier and needed to be corrected before live App Store Connect work
+  - the App Store Connect REST API allows inspection and update flows for `apps`, but not app-record creation itself; the first app record still has to be created manually in the App Store Connect UI
+  - even after the app record exists, the `appAvailabilityV2` relationship can still return `NOT_FOUND` until App Store Connect has initialized Pricing and Availability for the app, which blocks API-based storefront inclusion/exclusion
+  - once Pricing and Availability is saved once in the App Store Connect UI, the actual availability data lives behind a mixed v1/v2 surface: discovery comes from `GET /v1/apps/{id}/relationships/appAvailabilityV2`, while the territory payload comes from `GET /v2/appAvailabilities/{id}/territoryAvailabilities`
+  - `xcodebuild` export/authentication key support is stricter than the repo shell helpers: the ASC key path must be absolute before `-authenticationKeyPath` will be accepted, so repo-root-relative `.env` paths must be normalized
+  - App Store Connect screenshot upload accepts `APP_IPHONE_67`, `APP_IPAD_PRO_3GEN_129`, and `APP_DESKTOP` for the current generated assets; the older `APP_IPAD_PRO_129` bucket rejects the modern 13-inch iPad captures with `IMAGE_INCORRECT_DIMENSIONS`
+  - Apple currently returns `500 UNEXPECTED_ERROR` when deleting the empty obsolete `APP_IPAD_PRO_129` screenshot set, even after its failed screenshot record has been removed
   - the original preferred `iPad (A16)` simulator can wedge on `simctl` lifecycle commands in this environment, so screenshot automation is more reliable when the helper picks another available iPad first
   - the screenshot artifacts were being written as soon as the model flipped to ready, which was early enough for macOS window captures to catch the loading overlay instead of the final document content
   - the built mac app bundle already had `AppIcon.icns` and `CFBundleIconName = AppIcon`, so the missing Dock icon was a runtime presentation problem rather than a missing asset-catalog payload

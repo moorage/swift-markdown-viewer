@@ -36,6 +36,8 @@ Artifacts are written under `artifacts/app-store-screenshots/`:
 
 ## Notes
 
+- iPhone capture prefers a 6.9-inch simulator and iPad capture prefers a 13-inch simulator so the generated assets match the highest-resolution App Store screenshot tiers Apple accepts today.
+- macOS capture uses a `1440x900` window so the exported PNGs land at `2880x1800`, which matches Apple's accepted desktop screenshot dimensions.
 - iPhone and iPad screenshots are captured with `simctl io screenshot` after the app reports a ready state, so they reflect the actual simulator display rather than the harness image exporter.
 - The simulator status bar is normalized to `9:41`, full battery, and strong connectivity during iPhone/iPad capture.
-- macOS currently relies on the in-app screenshot writer because there is no repo-owned window capture helper yet. The state/perf snapshots are reliable; inspect the generated PNGs before using them in App Store Connect.
+- macOS currently relies on the in-app screenshot writer because there is no repo-owned window capture helper yet. The state/perf snapshots are reliable; inspect the generated PNGs before uploading them.
